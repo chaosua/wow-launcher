@@ -42,16 +42,17 @@ namespace wow_launcher_cs
         {
             if (Updater.data.disabled)
                 return;
+
             if (File.Exists("Wow.exe"))
             {
-                if (Updater.CalculateMD5("Wow.exe").CompareTo(Updater.data.Wow.md5) == 0)
+                if (Updater.CalculateMD5("WoW.exe").CompareTo(Updater.data.Wow.md5) == 0)
                 {
                     PlayWow();
                     return;
                 }
-                if (File.Exists("Wow.exe.old"))
-                    File.Delete("Wow.exe.old");
-                File.Move("Wow.exe", "Wow.exe.old");
+                if (File.Exists("WoW.exe.old"))
+                    File.Delete("WoW.exe.old");
+                File.Move("WoW.exe", "WoW.exe.old");
             }
             using (WebClient wc = new WebClient())
             {
@@ -59,7 +60,7 @@ namespace wow_launcher_cs
                 {
                     PlayWow();
                 });
-                wc.DownloadFileAsync(new System.Uri(Updater.data.Wow.link), "Wow.exe");
+                wc.DownloadFileAsync(new System.Uri(Updater.data.Wow.link), "WoW.exe"); //Качає WoW.exe коли натиснуто кнопку Play
             }
         }
 
@@ -93,17 +94,17 @@ namespace wow_launcher_cs
                 File.Delete("Launcher.exe.old");
             if (Directory.Exists("Data/ruRU"))
                 locale = "ruRU";
-            else if (Directory.Exists("Data/enGB"))
-                locale = "enGB";
+          /*  else if (Directory.Exists("Data/enGB"))
+                locale = "enGB";*/
             else
             {
-                var result = MessageBox.Show("Wow folder not detected! Move the launcher to a proper location.", "Error", MessageBoxButtons.OK);
+                var result = MessageBox.Show("Папка з Data\ruRU не знайдена! Перемістіть Launcher в корінь папки World of Warcraft.", "Error", MessageBoxButtons.OK);
                 if (result == DialogResult.OK)
                 {
                     Application.Exit();
                 }
             }
-
+            // Очистка Кешу
             if (Directory.Exists("Cache"))
                 Directory.Delete("Cache", true);
         }
@@ -136,8 +137,8 @@ namespace wow_launcher_cs
                         Application.DoEvents();
                     }
                 }
-                playButton.Invoke(new MethodInvoker(delegate { playButton.Enabled = true; }));
-                               
+
+                playButton.Invoke(new MethodInvoker(delegate { playButton.Enabled = true; })); //Фікс компіляції
                 UpdatePlayButton(playButton);
             });
             thread.Start();
@@ -255,7 +256,10 @@ namespace wow_launcher_cs
 
         private void Menu_Shown(object sender, EventArgs e)
         {
-            bool edit_realmlist = false; //Set flag to not edit for now
+            // Ставим вказівник щоб не оновляти файл, потрібно реалізувати через налаштування
+            bool edit_realmlist = false; 
+            /*TODO: Дістати значення з файла конфігурації */
+
             string wtfpath = "Data/" + locale + "/realmlist.wtf";
             if (edit_realmlist && File.Exists(wtfpath))
             {
