@@ -11,6 +11,7 @@ using System.IO;
 using System.Net;
 using System.Diagnostics;
 using System.Threading;
+using System.Runtime.CompilerServices;
 
 namespace wow_launcher_cs
 {
@@ -64,7 +65,8 @@ namespace wow_launcher_cs
 
         static private void PlayWow()
         {
-            Process.Start("Wow.exe");
+            Process.Start("WoW.exe");
+            Environment.Exit(0); // закриваєм Launcher
         }
 
         private void titleBar_MouseMove(object sender, MouseEventArgs e)
@@ -89,8 +91,8 @@ namespace wow_launcher_cs
             this.Text = "Launcher";
             if (File.Exists("Launcher.exe.old"))
                 File.Delete("Launcher.exe.old");
-            if (Directory.Exists("Data/enUS"))
-                locale = "enUS";
+            if (Directory.Exists("Data/ruRU"))
+                locale = "ruRU";
             else if (Directory.Exists("Data/enGB"))
                 locale = "enGB";
             else
@@ -116,10 +118,10 @@ namespace wow_launcher_cs
                 {
                     bool dlCpt = false;
 
-                    if (File.Exists("Data/" + patch.name) && Updater.CalculateMD5("Data/" + patch.name).CompareTo(patch.md5) == 0)
+                    if (File.Exists("Data/ruRU/" + patch.name) && Updater.CalculateMD5("Data/ruRU/" + patch.name).CompareTo(patch.md5) == 0)
                         continue;
-                    if (File.Exists("Data/" + patch.name))
-                        File.Delete("Data/" + patch.name);
+                    if (File.Exists("Data/ruRU/" + patch.name))
+                        File.Delete("Data/ruRU/" + patch.name);
                     using (WebClient wc = new WebClient())
                     {
                         wc.DownloadProgressChanged += new DownloadProgressChangedEventHandler(UpdateProgress);
@@ -127,14 +129,15 @@ namespace wow_launcher_cs
                         {
                             dlCpt = true;
                         });
-                        wc.DownloadFileAsync(new System.Uri(patch.link), "Data/" + patch.name);
+                        wc.DownloadFileAsync(new System.Uri(patch.link), "Data/ruRU/" + patch.name);
                     }
                     while (!dlCpt)
                     {
                         Application.DoEvents();
                     }
                 }
-                playButton.Enabled = true;
+                playButton.Invoke(new MethodInvoker(delegate { playButton.Enabled = true; }));
+                               
                 UpdatePlayButton(playButton);
             });
             thread.Start();
@@ -252,8 +255,9 @@ namespace wow_launcher_cs
 
         private void Menu_Shown(object sender, EventArgs e)
         {
+            bool edit_realmlist = false; //Set flag to not edit for now
             string wtfpath = "Data/" + locale + "/realmlist.wtf";
-            if (File.Exists(wtfpath))
+            if (edit_realmlist && File.Exists(wtfpath))
             {
                 FileAttributes attributes = File.GetAttributes(wtfpath);
 

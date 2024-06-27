@@ -37,21 +37,21 @@
             this.closeButton = new System.Windows.Forms.Button();
             this.frameLeft = new System.Windows.Forms.Panel();
             this.frameRight = new System.Windows.Forms.Panel();
-            this.bottomBackground = new System.Windows.Forms.Panel();
-            this.progressBar = new System.Windows.Forms.PictureBox();
-            this.playButton = new System.Windows.Forms.Button();
             this.topBackground = new System.Windows.Forms.Panel();
+            this.playButton = new System.Windows.Forms.Button();
+            this.progressBar = new System.Windows.Forms.PictureBox();
+            this.bottomBackground = new System.Windows.Forms.Panel();
             this.titleBar.SuspendLayout();
-            this.bottomBackground.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.progressBar)).BeginInit();
+            this.bottomBackground.SuspendLayout();
             this.SuspendLayout();
             // 
             // frameBottom
             // 
             this.frameBottom.BackgroundImage = global::wow_launcher_cs.Properties.Resources.FrameBottom;
-            this.frameBottom.Location = new System.Drawing.Point(3, 629);
+            this.frameBottom.Location = new System.Drawing.Point(3, 627);
             this.frameBottom.Name = "frameBottom";
-            this.frameBottom.Size = new System.Drawing.Size(803, 4);
+            this.frameBottom.Size = new System.Drawing.Size(802, 4);
             this.frameBottom.TabIndex = 0;
             // 
             // titleBar
@@ -65,7 +65,7 @@
             this.titleBar.Controls.Add(this.closeButton);
             this.titleBar.Location = new System.Drawing.Point(3, 0);
             this.titleBar.Name = "titleBar";
-            this.titleBar.Size = new System.Drawing.Size(804, 29);
+            this.titleBar.Size = new System.Drawing.Size(806, 29);
             this.titleBar.TabIndex = 1;
             this.titleBar.MouseDown += new System.Windows.Forms.MouseEventHandler(this.titleBar_MouseDown);
             this.titleBar.MouseMove += new System.Windows.Forms.MouseEventHandler(this.titleBar_MouseMove);
@@ -92,9 +92,9 @@
             this.launcherLabel.ForeColor = System.Drawing.Color.White;
             this.launcherLabel.Location = new System.Drawing.Point(48, 10);
             this.launcherLabel.Name = "launcherLabel";
-            this.launcherLabel.Size = new System.Drawing.Size(141, 13);
+            this.launcherLabel.Size = new System.Drawing.Size(187, 13);
             this.launcherLabel.TabIndex = 3;
-            this.launcherLabel.Text = "World of Warcraft 4.3.4";
+            this.launcherLabel.Text = "World of Warcraft v3.3.5.12340";
             this.launcherLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.titleBar_MouseDown);
             this.launcherLabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.titleBar_MouseMove);
             this.launcherLabel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.titleBar_MouseUp);
@@ -104,7 +104,7 @@
             this.minimizeButton.BackgroundImage = global::wow_launcher_cs.Properties.Resources.MinimizeButtonBase;
             this.minimizeButton.FlatAppearance.BorderSize = 0;
             this.minimizeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.minimizeButton.Location = new System.Drawing.Point(749, 6);
+            this.minimizeButton.Location = new System.Drawing.Point(757, 5);
             this.minimizeButton.Margin = new System.Windows.Forms.Padding(0);
             this.minimizeButton.Name = "minimizeButton";
             this.minimizeButton.Size = new System.Drawing.Size(20, 20);
@@ -122,7 +122,7 @@
             this.closeButton.BackgroundImage = global::wow_launcher_cs.Properties.Resources.CloseButtonBase;
             this.closeButton.FlatAppearance.BorderSize = 0;
             this.closeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.closeButton.Location = new System.Drawing.Point(778, 6);
+            this.closeButton.Location = new System.Drawing.Point(779, 5);
             this.closeButton.Margin = new System.Windows.Forms.Padding(0);
             this.closeButton.Name = "closeButton";
             this.closeButton.Size = new System.Drawing.Size(20, 20);
@@ -153,26 +153,14 @@
             this.frameRight.Size = new System.Drawing.Size(3, 633);
             this.frameRight.TabIndex = 1;
             // 
-            // bottomBackground
+            // topBackground
             // 
-            this.bottomBackground.BackColor = System.Drawing.Color.White;
-            this.bottomBackground.BackgroundImage = global::wow_launcher_cs.Properties.Resources.BottomUpdateLauncher;
-            this.bottomBackground.Controls.Add(this.progressBar);
-            this.bottomBackground.Controls.Add(this.playButton);
-            this.bottomBackground.Location = new System.Drawing.Point(3, 509);
-            this.bottomBackground.Name = "bottomBackground";
-            this.bottomBackground.Size = new System.Drawing.Size(803, 120);
-            this.bottomBackground.TabIndex = 0;
-            // 
-            // progressBar
-            // 
-            this.progressBar.BackColor = System.Drawing.Color.Transparent;
-            this.progressBar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.progressBar.Location = new System.Drawing.Point(22, 57);
-            this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(585, 10);
-            this.progressBar.TabIndex = 0;
-            this.progressBar.TabStop = false;
+            this.topBackground.BackgroundImage = global::wow_launcher_cs.Properties.Resources.MainWindowImagePatch;
+            this.topBackground.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.topBackground.Location = new System.Drawing.Point(3, 29);
+            this.topBackground.Name = "topBackground";
+            this.topBackground.Size = new System.Drawing.Size(806, 480);
+            this.topBackground.TabIndex = 2;
             // 
             // playButton
             // 
@@ -180,9 +168,9 @@
             this.playButton.Enabled = false;
             this.playButton.FlatAppearance.BorderSize = 0;
             this.playButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.playButton.Location = new System.Drawing.Point(645, 20);
+            this.playButton.Location = new System.Drawing.Point(678, 23);
             this.playButton.Name = "playButton";
-            this.playButton.Size = new System.Drawing.Size(140, 84);
+            this.playButton.Size = new System.Drawing.Size(102, 75);
             this.playButton.TabIndex = 0;
             this.playButton.UseVisualStyleBackColor = true;
             this.playButton.EnabledChanged += new System.EventHandler(this.playButton_EnabledChanged);
@@ -192,14 +180,26 @@
             this.playButton.MouseLeave += new System.EventHandler(this.playButton_MouseLeave);
             this.playButton.MouseUp += new System.Windows.Forms.MouseEventHandler(this.playButton_MouseUp);
             // 
-            // topBackground
+            // progressBar
             // 
-            this.topBackground.BackgroundImage = global::wow_launcher_cs.Properties.Resources.MainWindowImagePatch;
-            this.topBackground.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.topBackground.Location = new System.Drawing.Point(3, 29);
-            this.topBackground.Name = "topBackground";
-            this.topBackground.Size = new System.Drawing.Size(803, 480);
-            this.topBackground.TabIndex = 2;
+            this.progressBar.BackColor = System.Drawing.Color.Transparent;
+            this.progressBar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.progressBar.Location = new System.Drawing.Point(27, 15);
+            this.progressBar.Name = "progressBar";
+            this.progressBar.Size = new System.Drawing.Size(610, 20);
+            this.progressBar.TabIndex = 0;
+            this.progressBar.TabStop = false;
+            // 
+            // bottomBackground
+            // 
+            this.bottomBackground.BackColor = System.Drawing.Color.White;
+            this.bottomBackground.BackgroundImage = global::wow_launcher_cs.Properties.Resources.BottomUpdateLauncher;
+            this.bottomBackground.Controls.Add(this.progressBar);
+            this.bottomBackground.Controls.Add(this.playButton);
+            this.bottomBackground.Location = new System.Drawing.Point(3, 509);
+            this.bottomBackground.Name = "bottomBackground";
+            this.bottomBackground.Size = new System.Drawing.Size(806, 124);
+            this.bottomBackground.TabIndex = 0;
             // 
             // Menu
             // 
@@ -225,8 +225,8 @@
             this.Shown += new System.EventHandler(this.Menu_Shown);
             this.titleBar.ResumeLayout(false);
             this.titleBar.PerformLayout();
-            this.bottomBackground.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.progressBar)).EndInit();
+            this.bottomBackground.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -236,13 +236,13 @@
         private System.Windows.Forms.Panel topBackground;
         private System.Windows.Forms.Panel frameLeft;
         private System.Windows.Forms.Panel frameRight;
-        private System.Windows.Forms.Panel bottomBackground;
         private System.Windows.Forms.Panel frameBottom;
         private System.Windows.Forms.Button closeButton;
         private System.Windows.Forms.Button minimizeButton;
-        private System.Windows.Forms.Button playButton;
         private System.Windows.Forms.Label launcherLabel;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button playButton;
         private System.Windows.Forms.PictureBox progressBar;
+        private System.Windows.Forms.Panel bottomBackground;
     }
 }

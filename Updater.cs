@@ -55,12 +55,12 @@ namespace wow_launcher_cs
         static XmlDocument xml;
         static XmlElement root;
         public static UpdateData data;
-        static string remoteHost = "http://127.0.0.1:8000/";
+        static string remoteHost = "http://127.0.0.1/client/"; //основна адреса сервера оновлення
 
         static public void Init()
         {
             data.disabled = false;
-            if (File.Exists("update.xml"))
+            if (File.Exists("update.xml")) //перевіряє чи присутній фал налаштувань поруч з лаунчером
                 InitValidation("update.xml");
             else
             {
@@ -77,7 +77,7 @@ namespace wow_launcher_cs
                 }
                 catch (WebException e)
                 {
-                    MessageBox.Show("Error reaching the Update server!\nError: " + e.Message, "Error", MessageBoxButtons.OK);
+                    MessageBox.Show("Помилка Сервер оновлень недоступний!\nError: " + e.Message, "Error", MessageBoxButtons.OK);
                     data.disabled = true;
                 }  
             }
@@ -105,7 +105,7 @@ namespace wow_launcher_cs
                         }
                         else
                         {
-                            MessageBox.Show("MD5 mismatch!", "Error", MessageBoxButtons.OK);
+                            MessageBox.Show("Хеш MD5 не співпадає!", "Error", MessageBoxButtons.OK);
                             data.disabled = true;
                             File.Delete(filename);
                             File.Move(filename + "old", filename);
@@ -137,7 +137,7 @@ namespace wow_launcher_cs
             if (!ValidateAndLoad())
             {
                 data.disabled = true;
-                MessageBox.Show("Failed to validate update.xml!", "Error", MessageBoxButtons.OK);
+                MessageBox.Show("Помилка перевірки update.xml!", "Error", MessageBoxButtons.OK);
             }
         }
 

@@ -22,7 +22,7 @@ namespace wow_launcher_cs
         private void SplashScreen_Load(object sender, EventArgs e)
         {
             string productVersion = Application.ProductVersion;
-            versionLabel.Text = "Version: " + productVersion;
+            versionLabel.Text = "Версія: " + productVersion;
             Updater.Init();
             Updater.UpdateLauncher();
         }
