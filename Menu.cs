@@ -12,6 +12,8 @@ using System.Net;
 using System.Diagnostics;
 using System.Threading;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace wow_launcher_cs
 {
@@ -54,10 +56,13 @@ namespace wow_launcher_cs
                     File.Delete("WoW.exe.old");
                 File.Move("WoW.exe", "WoW.exe.old");
             }
+
             using (WebClient wc = new WebClient())
             {
+                //DownloadInfoLabel.Text = "Оновлення WoW.exe";
                 wc.DownloadFileCompleted += ((sender, args) =>
                 {
+                    //DownloadInfoLabel.Text = "WoW.exe оновлено. СТАРТУЮ";
                     PlayWow();
                 });
                 wc.DownloadFileAsync(new System.Uri(Updater.data.Wow.link), "WoW.exe"); //Качає WoW.exe коли натиснуто кнопку Play
@@ -89,6 +94,7 @@ namespace wow_launcher_cs
         private void Menu_Load(object sender, EventArgs e)
         {
             UpdatePlayButton(playButton);
+            DownloadInfoLabel.Text = "";
             this.Text = "Launcher";
             if (File.Exists("Launcher.exe.old"))
                 File.Delete("Launcher.exe.old");
@@ -125,10 +131,13 @@ namespace wow_launcher_cs
                         File.Delete("Data/ruRU/" + patch.name);
                     using (WebClient wc = new WebClient())
                     {
+                        DownloadInfoLabel.Invoke(new MethodInvoker(delegate { DownloadInfoLabel.Text = "Завантаження: " + patch.name; }));
+
                         wc.DownloadProgressChanged += new DownloadProgressChangedEventHandler(UpdateProgress);
                         wc.DownloadFileCompleted += ((sender, args) =>
                         {
                             dlCpt = true;
+                            DownloadInfoLabel.Invoke(new MethodInvoker(delegate { DownloadInfoLabel.Text = "Клієнт оновлено."; }));
                         });
                         wc.DownloadFileAsync(new System.Uri(patch.link), "Data/ruRU/" + patch.name);
                     }
@@ -162,7 +171,6 @@ namespace wow_launcher_cs
                     bmp.SetPixel(Xcount, Ycount, Color.Transparent);
                 }
             }
-
             progressBar.BackgroundImage = bmp;
         }
 
