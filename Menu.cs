@@ -56,13 +56,13 @@ namespace wow_launcher_cs
                     File.Delete("WoW.exe.old");
                 File.Move("WoW.exe", "WoW.exe.old");
             }
-
+            //DownloadInfoLabel = MainMenu.Equals();
             using (WebClient wc = new WebClient())
             {
-                //DownloadInfoLabel.Text = "Оновлення WoW.exe";
+              //  DownloadInfoLabel.Text = "Оновлення WoW.exe";
                 wc.DownloadFileCompleted += ((sender, args) =>
                 {
-                    //DownloadInfoLabel.Text = "WoW.exe оновлено. СТАРТУЮ";
+                 //   DownloadInfoLabel.Text = "WoW.exe оновлено. СТАРТУЮ";
                     PlayWow();
                 });
                 wc.DownloadFileAsync(new System.Uri(Updater.data.Wow.link), "WoW.exe"); //Качає WoW.exe коли натиснуто кнопку Play
@@ -94,7 +94,7 @@ namespace wow_launcher_cs
         private void Menu_Load(object sender, EventArgs e)
         {
             UpdatePlayButton(playButton);
-            DownloadInfoLabel.Text = "";
+            DownloadInfoLabel.Text = "Клієнт оновлено.";
             this.Text = "Launcher";
             if (File.Exists("Launcher.exe.old"))
                 File.Delete("Launcher.exe.old");

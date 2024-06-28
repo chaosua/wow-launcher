@@ -38,12 +38,11 @@
             this.frameLeft = new System.Windows.Forms.Panel();
             this.frameRight = new System.Windows.Forms.Panel();
             this.topBackground = new System.Windows.Forms.Panel();
+            this.DownloadInfoLabel = new System.Windows.Forms.Label();
             this.playButton = new System.Windows.Forms.Button();
             this.progressBar = new System.Windows.Forms.PictureBox();
             this.bottomBackground = new System.Windows.Forms.Panel();
-            this.DownloadInfoLabel = new System.Windows.Forms.Label();
             this.titleBar.SuspendLayout();
-            this.topBackground.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.progressBar)).BeginInit();
             this.bottomBackground.SuspendLayout();
             this.SuspendLayout();
@@ -159,11 +158,22 @@
             // 
             this.topBackground.BackgroundImage = global::wow_launcher_cs.Properties.Resources.MainWindowImagePatch;
             this.topBackground.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.topBackground.Controls.Add(this.DownloadInfoLabel);
             this.topBackground.Location = new System.Drawing.Point(3, 29);
             this.topBackground.Name = "topBackground";
             this.topBackground.Size = new System.Drawing.Size(806, 480);
             this.topBackground.TabIndex = 2;
+            // 
+            // DownloadInfoLabel
+            // 
+            this.DownloadInfoLabel.AutoSize = true;
+            this.DownloadInfoLabel.BackColor = System.Drawing.Color.Transparent;
+            this.DownloadInfoLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold);
+            this.DownloadInfoLabel.ForeColor = System.Drawing.Color.White;
+            this.DownloadInfoLabel.Location = new System.Drawing.Point(23, 29);
+            this.DownloadInfoLabel.Name = "DownloadInfoLabel";
+            this.DownloadInfoLabel.Size = new System.Drawing.Size(179, 20);
+            this.DownloadInfoLabel.TabIndex = 4;
+            this.DownloadInfoLabel.Text = "DownloadTXTDummy";
             // 
             // playButton
             // 
@@ -187,7 +197,7 @@
             // 
             this.progressBar.BackColor = System.Drawing.Color.Transparent;
             this.progressBar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.progressBar.Location = new System.Drawing.Point(27, 15);
+            this.progressBar.Location = new System.Drawing.Point(27, 6);
             this.progressBar.Name = "progressBar";
             this.progressBar.Size = new System.Drawing.Size(610, 20);
             this.progressBar.TabIndex = 0;
@@ -197,24 +207,13 @@
             // 
             this.bottomBackground.BackColor = System.Drawing.Color.White;
             this.bottomBackground.BackgroundImage = global::wow_launcher_cs.Properties.Resources.BottomUpdateLauncher;
+            this.bottomBackground.Controls.Add(this.DownloadInfoLabel);
             this.bottomBackground.Controls.Add(this.progressBar);
             this.bottomBackground.Controls.Add(this.playButton);
             this.bottomBackground.Location = new System.Drawing.Point(3, 509);
             this.bottomBackground.Name = "bottomBackground";
             this.bottomBackground.Size = new System.Drawing.Size(806, 124);
             this.bottomBackground.TabIndex = 0;
-            // 
-            // DownloadInfoLabel
-            // 
-            this.DownloadInfoLabel.AutoSize = true;
-            this.DownloadInfoLabel.BackColor = System.Drawing.Color.Transparent;
-            this.DownloadInfoLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold);
-            this.DownloadInfoLabel.ForeColor = System.Drawing.Color.White;
-            this.DownloadInfoLabel.Location = new System.Drawing.Point(23, 457);
-            this.DownloadInfoLabel.Name = "DownloadInfoLabel";
-            this.DownloadInfoLabel.Size = new System.Drawing.Size(179, 20);
-            this.DownloadInfoLabel.TabIndex = 4;
-            this.DownloadInfoLabel.Text = "DownloadTXTDummy";
             // 
             // Menu
             // 
@@ -240,10 +239,9 @@
             this.Shown += new System.EventHandler(this.Menu_Shown);
             this.titleBar.ResumeLayout(false);
             this.titleBar.PerformLayout();
-            this.topBackground.ResumeLayout(false);
-            this.topBackground.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.progressBar)).EndInit();
             this.bottomBackground.ResumeLayout(false);
+            this.bottomBackground.PerformLayout();
             this.ResumeLayout(false);
 
         }
