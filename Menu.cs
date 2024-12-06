@@ -14,6 +14,7 @@ using System.Threading;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 
 namespace wow_launcher_cs
 {
@@ -95,7 +96,7 @@ namespace wow_launcher_cs
         {
             UpdatePlayButton(playButton);
             DownloadInfoLabel.Text = "Клієнт оновлено.";
-            this.Text = "Launcher";
+            Text = "Launcher";
             if (File.Exists("Launcher.exe.old"))
                 File.Delete("Launcher.exe.old");
             if (Directory.Exists("Data/ruRU"))
@@ -164,7 +165,7 @@ namespace wow_launcher_cs
         public void SetProgressBarPct(int pct)
         {
             Bitmap bmp = new Bitmap(Properties.Resources.dl_bar_green);
-            for (int Xcount = (pct*bmp.Width)/100; Xcount < bmp.Width; Xcount++)
+            for (int Xcount = (pct * bmp.Width) / 100; Xcount < bmp.Width; Xcount++)
             {
                 for (int Ycount = 0; Ycount < bmp.Height; Ycount++)
                 {
@@ -176,7 +177,7 @@ namespace wow_launcher_cs
 
         private void closeButton_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private void playButton_MouseDown(object sender, MouseEventArgs e)
@@ -262,27 +263,40 @@ namespace wow_launcher_cs
                 playButton.BackgroundImage = Properties.Resources.PlayButtonDisabled;
         }
 
-        private void Menu_Shown(object sender, EventArgs e)
+        private void CheckkRealmlistAndUpdate()
         {
-            // Ставим вказівник щоб не оновляти файл, потрібно реалізувати через налаштування
-            bool edit_realmlist = false; 
-            /*TODO: Дістати значення з файла конфігурації */
 
-            string wtfpath = "Data/" + locale + "/realmlist.wtf";
-            if (edit_realmlist && File.Exists(wtfpath))
+            string wtfpath = $@"Data/{locale}/realmlist.wtf";
+
+            if (File.Exists(wtfpath))
             {
                 FileAttributes attributes = File.GetAttributes(wtfpath);
 
                 if ((attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
                     File.SetAttributes(wtfpath, FileAttributes.Normal);
-                    if (System.IO.File.ReadAllText(wtfpath).CompareTo("set realmlist localhost") != 0)
+                if (File.ReadAllText(wtfpath).CompareTo("set realmlist login1.freedom-wow.in.ua") != 0)
                 {
-                    FileStream fs = new FileStream(wtfpath, FileMode.OpenOrCreate);
-                    byte[] rlm = new UTF8Encoding(true).GetBytes("set realmlist localhost");
-                    fs.Write(rlm, 0, rlm.Length);
-                    fs.Close();
+                    if (CheckboxRealmlist.Checked)
+                    {
+                        ChangeRealmlist(wtfpath);
+
+                    }
+
                 }
             }
+            else
+            {
+                using (StreamWriter sw = new StreamWriter(wtfpath, true, Encoding.UTF8))
+                {
+                    sw.Write("set realmlist login1.freedom-wow.in.ua");
+                    playButton.Enabled = true;
+
+                }
+            }
+        }
+
+        private void Menu_Shown(object sender, EventArgs e)
+        {
             UpdatePatches();
         }
 
@@ -290,5 +304,28 @@ namespace wow_launcher_cs
         {
             UpdateWow();
         }
+
+        private void CheckboxRealmlist_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckkRealmlistAndUpdate();
+        }
+
+        private void ChangeRealmlist(string wtfpath)
+        {
+            try
+            {
+                using (StreamWriter sw = new StreamWriter(wtfpath, false, Encoding.UTF8))
+                {
+                    sw.Write("set realmlist login1.freedom-wow.in.ua");
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Щоось пішло не так {ex.Message}");
+            }
+        }
+
     }
 }
