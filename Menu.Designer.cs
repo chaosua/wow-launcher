@@ -38,11 +38,12 @@
             this.frameLeft = new System.Windows.Forms.Panel();
             this.frameRight = new System.Windows.Forms.Panel();
             this.topBackground = new System.Windows.Forms.Panel();
+            this.CheckboxRealmlist = new System.Windows.Forms.CheckBox();
             this.DownloadInfoLabel = new System.Windows.Forms.Label();
             this.playButton = new System.Windows.Forms.Button();
             this.progressBar = new System.Windows.Forms.PictureBox();
             this.bottomBackground = new System.Windows.Forms.Panel();
-            this.CheckboxRealmlist = new System.Windows.Forms.CheckBox();
+            this.CheckBoxRealmName = new System.Windows.Forms.CheckBox();
             this.titleBar.SuspendLayout();
             this.topBackground.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.progressBar)).BeginInit();
@@ -160,11 +161,25 @@
             // 
             this.topBackground.BackgroundImage = global::wow_launcher_cs.Properties.Resources.MainWindowImagePatch;
             this.topBackground.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.topBackground.Controls.Add(this.CheckBoxRealmName);
             this.topBackground.Controls.Add(this.CheckboxRealmlist);
             this.topBackground.Location = new System.Drawing.Point(3, 29);
             this.topBackground.Name = "topBackground";
             this.topBackground.Size = new System.Drawing.Size(806, 480);
             this.topBackground.TabIndex = 2;
+            // 
+            // CheckboxRealmlist
+            // 
+            this.CheckboxRealmlist.BackColor = System.Drawing.Color.Transparent;
+            this.CheckboxRealmlist.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.CheckboxRealmlist.ForeColor = System.Drawing.SystemColors.Menu;
+            this.CheckboxRealmlist.Location = new System.Drawing.Point(529, 437);
+            this.CheckboxRealmlist.Name = "CheckboxRealmlist";
+            this.CheckboxRealmlist.Size = new System.Drawing.Size(251, 37);
+            this.CheckboxRealmlist.TabIndex = 0;
+            this.CheckboxRealmlist.Text = "Перезаписати realmlist.wtf";
+            this.CheckboxRealmlist.UseVisualStyleBackColor = false;
+            this.CheckboxRealmlist.CheckedChanged += new System.EventHandler(this.CheckboxRealmlist_CheckedChanged);
             // 
             // DownloadInfoLabel
             // 
@@ -218,18 +233,18 @@
             this.bottomBackground.Size = new System.Drawing.Size(806, 124);
             this.bottomBackground.TabIndex = 0;
             // 
-            // CheckboxRealmlist
+            // CheckBoxRealmName
             // 
-            this.CheckboxRealmlist.BackColor = System.Drawing.Color.Transparent;
-            this.CheckboxRealmlist.Font = new System.Drawing.Font("Nimrod MT", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.CheckboxRealmlist.ForeColor = System.Drawing.SystemColors.Menu;
-            this.CheckboxRealmlist.Location = new System.Drawing.Point(529, 437);
-            this.CheckboxRealmlist.Name = "CheckboxRealmlist";
-            this.CheckboxRealmlist.Size = new System.Drawing.Size(251, 37);
-            this.CheckboxRealmlist.TabIndex = 0;
-            this.CheckboxRealmlist.Text = "Перезаписати realmlist.wtf";
-            this.CheckboxRealmlist.UseVisualStyleBackColor = false;
-            this.CheckboxRealmlist.CheckedChanged += new System.EventHandler(this.CheckboxRealmlist_CheckedChanged);
+            this.CheckBoxRealmName.BackColor = System.Drawing.Color.Transparent;
+            this.CheckBoxRealmName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.CheckBoxRealmName.ForeColor = System.Drawing.SystemColors.Menu;
+            this.CheckBoxRealmName.Location = new System.Drawing.Point(526, 379);
+            this.CheckBoxRealmName.Name = "CheckBoxRealmName";
+            this.CheckBoxRealmName.Size = new System.Drawing.Size(251, 52);
+            this.CheckBoxRealmName.TabIndex = 1;
+            this.CheckBoxRealmName.Text = "Виправити Проблему зі входом";
+            this.CheckBoxRealmName.UseVisualStyleBackColor = false;
+            this.CheckBoxRealmName.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // Menu
             // 
@@ -278,5 +293,6 @@
         private System.Windows.Forms.Panel bottomBackground;
         private System.Windows.Forms.Label DownloadInfoLabel;
         private System.Windows.Forms.CheckBox CheckboxRealmlist;
+        private System.Windows.Forms.CheckBox CheckBoxRealmName;
     }
 }

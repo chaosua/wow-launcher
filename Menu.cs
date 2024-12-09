@@ -305,6 +305,11 @@ namespace wow_launcher_cs
             UpdateWow();
         }
 
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            ChangeRealmName();
+        }
+
         private void CheckboxRealmlist_CheckedChanged(object sender, EventArgs e)
         {
             CheckkRealmlistAndUpdate();
@@ -327,5 +332,52 @@ namespace wow_launcher_cs
             }
         }
 
+        private void ChangeRealmName()
+        {
+            string path = "WTF/Config.wtf"; // Шлях до файлу
+            string searchText = "SET realmName"; // Рядок, який потрібно знайти
+            string replaceText = "SET realmName \"Freedom x5\""; // Новий текст, яким замінити
+            bool found = false;
+
+            try
+            {
+                // Читаємо всі рядки з файлу
+                string[] lines = File.ReadAllLines(path);
+
+                // Перебираємо всі рядки та замінюємо необхідний
+                for (int i = 0; i < lines.Length; i++)
+                {
+                    if (lines[i].Contains(searchText))
+                    {
+                        lines[i] = replaceText; // Заміна рядка
+                        found = true; // Позначаємо, що рядок знайдено
+                        break; // Виходимо з циклу, якщо рядок знайдено
+                    }
+                }
+
+                // Якщо рядок не знайдено, додаємо його в кінець масиву
+                if (!found)
+                {
+                    var linesList = new List<string>(lines);
+                    linesList.Add(replaceText);
+                    lines = linesList.ToArray(); // Оновлюємо масив рядків
+                }
+
+                // Перезаписуємо файл з модифікованими рядками
+                File.WriteAllLines(path, lines);
+            }
+            catch(Exception e)
+            {
+                if(CheckBoxRealmName.Checked)
+                {
+                MessageBox.Show("Файлу Config.wtf не існує!");
+                CheckBoxRealmName.Checked = false;
+
+                }
+
+            }
+        }
+
+        
     }
 }
