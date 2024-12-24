@@ -264,7 +264,7 @@ namespace wow_launcher_cs
                 playButton.BackgroundImage = Properties.Resources.PlayButtonDisabled;
         }
 
-        public void CheckkRealmlistAndUpdate()
+        public void CheckRealmlistAndUpdate()
         {
 
             string wtfpath = $@"Data/{locale}/realmlist.wtf";

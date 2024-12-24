@@ -98,7 +98,7 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Settings";
-            this.Load += new System.EventHandler(this.Налаштування_Load);
+            this.Load += new System.EventHandler(this.Settings_Load);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Settings_MouseDown);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Settings_MouseMove);
             this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Settings_MouseUp);

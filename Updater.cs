@@ -111,7 +111,8 @@ namespace wow_launcher_cs
                             File.Move(filename + "old", filename);
                             return;
                         }
-                    });
+                    }
+                    );
                     wc.DownloadFileAsync(new System.Uri(data.Launcher.link), filename);
                 }
             }
@@ -176,6 +177,7 @@ namespace wow_launcher_cs
                 data.Wow.link = null;
                 return true;
             }
+
             if (component.Attributes["md5"] != null && component.Attributes["link"] != null)
             {
                 data.Wow.md5 = component.Attributes["md5"].Value;
@@ -196,6 +198,7 @@ namespace wow_launcher_cs
                 data.Launcher.link = null;
                 return true;
             }
+
             if (component.Attributes["version"] != null && component.Attributes["md5"] != null && component.Attributes["link"] != null)
             {
                 data.Launcher.version = component.Attributes["version"].Value;

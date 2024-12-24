@@ -42,7 +42,7 @@ namespace wow_launcher_cs
             myFont = new Font(fonts.Families[0], 14.0F);
         }
 
-        private void Налаштування_Load(object sender, EventArgs e)
+        private void Settings_Load(object sender, EventArgs e)
         {
             CheckBoxRealmName.Font = myFont;
             CheckboxRealmlist.Font = myFont;
@@ -102,7 +102,7 @@ namespace wow_launcher_cs
 
         private void CheckboxRealmlist_CheckedChanged(object sender, EventArgs e)
         {
-            mainMenu.CheckkRealmlistAndUpdate();
+            mainMenu.CheckRealmlistAndUpdate();
         }
 
         public void ChangeRealmlist(string wtfpath)
@@ -121,6 +121,7 @@ namespace wow_launcher_cs
                 MessageBox.Show($"Щоось пішло не так {ex.Message}");
             }
         }
+
         private void ChangeRealmName()
         {
             string path = "WTF/Config.wtf"; // Шлях до файлу
@@ -161,12 +162,9 @@ namespace wow_launcher_cs
                 {
                     MessageBox.Show("Файлу Config.wtf не існує!");
                     CheckBoxRealmName.Checked = false;
-
                 }
 
             }
-        }
-
-        
+        }        
     }
-    }
+}
