@@ -131,6 +131,7 @@
     <None Include="Resources\dl_bar_green.png" />
     <Content Include="128.ico" />
     <Content Include="Resources\logo.jpg" />
+    <None Include="Resources\NimrodMT.ttf" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.8">

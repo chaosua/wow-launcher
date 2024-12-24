@@ -1,6 +1,6 @@
 ﻿namespace wow_launcher_cs
 {
-    partial class Settings
+    partial class Налаштування
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Settings));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Налаштування));
             this.closeButton = new System.Windows.Forms.Button();
             this.CheckBoxRealmName = new System.Windows.Forms.CheckBox();
             this.CheckboxRealmlist = new System.Windows.Forms.CheckBox();
@@ -55,11 +55,11 @@
             // CheckBoxRealmName
             // 
             this.CheckBoxRealmName.BackColor = System.Drawing.Color.Transparent;
-            this.CheckBoxRealmName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.CheckBoxRealmName.Font = new System.Drawing.Font("Nimrod MT", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.CheckBoxRealmName.ForeColor = System.Drawing.SystemColors.Menu;
             this.CheckBoxRealmName.Location = new System.Drawing.Point(36, 43);
             this.CheckBoxRealmName.Name = "CheckBoxRealmName";
-            this.CheckBoxRealmName.Size = new System.Drawing.Size(248, 52);
+            this.CheckBoxRealmName.Size = new System.Drawing.Size(420, 52);
             this.CheckBoxRealmName.TabIndex = 5;
             this.CheckBoxRealmName.Text = "Виправити проблему з входом на реалм";
             this.CheckBoxRealmName.UseVisualStyleBackColor = false;
@@ -68,18 +68,19 @@
             // CheckboxRealmlist
             // 
             this.CheckboxRealmlist.BackColor = System.Drawing.Color.Transparent;
-            this.CheckboxRealmlist.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.CheckboxRealmlist.Font = new System.Drawing.Font("Nimrod MT", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.CheckboxRealmlist.ForeColor = System.Drawing.SystemColors.Menu;
-            this.CheckboxRealmlist.Location = new System.Drawing.Point(36, 121);
+            this.CheckboxRealmlist.Location = new System.Drawing.Point(36, 101);
             this.CheckboxRealmlist.Name = "CheckboxRealmlist";
-            this.CheckboxRealmlist.Size = new System.Drawing.Size(251, 37);
+            this.CheckboxRealmlist.Size = new System.Drawing.Size(420, 37);
             this.CheckboxRealmlist.TabIndex = 6;
             this.CheckboxRealmlist.Text = "Відновити realmlist.wtf";
             this.CheckboxRealmlist.UseVisualStyleBackColor = false;
             this.CheckboxRealmlist.CheckedChanged += new System.EventHandler(this.CheckboxRealmlist_CheckedChanged);
             // 
-            // Settings
+            // Налаштування
             // 
+            this.AccessibleRole = System.Windows.Forms.AccessibleRole.MenuBar;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Lime;
@@ -91,7 +92,10 @@
             this.Controls.Add(this.closeButton);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "Settings";
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Name = "Налаштування";
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Settings";
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Settings_MouseDown);

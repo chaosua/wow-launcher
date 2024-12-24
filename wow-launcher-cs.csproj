@@ -142,6 +142,7 @@
     <None Include="Resources\CloseButtonHover.jpg" />
     <None Include="Resources\128.ico" />
     <None Include="Resources\dl_bar_green.png" />
+    <EmbeddedResource Include="Resources\NimrodMT.ttf" />
     <Content Include="128.ico" />
     <Resource Include="Resources\config_button_base.png" />
     <Resource Include="Resources\config_button_hover.png" />

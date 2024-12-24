@@ -11,14 +11,14 @@ using System.Windows.Forms;
 
 namespace wow_launcher_cs
 {
-    public partial class Settings : Form
+    public partial class Налаштування : Form
     {
         private Menu mainMenu;
 
         private bool mouseDown;
         private Point lastLocation;
 
-        public Settings(Menu form)
+        public Налаштування(Menu form)
         {
             mainMenu = form;
             InitializeComponent();
