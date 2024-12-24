@@ -21,6 +21,7 @@ namespace wow_launcher_cs
     public partial class Menu : Form
     {
         string locale;
+        private Settings settings;
 
         public Menu()
         {
@@ -263,7 +264,7 @@ namespace wow_launcher_cs
                 playButton.BackgroundImage = Properties.Resources.PlayButtonDisabled;
         }
 
-        private void CheckkRealmlistAndUpdate()
+        public void CheckkRealmlistAndUpdate()
         {
 
             string wtfpath = $@"Data/{locale}/realmlist.wtf";
@@ -276,9 +277,9 @@ namespace wow_launcher_cs
                     File.SetAttributes(wtfpath, FileAttributes.Normal);
                 if (File.ReadAllText(wtfpath).CompareTo("set realmlist login1.freedom-wow.in.ua") != 0)
                 {
-                    if (CheckboxRealmlist.Checked)
+                    if (settings.CheckboxRealmlist.Checked)
                     {
-                        ChangeRealmlist(wtfpath);
+                        settings.ChangeRealmlist(wtfpath);
 
                     }
 
@@ -305,79 +306,36 @@ namespace wow_launcher_cs
             UpdateWow();
         }
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        private void SettingsButton_Click_1(object sender, EventArgs e)
         {
-            ChangeRealmName();
-        }
-
-        private void CheckboxRealmlist_CheckedChanged(object sender, EventArgs e)
-        {
-            CheckkRealmlistAndUpdate();
-        }
-
-        private void ChangeRealmlist(string wtfpath)
-        {
-            try
+            if (settings == null || settings.IsDisposed)
             {
-                using (StreamWriter sw = new StreamWriter(wtfpath, false, Encoding.UTF8))
-                {
-                    sw.Write("set realmlist login1.freedom-wow.in.ua");
-
-                }
-
+                settings = new Settings(this);
+                settings.Show();
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show($"Щоось пішло не так {ex.Message}");
+                settings.BringToFront();
             }
         }
 
-        private void ChangeRealmName()
+        private void SettingsButton_MouseDown(object sender, MouseEventArgs e)
         {
-            string path = "WTF/Config.wtf"; // Шлях до файлу
-            string searchText = "SET realmName"; // Рядок, який потрібно знайти
-            string replaceText = "SET realmName \"Freedom x5\""; // Новий текст, яким замінити
-            bool found = false;
-
-            try
-            {
-                // Читаємо всі рядки з файлу
-                string[] lines = File.ReadAllLines(path);
-
-                // Перебираємо всі рядки та замінюємо необхідний
-                for (int i = 0; i < lines.Length; i++)
-                {
-                    if (lines[i].Contains(searchText))
-                    {
-                        lines[i] = replaceText; // Заміна рядка
-                        found = true; // Позначаємо, що рядок знайдено
-                        break; // Виходимо з циклу, якщо рядок знайдено
-                    }
-                }
-
-                // Якщо рядок не знайдено, додаємо його в кінець масиву
-                if (!found)
-                {
-                    var linesList = new List<string>(lines);
-                    linesList.Add(replaceText);
-                    lines = linesList.ToArray(); // Оновлюємо масив рядків
-                }
-
-                // Перезаписуємо файл з модифікованими рядками
-                File.WriteAllLines(path, lines);
-            }
-            catch(Exception e)
-            {
-                if(CheckBoxRealmName.Checked)
-                {
-                MessageBox.Show("Файлу Config.wtf не існує!");
-                CheckBoxRealmName.Checked = false;
-
-                }
-
-            }
+            SettingsButton.BackgroundImage = Properties.Resources.config_button_down;
+        }
+        private void SettingsButton_MouseEnter(object sender, EventArgs e)
+        {
+            SettingsButton.BackgroundImage = Properties.Resources.config_button_hover;
         }
 
-        
+        private void SettingsButton_MouseLeave(object sender, EventArgs e)
+        {
+            SettingsButton.BackgroundImage = Properties.Resources.config_button_base;
+        }
+
+        private void SettingsButton_MouseUp(object sender, MouseEventArgs e)
+        {
+            SettingsButton.BackgroundImage = Properties.Resources.config_button_base;
+        }
     }
 }

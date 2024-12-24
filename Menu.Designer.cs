@@ -37,17 +37,15 @@
             this.closeButton = new System.Windows.Forms.Button();
             this.frameLeft = new System.Windows.Forms.Panel();
             this.frameRight = new System.Windows.Forms.Panel();
-            this.topBackground = new System.Windows.Forms.Panel();
-            this.CheckBoxRealmName = new System.Windows.Forms.CheckBox();
-            this.CheckboxRealmlist = new System.Windows.Forms.CheckBox();
-            this.DownloadInfoLabel = new System.Windows.Forms.Label();
-            this.playButton = new System.Windows.Forms.Button();
-            this.progressBar = new System.Windows.Forms.PictureBox();
             this.bottomBackground = new System.Windows.Forms.Panel();
+            this.SettingsButton = new System.Windows.Forms.Button();
+            this.DownloadInfoLabel = new System.Windows.Forms.Label();
+            this.progressBar = new System.Windows.Forms.PictureBox();
+            this.playButton = new System.Windows.Forms.Button();
+            this.topBackground = new System.Windows.Forms.Panel();
             this.titleBar.SuspendLayout();
-            this.topBackground.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.progressBar)).BeginInit();
             this.bottomBackground.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.progressBar)).BeginInit();
             this.SuspendLayout();
             // 
             // frameBottom
@@ -157,42 +155,37 @@
             this.frameRight.Size = new System.Drawing.Size(3, 633);
             this.frameRight.TabIndex = 1;
             // 
-            // topBackground
+            // bottomBackground
             // 
-            this.topBackground.BackgroundImage = global::wow_launcher_cs.Properties.Resources.MainWindowImagePatch;
-            this.topBackground.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.topBackground.Controls.Add(this.CheckBoxRealmName);
-            this.topBackground.Controls.Add(this.CheckboxRealmlist);
-            this.topBackground.Location = new System.Drawing.Point(3, 29);
-            this.topBackground.Name = "topBackground";
-            this.topBackground.Size = new System.Drawing.Size(806, 480);
-            this.topBackground.TabIndex = 2;
+            this.bottomBackground.BackColor = System.Drawing.Color.White;
+            this.bottomBackground.BackgroundImage = global::wow_launcher_cs.Properties.Resources.BottomUpdateLauncher;
+            this.bottomBackground.Controls.Add(this.SettingsButton);
+            this.bottomBackground.Controls.Add(this.DownloadInfoLabel);
+            this.bottomBackground.Controls.Add(this.progressBar);
+            this.bottomBackground.Controls.Add(this.playButton);
+            this.bottomBackground.Location = new System.Drawing.Point(3, 509);
+            this.bottomBackground.Name = "bottomBackground";
+            this.bottomBackground.Size = new System.Drawing.Size(806, 124);
+            this.bottomBackground.TabIndex = 0;
             // 
-            // CheckBoxRealmName
+            // SettingsButton
             // 
-            this.CheckBoxRealmName.BackColor = System.Drawing.Color.Transparent;
-            this.CheckBoxRealmName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.CheckBoxRealmName.ForeColor = System.Drawing.SystemColors.Menu;
-            this.CheckBoxRealmName.Location = new System.Drawing.Point(529, 379);
-            this.CheckBoxRealmName.Name = "CheckBoxRealmName";
-            this.CheckBoxRealmName.Size = new System.Drawing.Size(248, 52);
-            this.CheckBoxRealmName.TabIndex = 1;
-            this.CheckBoxRealmName.Text = "Виправити проблему з входом на реалм";
-            this.CheckBoxRealmName.UseVisualStyleBackColor = false;
-            this.CheckBoxRealmName.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
-            // 
-            // CheckboxRealmlist
-            // 
-            this.CheckboxRealmlist.BackColor = System.Drawing.Color.Transparent;
-            this.CheckboxRealmlist.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.CheckboxRealmlist.ForeColor = System.Drawing.SystemColors.Menu;
-            this.CheckboxRealmlist.Location = new System.Drawing.Point(529, 437);
-            this.CheckboxRealmlist.Name = "CheckboxRealmlist";
-            this.CheckboxRealmlist.Size = new System.Drawing.Size(251, 37);
-            this.CheckboxRealmlist.TabIndex = 0;
-            this.CheckboxRealmlist.Text = "Відновити realmlist.wtf";
-            this.CheckboxRealmlist.UseVisualStyleBackColor = false;
-            this.CheckboxRealmlist.CheckedChanged += new System.EventHandler(this.CheckboxRealmlist_CheckedChanged);
+            this.SettingsButton.BackColor = System.Drawing.Color.Transparent;
+            this.SettingsButton.BackgroundImage = global::wow_launcher_cs.Properties.Resources.config_button_base;
+            this.SettingsButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.SettingsButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.SettingsButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.SettingsButton.Location = new System.Drawing.Point(22, 60);
+            this.SettingsButton.Name = "SettingsButton";
+            this.SettingsButton.Size = new System.Drawing.Size(105, 38);
+            this.SettingsButton.TabIndex = 2;
+            this.SettingsButton.TabStop = false;
+            this.SettingsButton.UseVisualStyleBackColor = true;
+            this.SettingsButton.Click += new System.EventHandler(this.SettingsButton_Click_1);
+            this.SettingsButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.SettingsButton_MouseDown);
+            this.SettingsButton.MouseEnter += new System.EventHandler(this.SettingsButton_MouseEnter);
+            this.SettingsButton.MouseLeave += new System.EventHandler(this.SettingsButton_MouseLeave);
+            this.SettingsButton.MouseUp += new System.Windows.Forms.MouseEventHandler(this.SettingsButton_MouseUp);
             // 
             // DownloadInfoLabel
             // 
@@ -205,6 +198,16 @@
             this.DownloadInfoLabel.Size = new System.Drawing.Size(179, 20);
             this.DownloadInfoLabel.TabIndex = 4;
             this.DownloadInfoLabel.Text = "DownloadTXTDummy";
+            // 
+            // progressBar
+            // 
+            this.progressBar.BackColor = System.Drawing.Color.Transparent;
+            this.progressBar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.progressBar.Location = new System.Drawing.Point(27, 6);
+            this.progressBar.Name = "progressBar";
+            this.progressBar.Size = new System.Drawing.Size(610, 20);
+            this.progressBar.TabIndex = 0;
+            this.progressBar.TabStop = false;
             // 
             // playButton
             // 
@@ -224,27 +227,14 @@
             this.playButton.MouseLeave += new System.EventHandler(this.playButton_MouseLeave);
             this.playButton.MouseUp += new System.Windows.Forms.MouseEventHandler(this.playButton_MouseUp);
             // 
-            // progressBar
+            // topBackground
             // 
-            this.progressBar.BackColor = System.Drawing.Color.Transparent;
-            this.progressBar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.progressBar.Location = new System.Drawing.Point(27, 6);
-            this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(610, 20);
-            this.progressBar.TabIndex = 0;
-            this.progressBar.TabStop = false;
-            // 
-            // bottomBackground
-            // 
-            this.bottomBackground.BackColor = System.Drawing.Color.White;
-            this.bottomBackground.BackgroundImage = global::wow_launcher_cs.Properties.Resources.BottomUpdateLauncher;
-            this.bottomBackground.Controls.Add(this.DownloadInfoLabel);
-            this.bottomBackground.Controls.Add(this.progressBar);
-            this.bottomBackground.Controls.Add(this.playButton);
-            this.bottomBackground.Location = new System.Drawing.Point(3, 509);
-            this.bottomBackground.Name = "bottomBackground";
-            this.bottomBackground.Size = new System.Drawing.Size(806, 124);
-            this.bottomBackground.TabIndex = 0;
+            this.topBackground.BackgroundImage = global::wow_launcher_cs.Properties.Resources.MainWindowImagePatch;
+            this.topBackground.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.topBackground.Location = new System.Drawing.Point(3, 29);
+            this.topBackground.Name = "topBackground";
+            this.topBackground.Size = new System.Drawing.Size(806, 480);
+            this.topBackground.TabIndex = 2;
             // 
             // Menu
             // 
@@ -270,10 +260,9 @@
             this.Shown += new System.EventHandler(this.Menu_Shown);
             this.titleBar.ResumeLayout(false);
             this.titleBar.PerformLayout();
-            this.topBackground.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.progressBar)).EndInit();
             this.bottomBackground.ResumeLayout(false);
             this.bottomBackground.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.progressBar)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -292,7 +281,6 @@
         private System.Windows.Forms.PictureBox progressBar;
         private System.Windows.Forms.Panel bottomBackground;
         private System.Windows.Forms.Label DownloadInfoLabel;
-        private System.Windows.Forms.CheckBox CheckboxRealmlist;
-        private System.Windows.Forms.CheckBox CheckBoxRealmName;
+        private System.Windows.Forms.Button SettingsButton;
     }
 }

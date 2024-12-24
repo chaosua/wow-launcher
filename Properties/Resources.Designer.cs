@@ -123,6 +123,36 @@ namespace wow_launcher_cs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap config_button_base {
+            get {
+                object obj = ResourceManager.GetObject("config_button_base", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap config_button_down {
+            get {
+                object obj = ResourceManager.GetObject("config_button_down", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap config_button_hover {
+            get {
+                object obj = ResourceManager.GetObject("config_button_hover", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap dl_bar_green {
             get {
                 object obj = ResourceManager.GetObject("dl_bar_green", resourceCulture);
@@ -213,6 +243,36 @@ namespace wow_launcher_cs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap OK_button_base {
+            get {
+                object obj = ResourceManager.GetObject("OK_button_base", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap OK_button_down {
+            get {
+                object obj = ResourceManager.GetObject("OK_button_down", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap OK_button_hover {
+            get {
+                object obj = ResourceManager.GetObject("OK_button_hover", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap PlayButtonBase {
             get {
                 object obj = ResourceManager.GetObject("PlayButtonBase", resourceCulture);
@@ -246,6 +306,16 @@ namespace wow_launcher_cs.Properties {
         internal static System.Drawing.Bitmap PlayButtonHover {
             get {
                 object obj = ResourceManager.GetObject("PlayButtonHover", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap SettingsBackground {
+            get {
+                object obj = ResourceManager.GetObject("SettingsBackground", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

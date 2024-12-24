@@ -71,6 +71,12 @@
     <Compile Include="Menu.Designer.cs">
       <DependentUpon>Menu.cs</DependentUpon>
     </Compile>
+    <Compile Include="Settings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Settings.Designer.cs">
+      <DependentUpon>Settings.cs</DependentUpon>
+    </Compile>
     <Compile Include="SplashScreen.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -82,6 +88,9 @@
     <Compile Include="Updater.cs" />
     <EmbeddedResource Include="Menu.resx">
       <DependentUpon>Menu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Settings.resx">
+      <DependentUpon>Settings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SplashScreen.resx">
       <DependentUpon>SplashScreen.cs</DependentUpon>
@@ -110,6 +119,10 @@
     <Resource Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\OK_button_hover.png" />
+    <Resource Include="Resources\OK_button_down.png" />
+    <Resource Include="Resources\OK_button_base.png" />
+    <None Include="Resources\SettingsBackground.png" />
     <None Include="Resources\wowIcon.png" />
     <None Include="Resources\PlayButtonHover.jpg" />
     <None Include="Resources\PlayButtonDown.jpg" />
@@ -130,6 +143,9 @@
     <None Include="Resources\128.ico" />
     <None Include="Resources\dl_bar_green.png" />
     <Content Include="128.ico" />
+    <Resource Include="Resources\config_button_base.png" />
+    <Resource Include="Resources\config_button_hover.png" />
+    <Resource Include="Resources\config_button_down.png" />
     <Content Include="Resources\logo.jpg" />
   </ItemGroup>
   <ItemGroup>
