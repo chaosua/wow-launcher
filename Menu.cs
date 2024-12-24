@@ -21,7 +21,7 @@ namespace wow_launcher_cs
     public partial class Menu : Form
     {
         string locale;
-        private Налаштування settings;
+        private Settings settings;
 
         public Menu()
         {
@@ -310,7 +310,7 @@ namespace wow_launcher_cs
         {
             if (settings == null || settings.IsDisposed)
             {
-                settings = new Налаштування(this);
+                settings = new Settings(this);
                 settings.Show();
             }
             else

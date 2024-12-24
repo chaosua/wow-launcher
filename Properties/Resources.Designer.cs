@@ -241,6 +241,16 @@ namespace wow_launcher_cs.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] NimrodMT {
+            get {
+                object obj = ResourceManager.GetObject("NimrodMT", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap OK_button_base {

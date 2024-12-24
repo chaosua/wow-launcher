@@ -1,6 +1,6 @@
 ﻿namespace wow_launcher_cs
 {
-    partial class Налаштування
+    partial class Settings
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Налаштування));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Settings));
             this.closeButton = new System.Windows.Forms.Button();
             this.CheckBoxRealmName = new System.Windows.Forms.CheckBox();
             this.CheckboxRealmlist = new System.Windows.Forms.CheckBox();
@@ -55,7 +55,7 @@
             // CheckBoxRealmName
             // 
             this.CheckBoxRealmName.BackColor = System.Drawing.Color.Transparent;
-            this.CheckBoxRealmName.Font = new System.Drawing.Font("Nimrod MT", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.CheckBoxRealmName.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.CheckBoxRealmName.ForeColor = System.Drawing.SystemColors.Menu;
             this.CheckBoxRealmName.Location = new System.Drawing.Point(36, 43);
             this.CheckBoxRealmName.Name = "CheckBoxRealmName";
@@ -68,7 +68,7 @@
             // CheckboxRealmlist
             // 
             this.CheckboxRealmlist.BackColor = System.Drawing.Color.Transparent;
-            this.CheckboxRealmlist.Font = new System.Drawing.Font("Nimrod MT", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.CheckboxRealmlist.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.CheckboxRealmlist.ForeColor = System.Drawing.SystemColors.Menu;
             this.CheckboxRealmlist.Location = new System.Drawing.Point(36, 101);
             this.CheckboxRealmlist.Name = "CheckboxRealmlist";
@@ -78,7 +78,7 @@
             this.CheckboxRealmlist.UseVisualStyleBackColor = false;
             this.CheckboxRealmlist.CheckedChanged += new System.EventHandler(this.CheckboxRealmlist_CheckedChanged);
             // 
-            // Налаштування
+            // Settings
             // 
             this.AccessibleRole = System.Windows.Forms.AccessibleRole.MenuBar;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -93,11 +93,12 @@
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "Налаштування";
+            this.Name = "Settings";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Settings";
+            this.Load += new System.EventHandler(this.Налаштування_Load);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Settings_MouseDown);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Settings_MouseMove);
             this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Settings_MouseUp);

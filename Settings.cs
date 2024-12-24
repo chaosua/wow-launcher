@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Text;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -11,17 +12,40 @@ using System.Windows.Forms;
 
 namespace wow_launcher_cs
 {
-    public partial class Налаштування : Form
+    public partial class Settings : Form
     {
         private Menu mainMenu;
+
+        [System.Runtime.InteropServices.DllImport("gdi32.dll")]
+        private static extern IntPtr AddFontMemResourceEx(IntPtr pbFont, uint cbFont,
+            IntPtr pdv, [System.Runtime.InteropServices.In] ref uint pcFonts);
 
         private bool mouseDown;
         private Point lastLocation;
 
-        public Налаштування(Menu form)
+        private PrivateFontCollection fonts = new PrivateFontCollection();
+        Font myFont;
+
+        public Settings(Menu form)
         {
             mainMenu = form;
             InitializeComponent();
+
+            byte[] fontData = Properties.Resources.NimrodMT;
+            IntPtr fontPtr = System.Runtime.InteropServices.Marshal.AllocCoTaskMem(fontData.Length);
+            System.Runtime.InteropServices.Marshal.Copy(fontData, 0, fontPtr, fontData.Length);
+            uint dummy = 0;
+            fonts.AddMemoryFont(fontPtr, Properties.Resources.NimrodMT.Length);
+            AddFontMemResourceEx(fontPtr, (uint)Properties.Resources.NimrodMT.Length, IntPtr.Zero, ref dummy);
+            System.Runtime.InteropServices.Marshal.FreeCoTaskMem(fontPtr);
+
+            myFont = new Font(fonts.Families[0], 14.0F);
+        }
+
+        private void Налаштування_Load(object sender, EventArgs e)
+        {
+            CheckBoxRealmName.Font = myFont;
+            CheckboxRealmlist.Font = myFont;
         }
 
         private void closeButton_Click(object sender, EventArgs e)
@@ -141,5 +165,8 @@ namespace wow_launcher_cs
                 }
 
             }
-        } }
+        }
+
+        
+    }
     }
