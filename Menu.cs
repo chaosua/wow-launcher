@@ -106,7 +106,7 @@ namespace wow_launcher_cs
                 locale = "enGB";*/
             else
             {
-                var result = MessageBox.Show("Папка з Data\ruRU не знайдена! Перемістіть Launcher в корінь папки World of Warcraft.", "Error", MessageBoxButtons.OK);
+                var result = MessageBox.Show("Папка Data\\ruRU не знайдена! \rПеремістіть Launcher в корінь папки World of Warcraft 3.3.5", "Помилка", MessageBoxButtons.OK);
                 if (result == DialogResult.OK)
                 {
                     Application.Exit();

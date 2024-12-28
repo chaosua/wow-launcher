@@ -47,7 +47,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>128.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\ficon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -147,6 +147,7 @@
     <Resource Include="Resources\config_button_base.png" />
     <Resource Include="Resources\config_button_hover.png" />
     <Resource Include="Resources\config_button_down.png" />
+    <None Include="Resources\ficon.ico" />
     <Content Include="Resources\logo.jpg" />
   </ItemGroup>
   <ItemGroup>
