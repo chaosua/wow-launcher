@@ -156,7 +156,7 @@ namespace wow_launcher_cs
                 // Перезаписуємо файл з модифікованими рядками
                 File.WriteAllLines(path, lines);
             }
-            catch (Exception e)
+            catch (Exception /*e*/)
             {
                 if (CheckBoxRealmName.Checked)
                 {

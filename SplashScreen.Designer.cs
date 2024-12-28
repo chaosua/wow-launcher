@@ -36,11 +36,11 @@
             // 
             this.versionLabel.AutoSize = true;
             this.versionLabel.BackColor = System.Drawing.Color.Transparent;
-            this.versionLabel.Font = new System.Drawing.Font("Times New Roman", 10.00F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.versionLabel.Font = new System.Drawing.Font("Times New Roman", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.versionLabel.ForeColor = System.Drawing.Color.White;
-            this.versionLabel.Location = new System.Drawing.Point(200, 175); //координати тексту версії лаунчера на сплешскріні
+            this.versionLabel.Location = new System.Drawing.Point(200, 175);
             this.versionLabel.Name = "versionLabel";
-            this.versionLabel.Size = new System.Drawing.Size(0, 14);
+            this.versionLabel.Size = new System.Drawing.Size(0, 16);
             this.versionLabel.TabIndex = 0;
             // 
             // SplashScreen
