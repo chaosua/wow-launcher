@@ -15,6 +15,9 @@ using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
+using System.Net.Http;
+using System.Net.NetworkInformation;
+using System.Security.Cryptography;
 
 namespace wow_launcher_cs
 {
@@ -180,6 +183,57 @@ namespace wow_launcher_cs
             progressBar.BackgroundImage = bmp;
         }
 
+        public async void SendUserSurvey()
+        {
+            // Збираєм статистику по кількості активних користувачів
+            try
+            {
+                // Визначення MAC-адреси активного мережевого адаптера
+                string macAddress = NetworkInterface.GetAllNetworkInterfaces()
+                    .Where(nic => nic.OperationalStatus == OperationalStatus.Up &&
+                                  nic.NetworkInterfaceType != NetworkInterfaceType.Loopback)
+                    .Select(nic => nic.GetPhysicalAddress().ToString())
+                    .FirstOrDefault();
+
+                if (string.IsNullOrEmpty(macAddress))
+                {
+                    //Console.WriteLine("Не вдалося знайти активний мережевий адаптер.");
+                    //return;
+                    macAddress ="00:00:00:00:00:00";
+                }
+
+                // Обчислення MD5 з MAC-адреси
+                string macHash = BitConverter.ToString(
+                    MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(macAddress)))
+                    .Replace("-", "");
+
+                // Відправка запиту на веб-сервер
+                using (HttpClient client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri("http://updater.freedom-wow.in.ua/");
+                    string url = $"client/survey.php?count_user={macHash}";
+                    HttpResponseMessage response = await client.GetAsync(url);
+
+                    /* Обробка відповіді сервера
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string responseBody = await response.Content.ReadAsStringAsync();
+                        Console.WriteLine($"Відповідь сервера: {responseBody}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Запит завершився з помилкою: {response.StatusCode}");
+                    }
+                    */
+                }
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Помилка: {ex.Message}");
+            }
+        }
+
         private void closeButton_Click(object sender, EventArgs e)
         {
             Close();
@@ -303,6 +357,7 @@ namespace wow_launcher_cs
         private void Menu_Shown(object sender, EventArgs e)
         {
             UpdatePatches();
+            SendUserSurvey();
         }
 
         private void playButton_Click(object sender, EventArgs e)
