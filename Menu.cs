@@ -96,7 +96,7 @@ namespace wow_launcher_cs
         private void Menu_Load(object sender, EventArgs e)
         {
             UpdatePlayButton(playButton);
-            DownloadInfoLabel.Text = "Клієнт оновлено.";
+            DownloadInfoLabel.Text = "Перевірка онолень.";
             Text = "Launcher";
             if (File.Exists("Launcher.exe.old"))
                 File.Delete("Launcher.exe.old");
@@ -128,7 +128,11 @@ namespace wow_launcher_cs
                     bool dlCpt = false;
 
                     if (File.Exists("Data/ruRU/" + patch.name) && Updater.CalculateMD5("Data/ruRU/" + patch.name).CompareTo(patch.md5) == 0)
+                    {
+                        DownloadInfoLabel.Invoke(new MethodInvoker(delegate { DownloadInfoLabel.Text = "Оновлення відсутні."; }));
                         continue;
+                    }
+
                     if (File.Exists("Data/ruRU/" + patch.name))
                         File.Delete("Data/ruRU/" + patch.name);
                     using (WebClient wc = new WebClient())
@@ -139,7 +143,7 @@ namespace wow_launcher_cs
                         wc.DownloadFileCompleted += ((sender, args) =>
                         {
                             dlCpt = true;
-                            DownloadInfoLabel.Invoke(new MethodInvoker(delegate { DownloadInfoLabel.Text = "Клієнт оновлено."; }));
+                            DownloadInfoLabel.Invoke(new MethodInvoker(delegate { DownloadInfoLabel.Text = "Завантажено останнє оновлення."; }));
                         });
                         wc.DownloadFileAsync(new System.Uri(patch.link), "Data/ruRU/" + patch.name);
                     }
