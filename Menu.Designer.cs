@@ -195,9 +195,9 @@
             this.DownloadInfoLabel.ForeColor = System.Drawing.Color.White;
             this.DownloadInfoLabel.Location = new System.Drawing.Point(23, 29);
             this.DownloadInfoLabel.Name = "DownloadInfoLabel";
-            this.DownloadInfoLabel.Size = new System.Drawing.Size(179, 20);
+            this.DownloadInfoLabel.Size = new System.Drawing.Size(109, 20);
             this.DownloadInfoLabel.TabIndex = 4;
-            this.DownloadInfoLabel.Text = "DownloadTXTDummy";
+            this.DownloadInfoLabel.Text = "DynamicTXT";
             // 
             // progressBar
             // 

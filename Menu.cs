@@ -99,7 +99,7 @@ namespace wow_launcher_cs
         private void Menu_Load(object sender, EventArgs e)
         {
             UpdatePlayButton(playButton);
-            DownloadInfoLabel.Text = "Перевірка онолень.";
+            DownloadInfoLabel.Text = "";
             Text = "Launcher";
             if (File.Exists("Launcher.exe.old"))
                 File.Delete("Launcher.exe.old");
@@ -122,10 +122,16 @@ namespace wow_launcher_cs
 
         public void UpdatePatches()
         {
+            DownloadInfoLabel.Text = "Перевірка оновлень.";
+
             Thread thread = new Thread(() =>
             {
                 if (Updater.data.disabled)
+                {
+                    DownloadInfoLabel.Invoke(new MethodInvoker(delegate { DownloadInfoLabel.Text = "Оновлення скасовано."; }));
                     return;
+                }
+
                 foreach (Updater.PatchData patch in Updater.data.Patches)
                 {
                     bool dlCpt = false;
