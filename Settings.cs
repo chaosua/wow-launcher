@@ -26,6 +26,12 @@ namespace wow_launcher_cs
         private PrivateFontCollection fonts = new PrivateFontCollection();
         Font myFont;
 
+        class ComboItem
+        {
+            public int ID { get; set; }
+            public string Text { get; set; }
+        }
+
         public Settings(Menu form)
         {
             mainMenu = form;
@@ -46,6 +52,15 @@ namespace wow_launcher_cs
         {
             CheckBoxRealmName.Font = myFont;
             CheckboxRealmlist.Font = myFont;
+            LanguageTxT.Font = myFont;
+            LanguageBoxList.Font = myFont;
+
+            LanguageBoxList.DataSource = new ComboItem[]
+            {
+                new ComboItem { ID = 1, Text = "Англійська enUS" },
+                new ComboItem{ ID = 2, Text = "Англійська enGB" },
+                new ComboItem{ ID = 3, Text = "Українська ruRU" }
+            };
         }
 
         private void closeButton_Click(object sender, EventArgs e)

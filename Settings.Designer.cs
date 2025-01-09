@@ -32,6 +32,8 @@
             this.closeButton = new System.Windows.Forms.Button();
             this.CheckBoxRealmName = new System.Windows.Forms.CheckBox();
             this.CheckboxRealmlist = new System.Windows.Forms.CheckBox();
+            this.LanguageBoxList = new System.Windows.Forms.ComboBox();
+            this.LanguageTxT = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // closeButton
@@ -78,6 +80,32 @@
             this.CheckboxRealmlist.UseVisualStyleBackColor = false;
             this.CheckboxRealmlist.CheckedChanged += new System.EventHandler(this.CheckboxRealmlist_CheckedChanged);
             // 
+            // LanguageBoxList
+            // 
+            this.LanguageBoxList.BackColor = System.Drawing.SystemColors.Menu;
+            this.LanguageBoxList.DisplayMember = "Text";
+            this.LanguageBoxList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.LanguageBoxList.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.LanguageBoxList.ForeColor = System.Drawing.SystemColors.InfoText;
+            this.LanguageBoxList.FormattingEnabled = true;
+            this.LanguageBoxList.Location = new System.Drawing.Point(264, 154);
+            this.LanguageBoxList.Name = "LanguageBoxList";
+            this.LanguageBoxList.Size = new System.Drawing.Size(192, 28);
+            this.LanguageBoxList.TabIndex = 7;
+            this.LanguageBoxList.ValueMember = "ID";
+            // 
+            // LanguageTxT
+            // 
+            this.LanguageTxT.AutoSize = true;
+            this.LanguageTxT.BackColor = System.Drawing.Color.Transparent;
+            this.LanguageTxT.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F);
+            this.LanguageTxT.ForeColor = System.Drawing.SystemColors.Menu;
+            this.LanguageTxT.Location = new System.Drawing.Point(53, 154);
+            this.LanguageTxT.Name = "LanguageTxT";
+            this.LanguageTxT.Size = new System.Drawing.Size(127, 24);
+            this.LanguageTxT.TabIndex = 8;
+            this.LanguageTxT.Text = "Мова клієнта";
+            // 
             // Settings
             // 
             this.AccessibleRole = System.Windows.Forms.AccessibleRole.MenuBar;
@@ -87,6 +115,8 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(487, 253);
+            this.Controls.Add(this.LanguageTxT);
+            this.Controls.Add(this.LanguageBoxList);
             this.Controls.Add(this.CheckboxRealmlist);
             this.Controls.Add(this.CheckBoxRealmName);
             this.Controls.Add(this.closeButton);
@@ -103,6 +133,7 @@
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Settings_MouseMove);
             this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Settings_MouseUp);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -111,5 +142,7 @@
         private System.Windows.Forms.Button closeButton;
         private System.Windows.Forms.CheckBox CheckBoxRealmName;
         public System.Windows.Forms.CheckBox CheckboxRealmlist;
+        private System.Windows.Forms.ComboBox LanguageBoxList;
+        private System.Windows.Forms.Label LanguageTxT;
     }
 }
