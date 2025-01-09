@@ -89,7 +89,7 @@
             this.LanguageBoxList.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.LanguageBoxList.ForeColor = System.Drawing.SystemColors.Window;
             this.LanguageBoxList.FormattingEnabled = true;
-            this.LanguageBoxList.Location = new System.Drawing.Point(340, 201);
+            this.LanguageBoxList.Location = new System.Drawing.Point(375, 201);
             this.LanguageBoxList.Name = "LanguageBoxList";
             this.LanguageBoxList.Size = new System.Drawing.Size(81, 32);
             this.LanguageBoxList.TabIndex = 7;
