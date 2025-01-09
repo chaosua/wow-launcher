@@ -58,7 +58,7 @@
             // CheckBoxRealmName
             // 
             this.CheckBoxRealmName.BackColor = System.Drawing.Color.Transparent;
-            this.CheckBoxRealmName.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.CheckBoxRealmName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.CheckBoxRealmName.ForeColor = System.Drawing.SystemColors.Menu;
             this.CheckBoxRealmName.Location = new System.Drawing.Point(36, 43);
             this.CheckBoxRealmName.Name = "CheckBoxRealmName";
@@ -71,7 +71,7 @@
             // CheckboxRealmlist
             // 
             this.CheckboxRealmlist.BackColor = System.Drawing.Color.Transparent;
-            this.CheckboxRealmlist.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.CheckboxRealmlist.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.CheckboxRealmlist.ForeColor = System.Drawing.SystemColors.Menu;
             this.CheckboxRealmlist.Location = new System.Drawing.Point(36, 101);
             this.CheckboxRealmlist.Name = "CheckboxRealmlist";
@@ -86,12 +86,12 @@
             this.LanguageBoxList.BackColor = System.Drawing.SystemColors.MenuText;
             this.LanguageBoxList.DisplayMember = "Text";
             this.LanguageBoxList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.LanguageBoxList.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.LanguageBoxList.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.LanguageBoxList.ForeColor = System.Drawing.SystemColors.Window;
             this.LanguageBoxList.FormattingEnabled = true;
             this.LanguageBoxList.Location = new System.Drawing.Point(375, 201);
             this.LanguageBoxList.Name = "LanguageBoxList";
-            this.LanguageBoxList.Size = new System.Drawing.Size(81, 32);
+            this.LanguageBoxList.Size = new System.Drawing.Size(81, 28);
             this.LanguageBoxList.TabIndex = 7;
             this.LanguageBoxList.ValueMember = "ID";
             this.LanguageBoxList.SelectedIndexChanged += new System.EventHandler(this.ChangeClientLocale);
@@ -100,25 +100,25 @@
             // 
             this.LanguageTxT.AutoSize = true;
             this.LanguageTxT.BackColor = System.Drawing.Color.Transparent;
-            this.LanguageTxT.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F);
+            this.LanguageTxT.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.LanguageTxT.ForeColor = System.Drawing.SystemColors.Menu;
             this.LanguageTxT.Location = new System.Drawing.Point(50, 204);
             this.LanguageTxT.Name = "LanguageTxT";
-            this.LanguageTxT.Size = new System.Drawing.Size(180, 24);
+            this.LanguageTxT.Size = new System.Drawing.Size(110, 20);
             this.LanguageTxT.TabIndex = 8;
-            this.LanguageTxT.Text = "Локалізація клієнта";
+            this.LanguageTxT.Text = "Мова клієнта";
             // 
             // DownloadUALocale
             // 
             this.DownloadUALocale.AutoSize = true;
             this.DownloadUALocale.BackColor = System.Drawing.Color.Transparent;
-            this.DownloadUALocale.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F);
+            this.DownloadUALocale.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.DownloadUALocale.ForeColor = System.Drawing.SystemColors.Menu;
             this.DownloadUALocale.Location = new System.Drawing.Point(36, 156);
             this.DownloadUALocale.Name = "DownloadUALocale";
-            this.DownloadUALocale.Size = new System.Drawing.Size(375, 28);
+            this.DownloadUALocale.Size = new System.Drawing.Size(383, 24);
             this.DownloadUALocale.TabIndex = 9;
-            this.DownloadUALocale.Text = "Завантажувати український  переклад";
+            this.DownloadUALocale.Text = "Завантажувати UA переклад (лише для ruRU)";
             this.DownloadUALocale.UseVisualStyleBackColor = false;
             this.DownloadUALocale.CheckStateChanged += new System.EventHandler(this.DownloadUAlocaleState);
             // 

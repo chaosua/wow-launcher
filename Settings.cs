@@ -45,7 +45,7 @@ namespace wow_launcher_cs
             AddFontMemResourceEx(fontPtr, (uint)Properties.Resources.NimrodMT.Length, IntPtr.Zero, ref dummy);
             System.Runtime.InteropServices.Marshal.FreeCoTaskMem(fontPtr);
 
-            myFont = new Font(fonts.Families[0], 14.0F);
+            myFont = new Font(fonts.Families[0], 12.0F);
         }
 
         private void Settings_Load(object sender, EventArgs e)

@@ -131,6 +131,9 @@ namespace wow_launcher_cs
 
             Thread thread = new Thread(() =>
             {
+                playButton.Invoke(new MethodInvoker(delegate { playButton.Enabled = false; })); 
+                UpdatePlayButton(playButton);
+
                 if (!DLConfigUA)
                 {
                     string patchname = "patch-ruRU-4.MPQ";
@@ -143,12 +146,16 @@ namespace wow_launcher_cs
                     }
 
                     DownloadInfoLabel.Invoke(new MethodInvoker(delegate { DownloadInfoLabel.Text = $"Оновлення вимкнено.{infotxt}"; }));
+                    playButton.Invoke(new MethodInvoker(delegate { playButton.Enabled = true; })); 
+                    UpdatePlayButton(playButton);
                     return;
                 }
 
                 if (Updater.data.disabled)
                 {
                     DownloadInfoLabel.Invoke(new MethodInvoker(delegate { DownloadInfoLabel.Text = "Оновлення скасовано. Немає з'єднання?."; }));
+                    playButton.Invoke(new MethodInvoker(delegate { playButton.Enabled = true; })); 
+                    UpdatePlayButton(playButton);
                     return;
                 }
 
