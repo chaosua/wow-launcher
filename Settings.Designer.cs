@@ -88,9 +88,9 @@
             this.LanguageBoxList.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.LanguageBoxList.ForeColor = System.Drawing.SystemColors.InfoText;
             this.LanguageBoxList.FormattingEnabled = true;
-            this.LanguageBoxList.Location = new System.Drawing.Point(264, 154);
+            this.LanguageBoxList.Location = new System.Drawing.Point(325, 154);
             this.LanguageBoxList.Name = "LanguageBoxList";
-            this.LanguageBoxList.Size = new System.Drawing.Size(192, 28);
+            this.LanguageBoxList.Size = new System.Drawing.Size(131, 28);
             this.LanguageBoxList.TabIndex = 7;
             this.LanguageBoxList.ValueMember = "ID";
             this.LanguageBoxList.SelectedIndexChanged += new System.EventHandler(this.ChangeClientLocale);

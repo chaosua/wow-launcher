@@ -221,11 +221,17 @@ namespace wow_launcher_cs
                     if (selectedItem != null)
                     {
                         LanguageBoxList.SelectedItem = selectedItem;
+                        return;
                     }
                 }
             }
-        }
 
+            // Якщо файл Config.wtf не існує або в ньому відсутній параметр SET locale
+            if (items.Any())
+            {
+                LanguageBoxList.SelectedItem = items.First();
+            }
+        }
         private void ChangeClientLocale(object sender, EventArgs e)
         {
             // Основна папка
@@ -236,7 +242,9 @@ namespace wow_launcher_cs
             // Перевірка, чи існує файл Config.wtf
             if (!File.Exists(configFilePath))
             {
-                throw new FileNotFoundException($"Файл {configFilePath} не знайдений.");
+                // Створення файлу, якщо його немає
+                Directory.CreateDirectory(wtfDirectory);
+                File.WriteAllText(configFilePath, "");
             }
 
             // Отримання вибраного пункту меню
@@ -270,5 +278,6 @@ namespace wow_launcher_cs
                 File.WriteAllLines(configFilePath, configLines);
             }
         }
+
     }
 }
