@@ -47,14 +47,17 @@ namespace wow_launcher_cs
 
         static public void UpdateWow()
         {
-            if (Updater.data.disabled)
+            var state = new Menu();
+            bool DLConfigUA = state.GetLauncherConfigState("DownloadUALocale");
+
+            if (Updater.data.disabled || !DLConfigUA)
                 return;
 
             if (File.Exists("Wow.exe"))
             {
                 if (Updater.CalculateMD5("WoW.exe").CompareTo(Updater.data.Wow.md5) == 0)
                 {
-                    PlayWow();
+                    //PlayWow();
                     return;
                 }
                 if (File.Exists("WoW.exe.old"))
@@ -64,11 +67,12 @@ namespace wow_launcher_cs
             //DownloadInfoLabel = MainMenu.Equals();
             using (WebClient wc = new WebClient())
             {
-              //  DownloadInfoLabel.Text = "Оновлення WoW.exe";
+
                 wc.DownloadFileCompleted += ((sender, args) =>
                 {
-                 //   DownloadInfoLabel.Text = "WoW.exe оновлено. СТАРТУЮ";
-                    PlayWow();
+                    var DownloadInfoLabel = new Menu();
+                    DownloadInfoLabel.Text = "WoW.exe оновлено.";
+                    //  PlayWow();
                 });
                 wc.DownloadFileAsync(new System.Uri(Updater.data.Wow.link), "WoW.exe"); //Качає WoW.exe коли натиснуто кнопку Play
             }
@@ -127,9 +131,20 @@ namespace wow_launcher_cs
 
             Thread thread = new Thread(() =>
             {
-                if (Updater.data.disabled || !DLConfigUA)
+                if (!DLConfigUA)
                 {
-                    DownloadInfoLabel.Invoke(new MethodInvoker(delegate { DownloadInfoLabel.Text = "Оновлення скасовано."; }));
+                    string patchname = "patch-ruRU-4.MPQ";
+
+                    if (File.Exists("Data/ruRU/" + patchname))
+                        File.Delete("Data/ruRU/" + patchname);
+
+                    DownloadInfoLabel.Invoke(new MethodInvoker(delegate { DownloadInfoLabel.Text = "Оновлення вимкнено. Локалізацію видалено!"; }));
+                    return;
+                }
+
+                if (Updater.data.disabled)
+                {
+                    DownloadInfoLabel.Invoke(new MethodInvoker(delegate { DownloadInfoLabel.Text = "Оновлення скасовано. Немає з'єднання?."; }));
                     return;
                 }
 
@@ -347,7 +362,6 @@ namespace wow_launcher_cs
                         settings.ChangeRealmlist(wtfpath);
 
                     }
-
                 }
             }
             else
@@ -356,7 +370,6 @@ namespace wow_launcher_cs
                 {
                     sw.Write("set realmlist login1.freedom-wow.in.ua");
                     playButton.Enabled = true;
-
                 }
             }
         }
@@ -364,12 +377,13 @@ namespace wow_launcher_cs
         private void Menu_Shown(object sender, EventArgs e)
         {
             UpdatePatches();
+            UpdateWow();
             SendUserSurvey();
         }
 
         private void playButton_Click(object sender, EventArgs e)
         {
-            UpdateWow();
+            PlayWow();
         }
 
         private void SettingsButton_Click_1(object sender, EventArgs e)
