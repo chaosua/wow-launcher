@@ -54,13 +54,16 @@ namespace wow_launcher_cs
             CheckboxRealmlist.Font = myFont;
             LanguageTxT.Font = myFont;
             LanguageBoxList.Font = myFont;
+            DownloadUALocale.Font = myFont;
 
             GetAvailableLocales();
+            LoadConfig();
         }
 
         private void closeButton_Click(object sender, EventArgs e)
         {
             Close();
+            mainMenu.UpdatePatches();
         }
 
         private void closeButton_MouseDown(object sender, MouseEventArgs e)
@@ -232,6 +235,32 @@ namespace wow_launcher_cs
                 LanguageBoxList.SelectedItem = items.First();
             }
         }
+        private void LoadConfig()
+        {
+            // Основна папка
+            string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string LauncherConfigFilePath = Path.Combine(baseDirectory, "Launcher.ini");
+
+            // Перевірка, чи існує файл launcher.ini
+            if (!File.Exists(LauncherConfigFilePath))
+            {
+                return;
+            }
+            else 
+            {
+                // Читання файлу Launcher.ini
+                string[] configLines = File.ReadAllLines(LauncherConfigFilePath);
+                // Пошук параметра DownloadUALocale
+                string downloadUALocaleLine = configLines.FirstOrDefault(line => line.StartsWith("DownloadUALocale "));
+                if (!string.IsNullOrEmpty(downloadUALocaleLine))
+                {
+                    // Отримання значення параметра DownloadUALocale
+                    string downloadUALocale = downloadUALocaleLine.Split('"')[1];
+                    // Встановлення значення чекбокса
+                    DownloadUALocale.Checked = downloadUALocale == "1";
+                }
+            }
+        }
         private void ChangeClientLocale(object sender, EventArgs e)
         {
             // Основна папка
@@ -279,5 +308,59 @@ namespace wow_launcher_cs
             }
         }
 
+        private void DownloadUAlocaleState(object sender, EventArgs e)
+        {
+            // Отримання вибраного пункту меню
+            if (DownloadUALocale.CheckState == CheckState.Checked)
+            {
+                WriteLauncherConfig("DownloadUALocale", true);
+            }
+            else
+            {
+                WriteLauncherConfig("DownloadUALocale", false);
+            }
+        }
+        private void WriteLauncherConfig(string config, bool enabled)
+        {
+            string state = enabled ? "1" : "0";
+
+            // Основна папка
+            string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string LauncherConfigFilePath = Path.Combine(baseDirectory, "Launcher.ini");
+
+            // Перевірка, чи існує файл launcher.ini
+            if (!File.Exists(LauncherConfigFilePath))
+            {
+                // Створення файлу, якщо його немає
+                File.WriteAllText(LauncherConfigFilePath, "");
+            }
+
+            // Читання та оновлення файлу Launcher.ini
+            string[] configLines = File.ReadAllLines(LauncherConfigFilePath);
+            bool LauncherConfigFound = false;
+
+            for (int i = 0; i < configLines.Length; i++)
+            {
+                // Перевіряємо, чи рядок починається з заданого параметра
+                if (configLines[i].StartsWith($"{config} "))
+                {
+                    // Перезаписуємо рядок
+                    configLines[i] = $"{config} \"{state}\"";
+                    LauncherConfigFound = true;
+                    break;
+                }
+            }
+
+            // Якщо параметр відсутній, додаємо його
+            if (!LauncherConfigFound)
+            {
+                var newConfigLines = configLines.ToList();
+                newConfigLines.Add($"{config} \"{state}\"");
+                configLines = newConfigLines.ToArray();
+            }
+
+            // Запис оновлених даних назад у файл
+            File.WriteAllLines(LauncherConfigFilePath, configLines);
+        }
     }
 }

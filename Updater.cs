@@ -60,6 +60,7 @@ namespace wow_launcher_cs
         static public void Init()
         {
             data.disabled = false;
+
             if (File.Exists("update.xml")) //перевіряє чи присутній фал налаштувань поруч з лаунчером
                 InitValidation("update.xml");
             else
@@ -87,6 +88,7 @@ namespace wow_launcher_cs
         {
             if (data.disabled)
                 return;
+
             Version productVersion = Version.Parse(Application.ProductVersion);
             Version latestVersion = Version.Parse(data.Launcher.version);
             string filename = Assembly.GetEntryAssembly().Location;

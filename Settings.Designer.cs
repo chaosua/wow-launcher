@@ -34,6 +34,7 @@
             this.CheckboxRealmlist = new System.Windows.Forms.CheckBox();
             this.LanguageBoxList = new System.Windows.Forms.ComboBox();
             this.LanguageTxT = new System.Windows.Forms.Label();
+            this.DownloadUALocale = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // closeButton
@@ -41,7 +42,7 @@
             this.closeButton.BackgroundImage = global::wow_launcher_cs.Properties.Resources.OK_button_base;
             this.closeButton.FlatAppearance.BorderSize = 0;
             this.closeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.closeButton.Location = new System.Drawing.Point(196, 198);
+            this.closeButton.Location = new System.Drawing.Point(197, 240);
             this.closeButton.Margin = new System.Windows.Forms.Padding(0);
             this.closeButton.Name = "closeButton";
             this.closeButton.Size = new System.Drawing.Size(88, 33);
@@ -88,9 +89,9 @@
             this.LanguageBoxList.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.LanguageBoxList.ForeColor = System.Drawing.SystemColors.InfoText;
             this.LanguageBoxList.FormattingEnabled = true;
-            this.LanguageBoxList.Location = new System.Drawing.Point(325, 154);
+            this.LanguageBoxList.Location = new System.Drawing.Point(359, 201);
             this.LanguageBoxList.Name = "LanguageBoxList";
-            this.LanguageBoxList.Size = new System.Drawing.Size(131, 28);
+            this.LanguageBoxList.Size = new System.Drawing.Size(97, 28);
             this.LanguageBoxList.TabIndex = 7;
             this.LanguageBoxList.ValueMember = "ID";
             this.LanguageBoxList.SelectedIndexChanged += new System.EventHandler(this.ChangeClientLocale);
@@ -101,11 +102,25 @@
             this.LanguageTxT.BackColor = System.Drawing.Color.Transparent;
             this.LanguageTxT.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F);
             this.LanguageTxT.ForeColor = System.Drawing.SystemColors.Menu;
-            this.LanguageTxT.Location = new System.Drawing.Point(53, 154);
+            this.LanguageTxT.Location = new System.Drawing.Point(55, 205);
             this.LanguageTxT.Name = "LanguageTxT";
             this.LanguageTxT.Size = new System.Drawing.Size(127, 24);
             this.LanguageTxT.TabIndex = 8;
             this.LanguageTxT.Text = "Мова клієнта";
+            // 
+            // DownloadUALocale
+            // 
+            this.DownloadUALocale.AutoSize = true;
+            this.DownloadUALocale.BackColor = System.Drawing.Color.Transparent;
+            this.DownloadUALocale.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F);
+            this.DownloadUALocale.ForeColor = System.Drawing.SystemColors.Menu;
+            this.DownloadUALocale.Location = new System.Drawing.Point(36, 156);
+            this.DownloadUALocale.Name = "DownloadUALocale";
+            this.DownloadUALocale.Size = new System.Drawing.Size(284, 28);
+            this.DownloadUALocale.TabIndex = 9;
+            this.DownloadUALocale.Text = "Завантажувати українізатор";
+            this.DownloadUALocale.UseVisualStyleBackColor = false;
+            this.DownloadUALocale.CheckStateChanged += new System.EventHandler(this.DownloadUAlocaleState);
             // 
             // Settings
             // 
@@ -115,7 +130,8 @@
             this.BackColor = System.Drawing.Color.Lime;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(487, 253);
+            this.ClientSize = new System.Drawing.Size(487, 291);
+            this.Controls.Add(this.DownloadUALocale);
             this.Controls.Add(this.LanguageTxT);
             this.Controls.Add(this.LanguageBoxList);
             this.Controls.Add(this.CheckboxRealmlist);
@@ -145,5 +161,6 @@
         public System.Windows.Forms.CheckBox CheckboxRealmlist;
         private System.Windows.Forms.ComboBox LanguageBoxList;
         private System.Windows.Forms.Label LanguageTxT;
+        private System.Windows.Forms.CheckBox DownloadUALocale;
     }
 }

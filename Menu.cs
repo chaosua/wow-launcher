@@ -123,10 +123,11 @@ namespace wow_launcher_cs
         public void UpdatePatches()
         {
             DownloadInfoLabel.Text = "Перевірка оновлень.";
+            bool DLConfigUA = GetLauncherConfigState("DownloadUALocale");
 
             Thread thread = new Thread(() =>
             {
-                if (Updater.data.disabled)
+                if (Updater.data.disabled || !DLConfigUA)
                 {
                     DownloadInfoLabel.Invoke(new MethodInvoker(delegate { DownloadInfoLabel.Text = "Оновлення скасовано."; }));
                     return;
@@ -401,6 +402,40 @@ namespace wow_launcher_cs
         private void SettingsButton_MouseUp(object sender, MouseEventArgs e)
         {
             SettingsButton.BackgroundImage = Properties.Resources.config_button_base;
+        }
+
+        public bool GetLauncherConfigState(string config)
+        {
+            // Основна папка
+            string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string LauncherConfigFilePath = Path.Combine(baseDirectory, "Launcher.ini");
+
+            bool state = true;
+
+            // Перевірка, чи існує файл launcher.ini
+            if (!File.Exists(LauncherConfigFilePath))
+            {
+                return state;
+            }
+            else
+            {
+                // Читання файлу Launcher.ini
+                string[] configLines = File.ReadAllLines(LauncherConfigFilePath);
+                // Пошук параметра 
+                string configLine = configLines.FirstOrDefault(line => line.StartsWith($"{config} "));
+                if (!string.IsNullOrEmpty(configLine))
+                {
+                    // Отримання значення параметра DownloadUALocale
+                    string status = configLine.Split('"')[1];
+
+                    // Встановлення значення чекбокса
+                    if (status == "1")
+                        state = true;
+                    else
+                        state = false;
+                }
+            }
+            return state;
         }
     }
 }
