@@ -55,12 +55,7 @@ namespace wow_launcher_cs
             LanguageTxT.Font = myFont;
             LanguageBoxList.Font = myFont;
 
-            LanguageBoxList.DataSource = new ComboItem[]
-            {
-                new ComboItem { ID = 1, Text = "Англійська enUS" },
-                new ComboItem{ ID = 2, Text = "Англійська enGB" },
-                new ComboItem{ ID = 3, Text = "Українська ruRU" }
-            };
+            GetAvailableLocales();
         }
 
         private void closeButton_Click(object sender, EventArgs e)
@@ -180,6 +175,89 @@ namespace wow_launcher_cs
                 }
 
             }
-        }        
+        }
+
+        private void GetAvailableLocales()
+        {
+            // Основна папка
+            string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string dataDirectory = Path.Combine(baseDirectory, "Data");
+            string wtfDirectory = Path.Combine(baseDirectory, "WTF");
+            string configFilePath = Path.Combine(wtfDirectory, "Config.wtf");
+
+            // Перевірка, чи існує директорія Data
+            if (!Directory.Exists(dataDirectory))
+            {
+                throw new DirectoryNotFoundException($"Директорія {dataDirectory} не знайдена.");
+            }
+
+            // Список пунктів меню
+            var items = Directory.GetDirectories(dataDirectory)
+                .Where(subDir => File.Exists(Path.Combine(subDir, "realmlist.wtf")))
+                .Select(subDir => new ComboItem
+                {
+                    ID = Guid.NewGuid().GetHashCode(), // Унікальний ID для кожного пункту
+                    Text = Path.GetFileName(subDir) // Назва субдиректорії
+                })
+                .ToArray();
+
+            // Присвоєння пунктів до меню
+            LanguageBoxList.DataSource = items;
+
+            // Перевірка наявності файлу Config.wtf
+            if (File.Exists(configFilePath))
+            {
+                // Читання файлу Config.wtf
+                string[] configLines = File.ReadAllLines(configFilePath);
+                string localeLine = configLines.FirstOrDefault(line => line.StartsWith("SET locale "));
+
+                if (!string.IsNullOrEmpty(localeLine))
+                {
+                    // Отримання значення локалі з лінійки SET locale ""
+                    string locale = localeLine.Split('"')[1];
+
+                    // Встановлення активного пункту меню
+                    var selectedItem = items.FirstOrDefault(item => item.Text.Equals(locale, StringComparison.OrdinalIgnoreCase));
+                    if (selectedItem != null)
+                    {
+                        LanguageBoxList.SelectedItem = selectedItem;
+                    }
+                }
+            }
+        }
+
+        private void ChangeClientLocale(object sender, EventArgs e)
+        {
+            // Основна папка
+            string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string wtfDirectory = Path.Combine(baseDirectory, "WTF");
+            string configFilePath = Path.Combine(wtfDirectory, "Config.wtf");
+
+            // Перевірка, чи існує файл Config.wtf
+            if (!File.Exists(configFilePath))
+            {
+                throw new FileNotFoundException($"Файл {configFilePath} не знайдений.");
+            }
+
+            // Отримання вибраного пункту меню
+            if (LanguageBoxList.SelectedItem is ComboItem selectedItem)
+            {
+                string selectedLocale = selectedItem.Text;
+
+                // Читання та оновлення файлу Config.wtf
+                string[] configLines = File.ReadAllLines(configFilePath);
+                for (int i = 0; i < configLines.Length; i++)
+                {
+                    if (configLines[i].StartsWith("SET locale "))
+                    {
+                        configLines[i] = $"SET locale \"{selectedLocale}\"";
+                        break;
+                    }
+                }
+
+                // Запис оновлених даних назад у файл
+                File.WriteAllLines(configFilePath, configLines);
+            }
+        }
     }
 }

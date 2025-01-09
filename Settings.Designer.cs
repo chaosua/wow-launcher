@@ -93,6 +93,7 @@
             this.LanguageBoxList.Size = new System.Drawing.Size(192, 28);
             this.LanguageBoxList.TabIndex = 7;
             this.LanguageBoxList.ValueMember = "ID";
+            this.LanguageBoxList.SelectedIndexChanged += new System.EventHandler(this.ChangeClientLocale);
             // 
             // LanguageTxT
             // 
