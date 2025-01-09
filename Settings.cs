@@ -180,7 +180,6 @@ namespace wow_launcher_cs
 
             }
         }
-
         private void GetAvailableLocales()
         {
             // Основна папка
@@ -189,79 +188,57 @@ namespace wow_launcher_cs
             string wtfDirectory = Path.Combine(baseDirectory, "WTF");
             string configFilePath = Path.Combine(wtfDirectory, "Config.wtf");
 
-            // Перевірка, чи існує директорія Data
             if (!Directory.Exists(dataDirectory))
             {
                 throw new DirectoryNotFoundException($"Директорія {dataDirectory} не знайдена.");
             }
 
-            // Список пунктів меню
             var items = Directory.GetDirectories(dataDirectory)
                 .Where(subDir => File.Exists(Path.Combine(subDir, "realmlist.wtf")))
                 .Select(subDir => new ComboItem
                 {
-                    ID = Guid.NewGuid().GetHashCode(), // Унікальний ID для кожного пункту
-                    Text = Path.GetFileName(subDir) // Назва субдиректорії
+                    ID = Guid.NewGuid().GetHashCode(),  // Унікальний ID для кожного пункту
+                    Text = Path.GetFileName(subDir)     // Назва субдиректорії
                 })
                 .ToArray();
 
-            // Присвоєння пунктів до меню
-            LanguageBoxList.DataSource = items;
+            bool localeSet = false;
 
-            // Перевірка наявності файлу Config.wtf
             if (File.Exists(configFilePath))
             {
-                // Читання файлу Config.wtf
                 string[] configLines = File.ReadAllLines(configFilePath);
+
                 string localeLine = configLines.FirstOrDefault(line => line.StartsWith("SET locale "));
 
                 if (!string.IsNullOrEmpty(localeLine))
                 {
-                    // Отримання значення локалі з лінійки SET locale ""
+                    //Console.WriteLine($"Локаль знайдено: {localeLine}");
                     string locale = localeLine.Split('"')[1];
 
-                    // Встановлення активного пункту меню
                     var selectedItem = items.FirstOrDefault(item => item.Text.Equals(locale, StringComparison.OrdinalIgnoreCase));
                     if (selectedItem != null)
                     {
+                        // Тимчасово відключаємо обробку подій
+                        LanguageBoxList.SelectedIndexChanged -= ChangeClientLocale;
+                        LanguageBoxList.DataSource = items;
                         LanguageBoxList.SelectedItem = selectedItem;
-                        return;
+                        LanguageBoxList.SelectedIndexChanged += ChangeClientLocale;
+
+                        localeSet = true;
                     }
                 }
             }
 
-            // Якщо файл Config.wtf не існує або в ньому відсутній параметр SET locale
-            if (items.Any())
+            // Присвоєння першого доступного варіанта, якщо локаль не була встановлена
+            if (!localeSet && items.Any())
             {
+                LanguageBoxList.SelectedIndexChanged -= ChangeClientLocale;
+                LanguageBoxList.DataSource = items;
                 LanguageBoxList.SelectedItem = items.First();
+                LanguageBoxList.SelectedIndexChanged += ChangeClientLocale;
             }
         }
-        private void LoadConfig()
-        {
-            // Основна папка
-            string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            string LauncherConfigFilePath = Path.Combine(baseDirectory, "Launcher.ini");
 
-            // Перевірка, чи існує файл launcher.ini
-            if (!File.Exists(LauncherConfigFilePath))
-            {
-                return;
-            }
-            else 
-            {
-                // Читання файлу Launcher.ini
-                string[] configLines = File.ReadAllLines(LauncherConfigFilePath);
-                // Пошук параметра DownloadUALocale
-                string downloadUALocaleLine = configLines.FirstOrDefault(line => line.StartsWith("DownloadUALocale "));
-                if (!string.IsNullOrEmpty(downloadUALocaleLine))
-                {
-                    // Отримання значення параметра DownloadUALocale
-                    string downloadUALocale = downloadUALocaleLine.Split('"')[1];
-                    // Встановлення значення чекбокса
-                    DownloadUALocale.Checked = downloadUALocale == "1";
-                }
-            }
-        }
         private void ChangeClientLocale(object sender, EventArgs e)
         {
             // Основна папка
@@ -309,6 +286,32 @@ namespace wow_launcher_cs
             }
         }
 
+        private void LoadConfig()
+        {
+            // Основна папка
+            string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string LauncherConfigFilePath = Path.Combine(baseDirectory, "Launcher.ini");
+
+            // Перевірка, чи існує файл launcher.ini
+            if (!File.Exists(LauncherConfigFilePath))
+            {
+                return;
+            }
+            else
+            {
+                // Читання файлу Launcher.ini
+                string[] configLines = File.ReadAllLines(LauncherConfigFilePath);
+                // Пошук параметра DownloadUALocale
+                string downloadUALocaleLine = configLines.FirstOrDefault(line => line.StartsWith("DownloadUALocale "));
+                if (!string.IsNullOrEmpty(downloadUALocaleLine))
+                {
+                    // Отримання значення параметра DownloadUALocale
+                    string downloadUALocale = downloadUALocaleLine.Split('"')[1];
+                    // Встановлення значення чекбокса
+                    DownloadUALocale.Checked = downloadUALocale == "1";
+                }
+            }
+        }
         private void DownloadUAlocaleState(object sender, EventArgs e)
         {
             // Отримання вибраного пункту меню
