@@ -134,11 +134,15 @@ namespace wow_launcher_cs
                 if (!DLConfigUA)
                 {
                     string patchname = "patch-ruRU-4.MPQ";
+                    string infotxt = "";
 
                     if (File.Exists("Data/ruRU/" + patchname))
+                    {
                         File.Delete("Data/ruRU/" + patchname);
+                        infotxt = " Локалізацію видалено!";
+                    }
 
-                    DownloadInfoLabel.Invoke(new MethodInvoker(delegate { DownloadInfoLabel.Text = "Оновлення вимкнено. Локалізацію видалено!"; }));
+                    DownloadInfoLabel.Invoke(new MethodInvoker(delegate { DownloadInfoLabel.Text = $"Оновлення вимкнено.{infotxt}"; }));
                     return;
                 }
 
@@ -424,12 +428,14 @@ namespace wow_launcher_cs
             string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
             string LauncherConfigFilePath = Path.Combine(baseDirectory, "Launcher.ini");
 
-            bool state = true;
+            bool state = false;
 
             // Перевірка, чи існує файл launcher.ini
             if (!File.Exists(LauncherConfigFilePath))
             {
-                return state;
+                var settings = new wow_launcher_cs.Settings(this);
+                settings.WriteLauncherConfig("DownloadUALocale", true);
+                return true;
             }
             else
             {

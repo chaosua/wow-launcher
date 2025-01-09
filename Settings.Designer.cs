@@ -116,9 +116,9 @@
             this.DownloadUALocale.ForeColor = System.Drawing.SystemColors.Menu;
             this.DownloadUALocale.Location = new System.Drawing.Point(36, 156);
             this.DownloadUALocale.Name = "DownloadUALocale";
-            this.DownloadUALocale.Size = new System.Drawing.Size(284, 28);
+            this.DownloadUALocale.Size = new System.Drawing.Size(375, 28);
             this.DownloadUALocale.TabIndex = 9;
-            this.DownloadUALocale.Text = "Завантажувати українізатор";
+            this.DownloadUALocale.Text = "Завантажувати український  переклад";
             this.DownloadUALocale.UseVisualStyleBackColor = false;
             this.DownloadUALocale.CheckStateChanged += new System.EventHandler(this.DownloadUAlocaleState);
             // 

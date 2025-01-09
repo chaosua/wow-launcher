@@ -177,7 +177,6 @@ namespace wow_launcher_cs
                     MessageBox.Show("Файлу Config.wtf не існує!\nError: " + e.Message, "Error", MessageBoxButtons.OK);
                     CheckBoxRealmName.Checked = false;
                 }
-
             }
         }
         private void GetAvailableLocales()
@@ -295,6 +294,8 @@ namespace wow_launcher_cs
             // Перевірка, чи існує файл launcher.ini
             if (!File.Exists(LauncherConfigFilePath))
             {
+                // Встановлюємо параметр ВКЛ по замовчуванню
+                WriteLauncherConfig("DownloadUALocale", true);
                 return;
             }
             else
@@ -324,7 +325,7 @@ namespace wow_launcher_cs
                 WriteLauncherConfig("DownloadUALocale", false);
             }
         }
-        private void WriteLauncherConfig(string config, bool enabled)
+        public void WriteLauncherConfig(string config, bool enabled)
         {
             string state = enabled ? "1" : "0";
 
