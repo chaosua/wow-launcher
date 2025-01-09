@@ -246,13 +246,24 @@ namespace wow_launcher_cs
 
                 // Читання та оновлення файлу Config.wtf
                 string[] configLines = File.ReadAllLines(configFilePath);
+                bool localeFound = false;
+
                 for (int i = 0; i < configLines.Length; i++)
                 {
                     if (configLines[i].StartsWith("SET locale "))
                     {
                         configLines[i] = $"SET locale \"{selectedLocale}\"";
+                        localeFound = true;
                         break;
                     }
+                }
+
+                // Якщо параметр SET locale відсутній, додаємо його
+                if (!localeFound)
+                {
+                    var newConfigLines = configLines.ToList();
+                    newConfigLines.Add($"SET locale \"{selectedLocale}\"");
+                    configLines = newConfigLines.ToArray();
                 }
 
                 // Запис оновлених даних назад у файл
