@@ -174,7 +174,7 @@ namespace wow_launcher_cs
             {
                 if (CheckBoxRealmName.Checked)
                 {
-                    MessageBox.Show("Файлу Config.wtf не існує!\nError: " + e.Message, "Error", MessageBoxButtons.OK);
+                    MessageBox.Show("Файлу Config.wtf не існує!\nError: " + e.Message, "Помилка", MessageBoxButtons.OK);
                     CheckBoxRealmName.Checked = false;
                 }
             }
@@ -294,6 +294,7 @@ namespace wow_launcher_cs
             // Перевірка, чи існує файл launcher.ini
             if (!File.Exists(LauncherConfigFilePath))
             {
+                // Створюємо новий файл
                 // Встановлюємо параметр ВКЛ по замовчуванню
                 WriteLauncherConfig("DownloadUALocale", true);
                 return;

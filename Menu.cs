@@ -513,6 +513,8 @@ namespace wow_launcher_cs
                     clientLocaleConfig = "enGB";
                 else if (Directory.Exists(Path.Combine(dataDirectory, "enUS")))
                     clientLocaleConfig = "enUS";
+                else
+                    MessageBox.Show("Жодної папки з локалізацією не знайдено!\nПомістіть Лаунчер в корінь папки з грою World of Warcraft 3.3.5", "Помилка", MessageBoxButtons.OK);
             }
 
             return clientLocaleConfig;

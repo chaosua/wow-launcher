@@ -61,7 +61,7 @@ namespace wow_launcher_cs
         {
             data.disabled = false;
 
-            if (File.Exists("update.xml")) //перевіряє чи присутній фал налаштувань поруч з лаунчером
+            if (File.Exists("update.xml")) //перевіряє чи присутній локальний файл налаштувань поруч з лаунчером
                 InitValidation("update.xml");
             else
             {
@@ -78,7 +78,7 @@ namespace wow_launcher_cs
                 }
                 catch (WebException e)
                 {
-                    MessageBox.Show("Помилка Сервер оновлень недоступний!\nError: " + e.Message, "Error", MessageBoxButtons.OK);
+                    MessageBox.Show("Помилка Сервер оновлень недоступний!\nError: " + e.Message, "Помилка", MessageBoxButtons.OK);
                     data.disabled = true;
                 }  
             }
@@ -107,7 +107,7 @@ namespace wow_launcher_cs
                         }
                         else
                         {
-                            MessageBox.Show("Хеш MD5 не співпадає!", "Error", MessageBoxButtons.OK);
+                            MessageBox.Show("Хеш MD5 не співпадає!", "Помилка", MessageBoxButtons.OK);
                             data.disabled = true;
                             File.Delete(filename);
                             File.Move(filename + "old", filename);
@@ -140,7 +140,7 @@ namespace wow_launcher_cs
             if (!ValidateAndLoad())
             {
                 data.disabled = true;
-                MessageBox.Show("Помилка перевірки update.xml!", "Error", MessageBoxButtons.OK);
+                MessageBox.Show("Помилка перевірки update.xml!", "Помилка", MessageBoxButtons.OK);
             }
         }
 
