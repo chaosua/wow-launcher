@@ -212,9 +212,9 @@ namespace wow_launcher_cs
                 if (!string.IsNullOrEmpty(localeLine))
                 {
                     //Console.WriteLine($"Локаль знайдено: {localeLine}");
-                    string locale = localeLine.Split('"')[1];
+                    string localeConfig = localeLine.Split('"')[1];
 
-                    var selectedItem = items.FirstOrDefault(item => item.Text.Equals(locale, StringComparison.OrdinalIgnoreCase));
+                    var selectedItem = items.FirstOrDefault(item => item.Text.Equals(localeConfig, StringComparison.OrdinalIgnoreCase));
                     if (selectedItem != null)
                     {
                         // Тимчасово відключаємо обробку подій

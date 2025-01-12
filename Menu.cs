@@ -23,7 +23,8 @@ namespace wow_launcher_cs
 {
     public partial class Menu : Form
     {
-        string locale;
+        private string locale;
+
         private Settings settings;
 
         public Menu()
@@ -102,23 +103,33 @@ namespace wow_launcher_cs
 
         private void Menu_Load(object sender, EventArgs e)
         {
-            UpdatePlayButton(playButton);
-            DownloadInfoLabel.Text = "";
-            Text = "Launcher";
-            if (File.Exists("Launcher.exe.old"))
-                File.Delete("Launcher.exe.old");
-            if (Directory.Exists("Data/ruRU"))
-                locale = "ruRU";
-          /*  else if (Directory.Exists("Data/enGB"))
-                locale = "enGB";*/
-            else
+            if (!Directory.Exists("Data"))
             {
-                var result = MessageBox.Show("Папка Data\\ruRU не знайдена! \rПеремістіть Launcher в корінь папки World of Warcraft 3.3.5", "Помилка", MessageBoxButtons.OK);
+                var result = MessageBox.Show("Не знайдено папки Data\\ \rПеремістіть Launcher в корінь папки World of Warcraft 3.3.5", "Помилка", MessageBoxButtons.OK);
                 if (result == DialogResult.OK)
                 {
                     Application.Exit();
                 }
             }
+
+            UpdatePlayButton(playButton);
+            DownloadInfoLabel.Text = "";
+            Text = "Launcher";
+            if (File.Exists("Launcher.exe.old"))
+                File.Delete("Launcher.exe.old");
+
+            locale = GetClientLocaleConfig();
+
+            if (locale == "NULL")
+            {
+                if (Directory.Exists("Data/ruRU"))
+                    locale = "ruRU";
+                else if (Directory.Exists("Data/enGB"))
+                    locale = "enGB";
+                else if (Directory.Exists("Data/enUS"))
+                    locale = "enUS";
+            }
+
             // Очистка Кешу
             if (Directory.Exists("Cache"))
                 Directory.Delete("Cache", true);
@@ -128,24 +139,30 @@ namespace wow_launcher_cs
         {
             DownloadInfoLabel.Text = "Перевірка оновлень.";
             bool DLConfigUA = GetLauncherConfigState("DownloadUALocale");
+            locale = GetClientLocaleConfig();
 
             Thread thread = new Thread(() =>
             {
                 playButton.Invoke(new MethodInvoker(delegate { playButton.Enabled = false; })); 
                 UpdatePlayButton(playButton);
 
-                if (!DLConfigUA)
+                if (!DLConfigUA || locale != "ruRU")
                 {
                     string patchname = "patch-ruRU-4.MPQ";
                     string infotxt = "";
 
+                    if (locale != "ruRU")
+                        infotxt = "Не вибрано ruRU клієнт. ";
+                    else
+                        infotxt = "";
+
                     if (File.Exists("Data/ruRU/" + patchname))
                     {
                         File.Delete("Data/ruRU/" + patchname);
-                        infotxt = " Локалізацію видалено!";
+                        infotxt += "UA переклад видалено!";
                     }
 
-                    DownloadInfoLabel.Invoke(new MethodInvoker(delegate { DownloadInfoLabel.Text = $"Оновлення вимкнено.{infotxt}"; }));
+                    DownloadInfoLabel.Invoke(new MethodInvoker(delegate { DownloadInfoLabel.Text = $"Оновлення вимкнено. {infotxt}"; }));
                     playButton.Invoke(new MethodInvoker(delegate { playButton.Enabled = true; })); 
                     UpdatePlayButton(playButton);
                     return;
@@ -357,6 +374,7 @@ namespace wow_launcher_cs
 
         public void CheckRealmlistAndUpdate()
         {
+            locale = GetClientLocaleConfig();
 
             string wtfpath = $@"Data/{locale}/realmlist.wtf";
 
@@ -463,6 +481,41 @@ namespace wow_launcher_cs
                 }
             }
             return state;
+        }
+
+        public string GetClientLocaleConfig()
+        {
+            // Основна папка
+            string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string dataDirectory = Path.Combine(baseDirectory, "Data");
+            string wtfDirectory = Path.Combine(baseDirectory, "WTF");
+            string configFilePath = Path.Combine(wtfDirectory, "Config.wtf");
+            string clientLocaleConfig = "NULL";
+
+            if (File.Exists(configFilePath))
+            {
+                string[] configLines = File.ReadAllLines(configFilePath);
+
+                string localeLine = configLines.FirstOrDefault(line => line.StartsWith("SET locale "));
+
+                if (!string.IsNullOrEmpty(localeLine))
+                {
+                    //Console.WriteLine($"Локаль знайдено: {localeLine}");
+                    clientLocaleConfig = localeLine.Split('"')[1];
+                }
+            }
+            
+            if (clientLocaleConfig == "NULL")
+            {
+                if (Directory.Exists(Path.Combine(dataDirectory, "ruRU")))
+                    clientLocaleConfig = "ruRU";
+                else if (Directory.Exists(Path.Combine(dataDirectory, "enGB")))
+                    clientLocaleConfig = "enGB";
+                else if (Directory.Exists(Path.Combine(dataDirectory, "enUS")))
+                    clientLocaleConfig = "enUS";
+            }
+
+            return clientLocaleConfig;
         }
     }
 }
