@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Text;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace wow_launcher_cs
@@ -40,7 +42,7 @@ namespace wow_launcher_cs
             System.Runtime.InteropServices.Marshal.Copy(fontData, 0, fontPtr, fontData.Length);
             uint dummy = 0;
             fonts.AddMemoryFont(fontPtr, Properties.Resources.NimrodMT.Length);
-            _ = AddFontMemResourceEx(fontPtr, (uint)Properties.Resources.NimrodMT.Length, IntPtr.Zero, ref dummy);
+            AddFontMemResourceEx(fontPtr, (uint)Properties.Resources.NimrodMT.Length, IntPtr.Zero, ref dummy);
             System.Runtime.InteropServices.Marshal.FreeCoTaskMem(fontPtr);
 
             myFont = new Font(fonts.Families[0], 12.0F);
@@ -129,7 +131,7 @@ namespace wow_launcher_cs
             }
             catch (Exception ex)
             {
-                _ = MessageBox.Show($"Щоось пішло не так {ex.Message}");
+                MessageBox.Show($"Щоось пішло не так {ex.Message}");
             }
         }
 
@@ -171,12 +173,11 @@ namespace wow_launcher_cs
             {
                 if (CheckBoxRealmName.Checked)
                 {
-                    _ = MessageBox.Show("Файлу Config.wtf не існує!\nError: " + e.Message, "Помилка", MessageBoxButtons.OK);
+                    MessageBox.Show("Файлу Config.wtf не існує!\nError: " + e.Message, "Помилка", MessageBoxButtons.OK);
                     CheckBoxRealmName.Checked = false;
                 }
             }
         }
-
         private void GetAvailableLocales()
         {
             // Основна папка
@@ -247,7 +248,7 @@ namespace wow_launcher_cs
             if (!File.Exists(configFilePath))
             {
                 // Створення файлу, якщо його немає
-                _ = Directory.CreateDirectory(wtfDirectory);
+                Directory.CreateDirectory(wtfDirectory);
                 File.WriteAllText(configFilePath, "");
             }
 
@@ -312,7 +313,6 @@ namespace wow_launcher_cs
                 }
             }
         }
-
         private void DownloadUAlocaleState(object sender, EventArgs e)
         {
             // Отримання вибраного пункту меню
@@ -325,7 +325,6 @@ namespace wow_launcher_cs
                 WriteLauncherConfig("DownloadUALocale", false);
             }
         }
-
         public void WriteLauncherConfig(string config, bool enabled)
         {
             string state = enabled ? "1" : "0";

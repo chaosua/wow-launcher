@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Net;
-using System.Reflection;
-using System.Security.Cryptography;
-using System.Windows.Forms;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Xml;
+using System.IO;
+using System.Configuration;
+using System.Net;
+using System.Windows.Forms;
+using System.Reflection;
+using System.Diagnostics;
+using System.Security.Cryptography;
 
 namespace wow_launcher_cs
 {
@@ -74,9 +78,9 @@ namespace wow_launcher_cs
                 }
                 catch (WebException e)
                 {
-                    _ = MessageBox.Show("Помилка Сервер оновлень недоступний!\nError: " + e.Message, "Помилка", MessageBoxButtons.OK);
+                    MessageBox.Show("Помилка Сервер оновлень недоступний!\nError: " + e.Message, "Помилка", MessageBoxButtons.OK);
                     data.disabled = true;
-                }
+                }  
             }
         }
 
@@ -98,12 +102,12 @@ namespace wow_launcher_cs
                     {
                         if (CalculateMD5(filename).CompareTo(data.Launcher.md5) == 0)
                         {
-                            _ = Process.Start(filename);
+                            Process.Start(filename);
                             Application.Exit();
                         }
                         else
                         {
-                            _ = MessageBox.Show("Хеш MD5 не співпадає!", "Помилка", MessageBoxButtons.OK);
+                            MessageBox.Show("Хеш MD5 не співпадає!", "Помилка", MessageBoxButtons.OK);
                             data.disabled = true;
                             File.Delete(filename);
                             File.Move(filename + "old", filename);
@@ -136,7 +140,7 @@ namespace wow_launcher_cs
             if (!ValidateAndLoad())
             {
                 data.disabled = true;
-                _ = MessageBox.Show("Помилка перевірки update.xml!", "Помилка", MessageBoxButtons.OK);
+                MessageBox.Show("Помилка перевірки update.xml!", "Помилка", MessageBoxButtons.OK);
             }
         }
 
