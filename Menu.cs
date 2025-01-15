@@ -121,14 +121,12 @@ namespace wow_launcher_cs
 
             Thread thread = new Thread(() =>
             {
-                playButton.Invoke(new MethodInvoker(delegate { playButton.Enabled = false; }));
-                UpdatePlayButton(playButton);
+                SetPlayButtonState(false);
 
                 if (Updater.data.disabled)
                 {
                     UpdateDownloadInfoLabel("Оновлення скасовано. Немає з'єднання?.");
-                    playButton.Invoke(new MethodInvoker(delegate { playButton.Enabled = true; }));
-                    UpdatePlayButton(playButton);
+                    SetPlayButtonState(true);
                     return;
                 }
 
@@ -139,6 +137,7 @@ namespace wow_launcher_cs
                     if (File.Exists("Data/ruRU/" + patch.name) && Updater.CalculateMD5("Data/ruRU/" + patch.name).CompareTo(patch.md5) == 0)
                     {
                         UpdateDownloadInfoLabel("Оновлення відсутні.");
+                        SetPlayButtonState(true); //включаєм кнопку
                         continue;
                     }
 
@@ -153,6 +152,7 @@ namespace wow_launcher_cs
                         {
                             dlCpt = true;
                             UpdateDownloadInfoLabel("Завантажено останнє оновлення.");
+                            SetPlayButtonState(true); //включаєм кнопку
                         });
                         wc.DownloadFileAsync(new System.Uri(patch.link), "Data/ruRU/" + patch.name);
                     }
@@ -161,9 +161,6 @@ namespace wow_launcher_cs
                         Application.DoEvents();
                     }
                 }
-
-                playButton.Invoke(new MethodInvoker(delegate { playButton.Enabled = true; })); //Фікс компіляції
-                UpdatePlayButton(playButton);
             });
             thread.Start();
         }
@@ -173,6 +170,8 @@ namespace wow_launcher_cs
             if (Updater.data.disabled || !DLConfigUA)
                 return;
 
+            SetPlayButtonState(false);
+
             UpdateDownloadInfoLabel("Перевірка WoW.exe.");
             DLConfigUA = GetLauncherConfigState("DownloadUALocale");
 
@@ -181,6 +180,7 @@ namespace wow_launcher_cs
                 if (Updater.CalculateMD5("WoW.exe").CompareTo(Updater.data.Wow.md5) == 0)
                 {
                     UpdateDownloadInfoLabel("Оновлення WoW.exe не потрібне.");
+                    SetPlayButtonState(true);
                     //PlayWow();
                     return;
                 }
@@ -194,6 +194,7 @@ namespace wow_launcher_cs
                 wc.DownloadFileCompleted += ((sender, args) =>
                 {
                     UpdateDownloadInfoLabel("WoW.exe оновлено.");
+                    SetPlayButtonState(true);
                     //  PlayWow();
                 });
                 wc.DownloadFileAsync(new System.Uri(Updater.data.Wow.link), "WoW.exe"); //Качає WoW.exe коли натиснуто кнопку Play
@@ -524,6 +525,18 @@ namespace wow_launcher_cs
             {
                 DownloadInfoLabel.Text = text;
             }
+        }
+        private void SetPlayButtonState(bool enabled)
+        {
+            if (playButton.InvokeRequired)
+            {
+                playButton.Invoke(new MethodInvoker(() => playButton.Enabled = enabled));
+            }
+            else
+            {
+                playButton.Enabled = enabled;
+            }
+            UpdatePlayButton(playButton);
         }
     }
 }
