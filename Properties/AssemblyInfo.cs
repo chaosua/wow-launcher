@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Freedom WoW UA Launcher")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Launcher for World of Warcraft 3.3.5.12340")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Freedom WoW UA Launcher")]
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.1.0.6")]
-[assembly: AssemblyFileVersion("1.1.0.6")]
+[assembly: AssemblyVersion("1.1.0.7")]
+[assembly: AssemblyFileVersion("1.1.0.7")]
