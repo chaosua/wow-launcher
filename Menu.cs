@@ -23,8 +23,6 @@ namespace wow_launcher_cs
 {
     public partial class Menu : Form
     {
-        private string locale;
-
         private Settings settings;
 
         public Menu()
@@ -34,52 +32,13 @@ namespace wow_launcher_cs
 
         private bool mouseDown;
         private Point lastLocation;
+        private bool DLConfigUA;
+        private string locale;
 
         private void titleBar_MouseDown(object sender, MouseEventArgs e)
         {
             mouseDown = true;
             lastLocation = e.Location;
-        }
-
-        static public void UpdateWow()
-        {
-            var state = new Menu();
-            bool DLConfigUA = state.GetLauncherConfigState("DownloadUALocale");
-
-            if (Updater.data.disabled || !DLConfigUA)
-                return;
-
-            if (File.Exists("Wow.exe"))
-            {
-                if (Updater.CalculateMD5("WoW.exe").CompareTo(Updater.data.Wow.md5) == 0)
-                {
-                    //PlayWow();
-                    return;
-                }
-                if (File.Exists("WoW.exe.old"))
-                    File.Delete("WoW.exe.old");
-                File.Move("WoW.exe", "WoW.exe.old");
-            }
-
-            state.DownloadInfoLabel.Text = "Завантаження WoW.exe.";
-
-            using (WebClient wc = new WebClient())
-            {
-
-                wc.DownloadFileCompleted += ((sender, args) =>
-                {
-                    var DownloadInfoLabel = new Menu();
-                    state.DownloadInfoLabel.Text = "WoW.exe оновлено.";
-                    //  PlayWow();
-                });
-                wc.DownloadFileAsync(new System.Uri(Updater.data.Wow.link), "WoW.exe"); //Качає WoW.exe коли натиснуто кнопку Play
-            }
-        }
-
-        static private void PlayWow()
-        {
-            Process.Start("WoW.exe");
-            Environment.Exit(0); // закриваєм Launcher
         }
 
         private void titleBar_MouseMove(object sender, MouseEventArgs e)
@@ -100,21 +59,6 @@ namespace wow_launcher_cs
 
         private void Menu_Load(object sender, EventArgs e)
         {
-            if (!Directory.Exists("Data"))
-            {
-                var result = MessageBox.Show("Не знайдено папки Data\\ \rПеремістіть Launcher в корінь папки World of Warcraft 3.3.5", "Помилка", MessageBoxButtons.OK);
-                if (result == DialogResult.OK)
-                {
-                    Application.Exit();
-                }
-            }
-
-            UpdatePlayButton(playButton);
-            DownloadInfoLabel.Text = "";
-            Text = "Launcher";
-            if (File.Exists("Launcher.exe.old"))
-                File.Delete("Launcher.exe.old");
-
             locale = GetClientLocaleConfig();
 
             if (locale == "NULL")
@@ -127,6 +71,21 @@ namespace wow_launcher_cs
                     locale = "enUS";
             }
 
+            if (!Directory.Exists("Data") || locale=="NULL")
+            {
+                var result = MessageBox.Show("Не знайдено папки Data\\ \rПеремістіть Launcher в корінь папки World of Warcraft 3.3.5", "Помилка", MessageBoxButtons.OK);
+                if (result == DialogResult.OK)
+                {
+                    Application.Exit();
+                }
+            }
+
+            UpdatePlayButton(playButton);
+            UpdateDownloadInfoLabel("Ініціалізація");
+            Text = "Launcher";
+            if (File.Exists("Launcher.exe.old"))
+                File.Delete("Launcher.exe.old");
+
             // Очистка Кешу
             if (Directory.Exists("Cache"))
                 Directory.Delete("Cache", true);
@@ -134,41 +93,41 @@ namespace wow_launcher_cs
 
         public void UpdatePatches()
         {
-            DownloadInfoLabel.Text = "Перевірка оновлень.";
-            bool DLConfigUA = GetLauncherConfigState("DownloadUALocale");
+            UpdateDownloadInfoLabel("Перевірка оновлень.");
+            DLConfigUA = GetLauncherConfigState("DownloadUALocale");
             locale = GetClientLocaleConfig();
+
+            if (!DLConfigUA || locale != "ruRU")
+            {
+                string patchname = "patch-ruRU-4.MPQ";
+                string infotxt = "";
+
+                if (locale != "ruRU")
+                    infotxt = "Не вибрано ruRU клієнт. ";
+                else
+                    infotxt = "";
+
+                if (File.Exists("Data/ruRU/" + patchname))
+                {
+                    File.Delete("Data/ruRU/" + patchname);
+                    infotxt += "UA переклад видалено!";
+                }
+
+                UpdateDownloadInfoLabel($"Оновлення вимкнено. {infotxt}");
+                playButton.Invoke(new MethodInvoker(delegate { playButton.Enabled = true; }));
+                UpdatePlayButton(playButton);
+                return;
+            }
 
             Thread thread = new Thread(() =>
             {
-                playButton.Invoke(new MethodInvoker(delegate { playButton.Enabled = false; })); 
+                playButton.Invoke(new MethodInvoker(delegate { playButton.Enabled = false; }));
                 UpdatePlayButton(playButton);
-
-                if (!DLConfigUA || locale != "ruRU")
-                {
-                    string patchname = "patch-ruRU-4.MPQ";
-                    string infotxt = "";
-
-                    if (locale != "ruRU")
-                        infotxt = "Не вибрано ruRU клієнт. ";
-                    else
-                        infotxt = "";
-
-                    if (File.Exists("Data/ruRU/" + patchname))
-                    {
-                        File.Delete("Data/ruRU/" + patchname);
-                        infotxt += "UA переклад видалено!";
-                    }
-
-                    DownloadInfoLabel.Invoke(new MethodInvoker(delegate { DownloadInfoLabel.Text = $"Оновлення вимкнено. {infotxt}"; }));
-                    playButton.Invoke(new MethodInvoker(delegate { playButton.Enabled = true; })); 
-                    UpdatePlayButton(playButton);
-                    return;
-                }
 
                 if (Updater.data.disabled)
                 {
-                    DownloadInfoLabel.Invoke(new MethodInvoker(delegate { DownloadInfoLabel.Text = "Оновлення скасовано. Немає з'єднання?."; }));
-                    playButton.Invoke(new MethodInvoker(delegate { playButton.Enabled = true; })); 
+                    UpdateDownloadInfoLabel("Оновлення скасовано. Немає з'єднання?.");
+                    playButton.Invoke(new MethodInvoker(delegate { playButton.Enabled = true; }));
                     UpdatePlayButton(playButton);
                     return;
                 }
@@ -179,7 +138,7 @@ namespace wow_launcher_cs
 
                     if (File.Exists("Data/ruRU/" + patch.name) && Updater.CalculateMD5("Data/ruRU/" + patch.name).CompareTo(patch.md5) == 0)
                     {
-                        DownloadInfoLabel.Invoke(new MethodInvoker(delegate { DownloadInfoLabel.Text = "Оновлення відсутні."; }));
+                        UpdateDownloadInfoLabel("Оновлення відсутні.");
                         continue;
                     }
 
@@ -187,13 +146,13 @@ namespace wow_launcher_cs
                         File.Delete("Data/ruRU/" + patch.name);
                     using (WebClient wc = new WebClient())
                     {
-                        DownloadInfoLabel.Invoke(new MethodInvoker(delegate { DownloadInfoLabel.Text = "Завантаження: " + patch.name; }));
+                        UpdateDownloadInfoLabel("Завантаження: " + patch.name);
 
                         wc.DownloadProgressChanged += new DownloadProgressChangedEventHandler(UpdateProgress);
                         wc.DownloadFileCompleted += ((sender, args) =>
                         {
                             dlCpt = true;
-                            DownloadInfoLabel.Invoke(new MethodInvoker(delegate { DownloadInfoLabel.Text = "Завантажено останнє оновлення."; }));
+                            UpdateDownloadInfoLabel("Завантажено останнє оновлення.");
                         });
                         wc.DownloadFileAsync(new System.Uri(patch.link), "Data/ruRU/" + patch.name);
                     }
@@ -207,6 +166,44 @@ namespace wow_launcher_cs
                 UpdatePlayButton(playButton);
             });
             thread.Start();
+        }
+
+        public void UpdateWowExecutable()
+        {
+            if (Updater.data.disabled || !DLConfigUA)
+                return;
+
+            UpdateDownloadInfoLabel("Перевірка WoW.exe.");
+            DLConfigUA = GetLauncherConfigState("DownloadUALocale");
+
+            if (File.Exists("Wow.exe"))
+            {
+                if (Updater.CalculateMD5("WoW.exe").CompareTo(Updater.data.Wow.md5) == 0)
+                {
+                    UpdateDownloadInfoLabel("Оновлення WoW.exe не потрібне.");
+                    //PlayWow();
+                    return;
+                }
+                if (File.Exists("WoW.exe.old"))
+                    File.Delete("WoW.exe.old");
+                File.Move("WoW.exe", "WoW.exe.old");
+            }
+
+            using (WebClient wc = new WebClient())
+            {
+                wc.DownloadFileCompleted += ((sender, args) =>
+                {
+                    UpdateDownloadInfoLabel("WoW.exe оновлено.");
+                    //  PlayWow();
+                });
+                wc.DownloadFileAsync(new System.Uri(Updater.data.Wow.link), "WoW.exe"); //Качає WoW.exe коли натиснуто кнопку Play
+            }
+        }
+
+        static private void PlayWow()
+        {
+            Process.Start("WoW.exe");
+            Environment.Exit(0); // закриваєм Launcher
         }
 
         public void UpdateProgress(object sender, DownloadProgressChangedEventArgs e)
@@ -403,7 +400,7 @@ namespace wow_launcher_cs
         private void Menu_Shown(object sender, EventArgs e)
         {
             UpdatePatches();
-            UpdateWow();
+            UpdateWowExecutable();
             SendUserSurvey();
         }
 
@@ -515,6 +512,18 @@ namespace wow_launcher_cs
             }
 
             return clientLocaleConfig;
+        }
+
+        private void UpdateDownloadInfoLabel(string text)
+        {
+            if (DownloadInfoLabel.InvokeRequired)
+            {
+                DownloadInfoLabel.Invoke(new MethodInvoker(() => DownloadInfoLabel.Text = text));
+            }
+            else
+            {
+                DownloadInfoLabel.Text = text;
+            }
         }
     }
 }
