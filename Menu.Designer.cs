@@ -43,9 +43,11 @@
             this.progressBar = new System.Windows.Forms.PictureBox();
             this.playButton = new System.Windows.Forms.Button();
             this.topBackground = new System.Windows.Forms.Panel();
+            this.discordLinkLabel = new System.Windows.Forms.LinkLabel();
             this.titleBar.SuspendLayout();
             this.bottomBackground.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.progressBar)).BeginInit();
+            this.topBackground.SuspendLayout();
             this.SuspendLayout();
             // 
             // frameBottom
@@ -231,10 +233,27 @@
             // 
             this.topBackground.BackgroundImage = global::wow_launcher_cs.Properties.Resources.MainWindowImagePatch;
             this.topBackground.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.topBackground.Controls.Add(this.discordLinkLabel);
             this.topBackground.Location = new System.Drawing.Point(3, 29);
             this.topBackground.Name = "topBackground";
             this.topBackground.Size = new System.Drawing.Size(806, 480);
             this.topBackground.TabIndex = 2;
+            // 
+            // discordLinkLabel
+            // 
+            this.discordLinkLabel.ActiveLinkColor = System.Drawing.Color.White;
+            this.discordLinkLabel.AutoSize = true;
+            this.discordLinkLabel.BackColor = System.Drawing.Color.Transparent;
+            this.discordLinkLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.discordLinkLabel.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
+            this.discordLinkLabel.LinkColor = System.Drawing.Color.White;
+            this.discordLinkLabel.Location = new System.Drawing.Point(72, 432);
+            this.discordLinkLabel.Name = "discordLinkLabel";
+            this.discordLinkLabel.Size = new System.Drawing.Size(181, 20);
+            this.discordLinkLabel.TabIndex = 0;
+            this.discordLinkLabel.TabStop = true;
+            this.discordLinkLabel.Text = "discord.gg/freedom-wow";
+            this.discordLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.OnLinkClicked);
             // 
             // Menu
             // 
@@ -263,6 +282,8 @@
             this.bottomBackground.ResumeLayout(false);
             this.bottomBackground.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.progressBar)).EndInit();
+            this.topBackground.ResumeLayout(false);
+            this.topBackground.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -282,5 +303,6 @@
         private System.Windows.Forms.Panel bottomBackground;
         private System.Windows.Forms.Label DownloadInfoLabel;
         private System.Windows.Forms.Button SettingsButton;
+        private System.Windows.Forms.LinkLabel discordLinkLabel;
     }
 }
