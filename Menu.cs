@@ -167,13 +167,14 @@ namespace wow_launcher_cs
 
         public void UpdateWowExecutable()
         {
+            DLConfigUA = GetLauncherConfigState("DownloadUALocale");
+
             if (Updater.data.disabled || !DLConfigUA)
                 return;
 
             SetPlayButtonState(false);
 
             UpdateDownloadInfoLabel("Перевірка WoW.exe.");
-            DLConfigUA = GetLauncherConfigState("DownloadUALocale");
 
             if (File.Exists("Wow.exe"))
             {

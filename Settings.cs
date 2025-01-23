@@ -62,8 +62,8 @@ namespace wow_launcher_cs
         private void closeButton_Click(object sender, EventArgs e)
         {
             Close();
+            mainMenu.UpdateWowExecutable();
             mainMenu.UpdatePatches();
-            //mainMenu.UpdateWowExecutable();
         }
 
         private void closeButton_MouseDown(object sender, MouseEventArgs e)
