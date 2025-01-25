@@ -244,15 +244,15 @@
             this.discordLinkLabel.ActiveLinkColor = System.Drawing.Color.White;
             this.discordLinkLabel.AutoSize = true;
             this.discordLinkLabel.BackColor = System.Drawing.Color.Transparent;
-            this.discordLinkLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.discordLinkLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.discordLinkLabel.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
             this.discordLinkLabel.LinkColor = System.Drawing.Color.White;
-            this.discordLinkLabel.Location = new System.Drawing.Point(72, 432);
+            this.discordLinkLabel.Location = new System.Drawing.Point(118, 432);
             this.discordLinkLabel.Name = "discordLinkLabel";
-            this.discordLinkLabel.Size = new System.Drawing.Size(181, 20);
+            this.discordLinkLabel.Size = new System.Drawing.Size(112, 20);
             this.discordLinkLabel.TabIndex = 0;
             this.discordLinkLabel.TabStop = true;
-            this.discordLinkLabel.Text = "discord.gg/freedom-wow";
+            this.discordLinkLabel.Text = "-> Discord <-";
             this.discordLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.OnLinkClicked);
             // 
             // Menu

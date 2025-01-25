@@ -543,7 +543,7 @@ namespace wow_launcher_cs
         private void OnLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             // Відкриття сайту у браузері за замовчуванням
-            string url = "https://discord.gg/freedom-wow";
+            string url = "https://discord.gg/pGmU9YTwY8";
             try
             {
                 System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
