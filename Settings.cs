@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Drawing.Text;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace wow_launcher_cs
@@ -165,6 +162,12 @@ namespace wow_launcher_cs
                     linesList.Add(replaceText);
                     lines = linesList.ToArray(); // Оновлюємо масив рядків
                 }
+                
+                var fileAttributes = File.GetAttributes(path);
+                if ((fileAttributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
+                {
+                    File.SetAttributes(path, fileAttributes & ~FileAttributes.ReadOnly);
+                }
 
                 // Перезаписуємо файл з модифікованими рядками
                 File.WriteAllLines(path, lines);
@@ -278,6 +281,12 @@ namespace wow_launcher_cs
                     newConfigLines.Add($"SET locale \"{selectedLocale}\"");
                     configLines = newConfigLines.ToArray();
                 }
+                
+                var fileAttributes = File.GetAttributes(configFilePath);
+                if ((fileAttributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
+                {
+                    File.SetAttributes(configFilePath, fileAttributes & ~FileAttributes.ReadOnly);
+                }
 
                 // Запис оновлених даних назад у файл
                 File.WriteAllLines(configFilePath, configLines);
@@ -362,6 +371,12 @@ namespace wow_launcher_cs
                 var newConfigLines = configLines.ToList();
                 newConfigLines.Add($"{config} \"{state}\"");
                 configLines = newConfigLines.ToArray();
+            }
+            
+            var fileAttributes = File.GetAttributes(LauncherConfigFilePath);
+            if ((fileAttributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
+            {
+                File.SetAttributes(LauncherConfigFilePath, fileAttributes & ~FileAttributes.ReadOnly);
             }
 
             // Запис оновлених даних назад у файл
