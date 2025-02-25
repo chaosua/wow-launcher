@@ -247,12 +247,11 @@
             this.discordLinkLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.discordLinkLabel.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
             this.discordLinkLabel.LinkColor = System.Drawing.Color.White;
-            this.discordLinkLabel.Location = new System.Drawing.Point(56, 274);
-            this.discordLinkLabel.MinimumSize = new System.Drawing.Size(200, 150);
+            this.discordLinkLabel.Location = new System.Drawing.Point(442, 382);
+            this.discordLinkLabel.MinimumSize = new System.Drawing.Size(130, 70);
             this.discordLinkLabel.Name = "discordLinkLabel";
-            this.discordLinkLabel.Size = new System.Drawing.Size(200, 150);
+            this.discordLinkLabel.Size = new System.Drawing.Size(130, 70);
             this.discordLinkLabel.TabIndex = 0;
-            this.discordLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.OnLinkClicked);
             this.discordLinkLabel.MouseClick += new System.Windows.Forms.MouseEventHandler(this.OnLinkAreaClicked);
             this.discordLinkLabel.MouseEnter += new System.EventHandler(this.discordLinkLabel_MouseEnter);
             this.discordLinkLabel.MouseLeave += new System.EventHandler(this.discordLinkLabel_MouseLeave);

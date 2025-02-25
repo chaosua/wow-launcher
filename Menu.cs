@@ -532,24 +532,6 @@ namespace wow_launcher_cs
             UpdatePlayButton(playButton);
         }
 
-        private void OnLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            // Відкриття сайту у браузері за замовчуванням
-            string url = "https://discord.gg/pGmU9YTwY8";
-            try
-            {
-                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
-                {
-                    FileName = url,
-                    UseShellExecute = true // Це потрібно для відкриття URL у браузері
-                });
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Не вдалося відкрити сайт: {ex.Message}", "Помилка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
         private void OnLinkAreaClicked(object sender, MouseEventArgs e)
         {
             // Відкриття сайту у браузері за замовчуванням
