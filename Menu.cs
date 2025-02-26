@@ -89,6 +89,12 @@ namespace wow_launcher_cs
             DLConfigUA = GetLauncherConfigState("DownloadUALocale");
             locale = GetClientLocaleConfig();
 
+            /* тиха очистка від сміття 0-дня. TODO: не забути вимкнути коли треба буде використати файл з назвою */
+            if (File.Exists("Data/ruRU/patch-ruRU-D.MPQ"))
+            {
+                File.Delete("Data/ruRU/patch-ruRU-D.MPQ");
+            }
+
             if (!DLConfigUA || locale != "ruRU")
             {
                 string patchname = "patch-ruRU-4.MPQ";
