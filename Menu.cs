@@ -25,6 +25,7 @@ namespace wow_launcher_cs
         private bool mouseDown;
         private Point lastLocation;
         private bool DLConfigUA;
+        private bool ClenupPatchD;
         private string locale;
 
         private void titleBar_MouseDown(object sender, MouseEventArgs e)
@@ -87,10 +88,11 @@ namespace wow_launcher_cs
         {
             UpdateDownloadInfoLabel("Перевірка оновлень.");
             DLConfigUA = GetLauncherConfigState("DownloadUALocale");
+            ClenupPatchD = GetLauncherConfigState("Patch-D-Cleanup");
             locale = GetClientLocaleConfig();
 
             /* тиха очистка від сміття 0-дня. TODO: не забути вимкнути коли треба буде використати файл з назвою */
-            if (File.Exists("Data/ruRU/patch-ruRU-D.MPQ"))
+            if (File.Exists("Data/ruRU/patch-ruRU-D.MPQ") && ClenupPatchD)
             {
                 File.Delete("Data/ruRU/patch-ruRU-D.MPQ");
             }
@@ -452,8 +454,10 @@ namespace wow_launcher_cs
             // Перевірка, чи існує файл launcher.ini
             if (!File.Exists(LauncherConfigFilePath))
             {
+                //Створюємо Стандартні налаштування
                 var settings = new wow_launcher_cs.Settings(this);
                 settings.WriteLauncherConfig("DownloadUALocale", true);
+                settings.WriteLauncherConfig("Patch-D-Cleanup", true);
                 return true;
             }
             else
@@ -472,6 +476,12 @@ namespace wow_launcher_cs
                         state = true;
                     else
                         state = false;
+                }
+                else
+                {
+                    // Якщо параметра не існує, створюємо його і ставим значення 1
+                    var settings = new wow_launcher_cs.Settings(this);
+                    settings.WriteLauncherConfig(config, true);
                 }
             }
             return state;
