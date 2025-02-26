@@ -451,24 +451,35 @@ namespace wow_launcher_cs
 
             bool state = false;
 
-            // Перевірка, чи існує файл launcher.ini
+            // Перевірка, чи існує файл Launcher.ini
             if (!File.Exists(LauncherConfigFilePath))
             {
-                //Створюємо Стандартні налаштування
-                var settings = new wow_launcher_cs.Settings(this);
-                settings.WriteLauncherConfig("DownloadUALocale", true);
-                settings.WriteLauncherConfig("Patch-D-Cleanup", true);
-                return true;
+                try
+                {
+                    // Створюємо файл із дефолтними налаштуваннями
+                    var settings = new wow_launcher_cs.Settings(this);
+                    settings.WriteLauncherConfig("DownloadUALocale", true);
+                    settings.WriteLauncherConfig("Patch-D-Cleanup", true);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Не вдалося створити файл Launcher.ini\nПомилка: {ex.Message}",
+                                    "Помилка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return true; //Виходимо зі значенням по замовчуванню
+                }
+                return true; //Виходимо зі значенням по замовчуванню
             }
-            else
+
+            try
             {
                 // Читання файлу Launcher.ini
                 string[] configLines = File.ReadAllLines(LauncherConfigFilePath);
-                // Пошук параметра 
+                // Пошук параметра
                 string configLine = configLines.FirstOrDefault(line => line.StartsWith($"{config} "));
+
                 if (!string.IsNullOrEmpty(configLine))
                 {
-                    // Отримання значення параметра DownloadUALocale
+                    // Отримання значення параметра
                     string status = configLine.Split('"')[1];
 
                     // Встановлення значення чекбокса
@@ -479,11 +490,19 @@ namespace wow_launcher_cs
                 }
                 else
                 {
-                    // Якщо параметра не існує, створюємо його і ставим значення 1
+                    // Якщо параметра не існує, створюємо його і ставимо значення "1"
                     var settings = new wow_launcher_cs.Settings(this);
                     settings.WriteLauncherConfig(config, true);
+                    state = true;
                 }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Помилка читання Launcher.ini\nПомилка: {ex.Message}",
+                                "Помилка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
             return state;
         }
 
