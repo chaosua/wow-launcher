@@ -25,6 +25,7 @@ namespace wow_launcher_cs
         private bool mouseDown;
         private Point lastLocation;
         private bool DLConfigUA;
+        private bool DLConfigWoW;
         private bool ClenupPatchD;
         private string locale;
 
@@ -167,9 +168,9 @@ namespace wow_launcher_cs
 
         public void UpdateWowExecutable()
         {
-            DLConfigUA = GetLauncherConfigState("DownloadUALocale");
+            DLConfigWoW = GetLauncherConfigState("PatchClient");
 
-            if (Updater.data.disabled || !DLConfigUA)
+            if (Updater.data.disabled || !DLConfigWoW)
                 return;
 
             SetPlayButtonState(false);
@@ -459,6 +460,7 @@ namespace wow_launcher_cs
                     // Створюємо файл із дефолтними налаштуваннями
                     var settings = new wow_launcher_cs.Settings(this);
                     settings.WriteLauncherConfig("DownloadUALocale", true);
+                    settings.WriteLauncherConfig("PatchClient", true);
                     settings.WriteLauncherConfig("Patch-D-Cleanup", true);
                 }
                 catch (Exception ex)

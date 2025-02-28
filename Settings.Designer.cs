@@ -35,6 +35,7 @@
             this.LanguageBoxList = new System.Windows.Forms.ComboBox();
             this.LanguageTxT = new System.Windows.Forms.Label();
             this.DownloadUALocale = new System.Windows.Forms.CheckBox();
+            this.patchClientWoW = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // closeButton
@@ -57,12 +58,13 @@
             // 
             // CheckBoxRealmName
             // 
+            this.CheckBoxRealmName.AutoSize = true;
             this.CheckBoxRealmName.BackColor = System.Drawing.Color.Transparent;
             this.CheckBoxRealmName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.CheckBoxRealmName.ForeColor = System.Drawing.SystemColors.Menu;
-            this.CheckBoxRealmName.Location = new System.Drawing.Point(36, 43);
+            this.CheckBoxRealmName.Location = new System.Drawing.Point(36, 40);
             this.CheckBoxRealmName.Name = "CheckBoxRealmName";
-            this.CheckBoxRealmName.Size = new System.Drawing.Size(420, 52);
+            this.CheckBoxRealmName.Size = new System.Drawing.Size(334, 24);
             this.CheckBoxRealmName.TabIndex = 5;
             this.CheckBoxRealmName.Text = "Виправити проблему з входом на реалм";
             this.CheckBoxRealmName.UseVisualStyleBackColor = false;
@@ -70,12 +72,13 @@
             // 
             // CheckboxRealmlist
             // 
+            this.CheckboxRealmlist.AutoSize = true;
             this.CheckboxRealmlist.BackColor = System.Drawing.Color.Transparent;
             this.CheckboxRealmlist.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.CheckboxRealmlist.ForeColor = System.Drawing.SystemColors.Menu;
-            this.CheckboxRealmlist.Location = new System.Drawing.Point(36, 101);
+            this.CheckboxRealmlist.Location = new System.Drawing.Point(36, 76);
             this.CheckboxRealmlist.Name = "CheckboxRealmlist";
-            this.CheckboxRealmlist.Size = new System.Drawing.Size(420, 37);
+            this.CheckboxRealmlist.Size = new System.Drawing.Size(194, 24);
             this.CheckboxRealmlist.TabIndex = 6;
             this.CheckboxRealmlist.Text = "Відновити realmlist.wtf";
             this.CheckboxRealmlist.UseVisualStyleBackColor = false;
@@ -89,7 +92,7 @@
             this.LanguageBoxList.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.LanguageBoxList.ForeColor = System.Drawing.SystemColors.Window;
             this.LanguageBoxList.FormattingEnabled = true;
-            this.LanguageBoxList.Location = new System.Drawing.Point(375, 201);
+            this.LanguageBoxList.Location = new System.Drawing.Point(356, 201);
             this.LanguageBoxList.Name = "LanguageBoxList";
             this.LanguageBoxList.Size = new System.Drawing.Size(81, 28);
             this.LanguageBoxList.TabIndex = 7;
@@ -114,13 +117,27 @@
             this.DownloadUALocale.BackColor = System.Drawing.Color.Transparent;
             this.DownloadUALocale.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.DownloadUALocale.ForeColor = System.Drawing.SystemColors.Menu;
-            this.DownloadUALocale.Location = new System.Drawing.Point(36, 156);
+            this.DownloadUALocale.Location = new System.Drawing.Point(36, 112);
             this.DownloadUALocale.Name = "DownloadUALocale";
             this.DownloadUALocale.Size = new System.Drawing.Size(383, 24);
             this.DownloadUALocale.TabIndex = 9;
             this.DownloadUALocale.Text = "Завантажувати UA переклад (лише для ruRU)";
             this.DownloadUALocale.UseVisualStyleBackColor = false;
             this.DownloadUALocale.CheckStateChanged += new System.EventHandler(this.DownloadUAlocaleState);
+            // 
+            // patchClientWoW
+            // 
+            this.patchClientWoW.AutoSize = true;
+            this.patchClientWoW.BackColor = System.Drawing.Color.Transparent;
+            this.patchClientWoW.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.patchClientWoW.ForeColor = System.Drawing.SystemColors.Menu;
+            this.patchClientWoW.Location = new System.Drawing.Point(36, 148);
+            this.patchClientWoW.Name = "patchClientWoW";
+            this.patchClientWoW.Size = new System.Drawing.Size(339, 24);
+            this.patchClientWoW.TabIndex = 10;
+            this.patchClientWoW.Text = "Пропатчити клієнт (для UA обов\'язково)";
+            this.patchClientWoW.UseVisualStyleBackColor = false;
+            this.patchClientWoW.CheckStateChanged += new System.EventHandler(this.PatchClientWoWState);
             // 
             // Settings
             // 
@@ -130,7 +147,8 @@
             this.BackColor = System.Drawing.Color.Lime;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(487, 291);
+            this.ClientSize = new System.Drawing.Size(470, 291);
+            this.Controls.Add(this.patchClientWoW);
             this.Controls.Add(this.DownloadUALocale);
             this.Controls.Add(this.LanguageTxT);
             this.Controls.Add(this.LanguageBoxList);
@@ -162,5 +180,6 @@
         private System.Windows.Forms.ComboBox LanguageBoxList;
         private System.Windows.Forms.Label LanguageTxT;
         private System.Windows.Forms.CheckBox DownloadUALocale;
+        private System.Windows.Forms.CheckBox patchClientWoW;
     }
 }

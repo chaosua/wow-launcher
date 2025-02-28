@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
 using System.Drawing.Text;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using wow_launcher_cs.Properties;
 
 namespace wow_launcher_cs
 {
@@ -52,6 +54,7 @@ namespace wow_launcher_cs
             LanguageTxT.Font = myFont;
             LanguageBoxList.Font = myFont;
             DownloadUALocale.Font = myFont;
+            patchClientWoW.Font = myFont;
             LoadConfig();
             GetAvailableLocales();
         }
@@ -305,6 +308,8 @@ namespace wow_launcher_cs
                 // Створюємо новий файл
                 // Встановлюємо параметр ВКЛ по замовчуванню
                 WriteLauncherConfig("DownloadUALocale", true);
+                WriteLauncherConfig("PatchClient", true);
+                WriteLauncherConfig("Patch-D-Cleanup", true);
                 return;
             }
             else
@@ -312,13 +317,22 @@ namespace wow_launcher_cs
                 // Читання файлу Launcher.ini
                 string[] configLines = File.ReadAllLines(LauncherConfigFilePath);
                 // Пошук параметра DownloadUALocale
-                string downloadUALocaleLine = configLines.FirstOrDefault(line => line.StartsWith("DownloadUALocale "));
-                if (!string.IsNullOrEmpty(downloadUALocaleLine))
+                string ConfigLine = configLines.FirstOrDefault(line => line.StartsWith("DownloadUALocale "));
+                if (!string.IsNullOrEmpty(ConfigLine))
                 {
                     // Отримання значення параметра DownloadUALocale
-                    string downloadUALocale = downloadUALocaleLine.Split('"')[1];
+                    string downloadUALocale = ConfigLine.Split('"')[1];
                     // Встановлення значення чекбокса
                     DownloadUALocale.Checked = downloadUALocale == "1";
+                }
+                ConfigLine = "";
+                ConfigLine = configLines.FirstOrDefault(line => line.StartsWith("PatchClient "));
+                if (!string.IsNullOrEmpty(ConfigLine))
+                {
+                    // Отримання значення параметра DownloadUALocale
+                    string PatchClient = ConfigLine.Split('"')[1];
+                    // Встановлення значення чекбокса
+                    patchClientWoW.Checked = PatchClient == "1";
                 }
             }
         }
@@ -328,6 +342,8 @@ namespace wow_launcher_cs
             if (DownloadUALocale.CheckState == CheckState.Checked)
             {
                 WriteLauncherConfig("DownloadUALocale", true);
+                if(patchClientWoW.CheckState != CheckState.Checked)
+                    patchClientWoW.CheckState = CheckState.Checked;
             }
             else
             {
@@ -381,6 +397,22 @@ namespace wow_launcher_cs
 
             // Запис оновлених даних назад у файл
             File.WriteAllLines(LauncherConfigFilePath, configLines);
+        }
+
+        private void PatchClientWoWState(object sender, EventArgs e)
+        {
+            // Отримання вибраного пункту меню
+            if (patchClientWoW.CheckState == CheckState.Checked)
+            {
+                WriteLauncherConfig("PatchClient", true);
+            }
+            else
+            {   //Якщо завантаження UAперекладу увімкнено не можна вимикати оновлення WoW.exe
+                if (DownloadUALocale.CheckState != CheckState.Checked) 
+                    WriteLauncherConfig("PatchClient", false);
+                else
+                    patchClientWoW.CheckState = CheckState.Checked;
+            }
         }
     }
 }
