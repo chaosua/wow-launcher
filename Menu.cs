@@ -174,38 +174,36 @@ namespace wow_launcher_cs
 
             SetPlayButtonState(false);
 
-            UpdateDownloadInfoLabel("Перевірка WoW.exe.");
-
             if (File.Exists("Wow.exe"))
             {
-                if (Updater.CalculateMD5("WoW.exe").CompareTo(Updater.data.Wow.md5) == 0)
+                if (Updater.CalculateMD5("Wow.exe").CompareTo(Updater.data.Wow.md5) == 0)
                 {
-                    UpdateDownloadInfoLabel("Оновлення WoW.exe не потрібне.");
+                    UpdateDownloadInfoLabel("Оновлення Wow.exe не потрібне.");
                     SetPlayButtonState(true);
                     //PlayWow();
                     return;
                 }
 
-                if (File.Exists("WoW.exe.old"))
-                    File.Delete("WoW.exe.old");
-                File.Move("WoW.exe", "WoW.exe.old");
+                if (File.Exists("Wow.exe.old"))
+                    File.Delete("Wow.exe.old");
+                File.Move("Wow.exe", "Wow.exe.old");
             }
 
             using (WebClient wc = new WebClient())
             {
                 wc.DownloadFileCompleted += ((sender, args) =>
                 {
-                    UpdateDownloadInfoLabel("WoW.exe оновлено.");
+                    UpdateDownloadInfoLabel("Wow.exe оновлено.");
                     SetPlayButtonState(true);
                     //  PlayWow();
                 });
-                wc.DownloadFileAsync(new System.Uri(Updater.data.Wow.link), "WoW.exe"); //Качає WoW.exe коли натиснуто кнопку Play
+                wc.DownloadFileAsync(new System.Uri(Updater.data.Wow.link), "Wow.exe"); //Качає WoW.exe коли натиснуто кнопку Play
             }
         }
 
         static private void PlayWow()
         {
-            Process.Start("WoW.exe");
+            Process.Start("Wow.exe");
             Environment.Exit(0); // закриваєм Launcher
         }
 
