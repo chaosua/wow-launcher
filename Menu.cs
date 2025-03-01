@@ -74,8 +74,8 @@ namespace wow_launcher_cs
                 }
             }
 
-            UpdatePlayButton(playButton);
-            UpdateDownloadInfoLabel("Ініціалізація");
+            //UpdatePlayButton(playButton);
+            UpdateDownloadInfoLabel("");
             Text = "Launcher";
             if (File.Exists("Launcher.exe.old"))
                 File.Delete("Launcher.exe.old");
@@ -88,8 +88,8 @@ namespace wow_launcher_cs
         public void UpdatePatches()
         {
             UpdateDownloadInfoLabel("Перевірка оновлень.");
-            DLConfigUA = GetLauncherConfigState("DownloadUALocale");
-            ClenupPatchD = GetLauncherConfigState("Patch-D-Cleanup");
+            DLConfigUA = GetLauncherConfig("DownloadUALocale");
+            ClenupPatchD = GetLauncherConfig("Patch-D-Cleanup");
             locale = GetClientLocaleConfig();
 
             /* тиха очистка від сміття 0-дня. TODO: не забути вимкнути коли треба буде використати файл з назвою */
@@ -115,15 +115,13 @@ namespace wow_launcher_cs
                 }
 
                 UpdateDownloadInfoLabel($"Оновлення вимкнено. {infotxt}");
-                playButton.Invoke(new MethodInvoker(delegate { playButton.Enabled = true; }));
-                UpdatePlayButton(playButton);
                 return;
             }
 
+            SetPlayButtonState(false);
+
             Thread thread = new Thread(() =>
             {
-                SetPlayButtonState(false);
-
                 if (Updater.data.disabled)
                 {
                     UpdateDownloadInfoLabel("Оновлення скасовано. Немає з'єднання?.");
@@ -138,12 +136,13 @@ namespace wow_launcher_cs
                     if (File.Exists("Data/ruRU/" + patch.name) && Updater.CalculateMD5("Data/ruRU/" + patch.name).CompareTo(patch.md5) == 0)
                     {
                         UpdateDownloadInfoLabel("Оновлення відсутні.");
-                        SetPlayButtonState(true); //включаєм кнопку
+                        //SetPlayButtonState(true); //включаєм кнопку
                         continue;
                     }
 
                     if (File.Exists("Data/ruRU/" + patch.name))
                         File.Delete("Data/ruRU/" + patch.name);
+
                     using (WebClient wc = new WebClient())
                     {
                         UpdateDownloadInfoLabel("Завантаження: " + patch.name);
@@ -151,9 +150,7 @@ namespace wow_launcher_cs
                         wc.DownloadProgressChanged += new DownloadProgressChangedEventHandler(UpdateProgress);
                         wc.DownloadFileCompleted += ((sender, args) =>
                         {
-                            dlCpt = true;
-                            UpdateDownloadInfoLabel("Завантажено останнє оновлення.");
-                            SetPlayButtonState(true); //включаєм кнопку
+                            dlCpt = true; 
                         });
                         wc.DownloadFileAsync(new System.Uri(patch.link), "Data/ruRU/" + patch.name);
                     }
@@ -162,13 +159,15 @@ namespace wow_launcher_cs
                         Application.DoEvents();
                     }
                 }
+                UpdateDownloadInfoLabel("Завантажено останнє оновлення.");
+                SetPlayButtonState(true);
             });
-            thread.Start();
+            thread.Start();  
         }
 
         public void UpdateWowExecutable()
         {
-            DLConfigWoW = GetLauncherConfigState("PatchClient");
+            DLConfigWoW = GetLauncherConfig("PatchClient");
 
             if (Updater.data.disabled || !DLConfigWoW)
                 return;
@@ -186,6 +185,7 @@ namespace wow_launcher_cs
                     //PlayWow();
                     return;
                 }
+
                 if (File.Exists("WoW.exe.old"))
                     File.Delete("WoW.exe.old");
                 File.Move("WoW.exe", "WoW.exe.old");
@@ -444,7 +444,7 @@ namespace wow_launcher_cs
             SettingsButton.BackgroundImage = Properties.Resources.config_button_base;
         }
 
-        public bool GetLauncherConfigState(string config)
+        public bool GetLauncherConfig(string config)
         {
             // Основна папка
             string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
@@ -455,21 +455,9 @@ namespace wow_launcher_cs
             // Перевірка, чи існує файл Launcher.ini
             if (!File.Exists(LauncherConfigFilePath))
             {
-                try
-                {
-                    // Створюємо файл із дефолтними налаштуваннями
-                    var settings = new wow_launcher_cs.Settings(this);
-                    settings.WriteLauncherConfig("DownloadUALocale", true);
-                    settings.WriteLauncherConfig("PatchClient", true);
-                    settings.WriteLauncherConfig("Patch-D-Cleanup", true);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Не вдалося створити файл Launcher.ini\nПомилка: {ex.Message}",
-                                    "Помилка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return true; //Виходимо зі значенням по замовчуванню
-                }
-                return true; //Виходимо зі значенням по замовчуванню
+                // Створюємо файл із дефолтними налаштуваннями
+                var settings = new wow_launcher_cs.Settings(this);
+                settings.SetDefaultLauncherConfig();
             }
 
             try
@@ -494,7 +482,7 @@ namespace wow_launcher_cs
                 {
                     // Якщо параметра не існує, створюємо його і ставимо значення "1"
                     var settings = new wow_launcher_cs.Settings(this);
-                    settings.WriteLauncherConfig(config, true);
+                    settings.UpdateLauncherConfig(config, true);
                     state = true;
                 }
             }

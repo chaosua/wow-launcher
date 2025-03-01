@@ -214,7 +214,6 @@
             // playButton
             // 
             this.playButton.BackgroundImage = global::wow_launcher_cs.Properties.Resources.PlayButtonBase;
-            this.playButton.Enabled = false;
             this.playButton.FlatAppearance.BorderSize = 0;
             this.playButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.playButton.Location = new System.Drawing.Point(678, 23);

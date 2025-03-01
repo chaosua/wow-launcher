@@ -123,7 +123,7 @@
             this.DownloadUALocale.TabIndex = 9;
             this.DownloadUALocale.Text = "Завантажувати UA переклад (лише для ruRU)";
             this.DownloadUALocale.UseVisualStyleBackColor = false;
-            this.DownloadUALocale.CheckStateChanged += new System.EventHandler(this.DownloadUAlocaleState);
+            this.DownloadUALocale.CheckStateChanged += new System.EventHandler(this.DownloadUALocaleStateChanged);
             // 
             // patchClientWoW
             // 
@@ -137,7 +137,7 @@
             this.patchClientWoW.TabIndex = 10;
             this.patchClientWoW.Text = "Пропатчити клієнт (для UA обов\'язково)";
             this.patchClientWoW.UseVisualStyleBackColor = false;
-            this.patchClientWoW.CheckStateChanged += new System.EventHandler(this.PatchClientWoWState);
+            this.patchClientWoW.CheckStateChanged += new System.EventHandler(this.ConfigPatchClientWoWStateChanged);
             // 
             // Settings
             // 

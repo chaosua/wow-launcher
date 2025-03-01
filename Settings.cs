@@ -165,7 +165,7 @@ namespace wow_launcher_cs
                     linesList.Add(replaceText);
                     lines = linesList.ToArray(); // Оновлюємо масив рядків
                 }
-                
+
                 var fileAttributes = File.GetAttributes(path);
                 if ((fileAttributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
                 {
@@ -284,7 +284,7 @@ namespace wow_launcher_cs
                     newConfigLines.Add($"SET locale \"{selectedLocale}\"");
                     configLines = newConfigLines.ToArray();
                 }
-                
+
                 var fileAttributes = File.GetAttributes(configFilePath);
                 if ((fileAttributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
                 {
@@ -306,51 +306,107 @@ namespace wow_launcher_cs
             if (!File.Exists(LauncherConfigFilePath))
             {
                 // Створюємо новий файл
-                // Встановлюємо параметр ВКЛ по замовчуванню
-                WriteLauncherConfig("DownloadUALocale", true);
-                WriteLauncherConfig("PatchClient", true);
-                WriteLauncherConfig("Patch-D-Cleanup", true);
-                return;
+                SetDefaultLauncherConfig();
             }
-            else
+
+            // Читання файлу Launcher.ini
+            string[] configLines = File.ReadAllLines(LauncherConfigFilePath);
+
+            // Пошук параметра DownloadUALocale
+            string ConfigLine = configLines.FirstOrDefault(line => line.StartsWith("DownloadUALocale "));
+
+            if (!string.IsNullOrEmpty(ConfigLine))
             {
-                // Читання файлу Launcher.ini
-                string[] configLines = File.ReadAllLines(LauncherConfigFilePath);
-                // Пошук параметра DownloadUALocale
-                string ConfigLine = configLines.FirstOrDefault(line => line.StartsWith("DownloadUALocale "));
-                if (!string.IsNullOrEmpty(ConfigLine))
-                {
-                    // Отримання значення параметра DownloadUALocale
-                    string downloadUALocale = ConfigLine.Split('"')[1];
-                    // Встановлення значення чекбокса
-                    DownloadUALocale.Checked = downloadUALocale == "1";
-                }
-                ConfigLine = "";
-                ConfigLine = configLines.FirstOrDefault(line => line.StartsWith("PatchClient "));
-                if (!string.IsNullOrEmpty(ConfigLine))
-                {
-                    // Отримання значення параметра DownloadUALocale
-                    string PatchClient = ConfigLine.Split('"')[1];
-                    // Встановлення значення чекбокса
-                    patchClientWoW.Checked = PatchClient == "1";
-                }
+                // Отримання значення параметра DownloadUALocale
+                string downloadUALocale = ConfigLine.Split('"')[1];
+                // Встановлення значення чекбокса
+                DownloadUALocale.Checked = downloadUALocale == "1";
+            }
+
+            ConfigLine = null;
+            // Пошук параметра PatchClient
+            ConfigLine = configLines.FirstOrDefault(line => line.StartsWith("PatchClient "));
+
+            if (!string.IsNullOrEmpty(ConfigLine))
+            {
+                // Отримання значення параметра PatchClient
+                string PatchClient = ConfigLine.Split('"')[1];
+                // Встановлення значення чекбокса
+                patchClientWoW.Checked = PatchClient == "1";
             }
         }
-        private void DownloadUAlocaleState(object sender, EventArgs e)
+
+        private void DownloadUALocaleStateChanged(object sender, EventArgs e)
         {
             // Отримання вибраного пункту меню
             if (DownloadUALocale.CheckState == CheckState.Checked)
             {
-                WriteLauncherConfig("DownloadUALocale", true);
-                if(patchClientWoW.CheckState != CheckState.Checked)
+                UpdateLauncherConfig("DownloadUALocale", true);
+                if (patchClientWoW.CheckState != CheckState.Checked)
                     patchClientWoW.CheckState = CheckState.Checked;
             }
             else
             {
-                WriteLauncherConfig("DownloadUALocale", false);
+                UpdateLauncherConfig("DownloadUALocale", false);
             }
         }
-        public void WriteLauncherConfig(string config, bool enabled)
+
+        private void ConfigPatchClientWoWStateChanged(object sender, EventArgs e)
+        {
+            // Отримання вибраного пункту меню
+            if (patchClientWoW.CheckState == CheckState.Checked)
+            {
+                UpdateLauncherConfig("PatchClient", true);
+            }
+            else
+            {   //Якщо завантаження UAперекладу увімкнено не можна вимикати оновлення WoW.exe
+                if (DownloadUALocale.CheckState != CheckState.Checked)
+                    UpdateLauncherConfig("PatchClient", false);
+                else
+                    patchClientWoW.CheckState = CheckState.Checked;
+            }
+        }
+
+        public void SetDefaultLauncherConfig()
+        {
+            string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string launcherConfigFilePath = Path.Combine(baseDirectory, "Launcher.ini");
+
+            // Перевірка, чи існує файл, якщо ні — створюємо
+            if (!File.Exists(launcherConfigFilePath))
+            {
+                try
+                {
+                    File.WriteAllText(launcherConfigFilePath, ""); // Створюємо пустий файл
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Не вдалося створити файл Launcher.ini\nПомилка: {ex.Message}",
+                                    "Помилка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return; // Вихід у разі помилки
+                }
+            }
+
+            try
+            {
+                // Формат запису параметрів у файл: ключ "значення"
+                string[] configLines =
+                {
+                    "DownloadUALocale \"1\"",
+                    "PatchClient \"1\"",
+                    "Patch-D-Cleanup \"1\""
+                 };
+
+                File.WriteAllLines(launcherConfigFilePath, configLines);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Помилка при записі конфігурації у Launcher.ini\n{ex.Message}",
+                                "Помилка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        public void UpdateLauncherConfig(string config, bool enabled)
         {
             string state = enabled ? "1" : "0";
 
@@ -362,7 +418,7 @@ namespace wow_launcher_cs
             if (!File.Exists(LauncherConfigFilePath))
             {
                 // Створення файлу, якщо його немає
-                File.WriteAllText(LauncherConfigFilePath, "");
+                SetDefaultLauncherConfig();
             }
 
             // Читання та оновлення файлу Launcher.ini
@@ -388,7 +444,7 @@ namespace wow_launcher_cs
                 newConfigLines.Add($"{config} \"{state}\"");
                 configLines = newConfigLines.ToArray();
             }
-            
+
             var fileAttributes = File.GetAttributes(LauncherConfigFilePath);
             if ((fileAttributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
             {
@@ -397,22 +453,6 @@ namespace wow_launcher_cs
 
             // Запис оновлених даних назад у файл
             File.WriteAllLines(LauncherConfigFilePath, configLines);
-        }
-
-        private void PatchClientWoWState(object sender, EventArgs e)
-        {
-            // Отримання вибраного пункту меню
-            if (patchClientWoW.CheckState == CheckState.Checked)
-            {
-                WriteLauncherConfig("PatchClient", true);
-            }
-            else
-            {   //Якщо завантаження UAперекладу увімкнено не можна вимикати оновлення WoW.exe
-                if (DownloadUALocale.CheckState != CheckState.Checked) 
-                    WriteLauncherConfig("PatchClient", false);
-                else
-                    patchClientWoW.CheckState = CheckState.Checked;
-            }
         }
     }
 }
