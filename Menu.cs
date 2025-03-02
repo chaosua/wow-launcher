@@ -136,7 +136,6 @@ namespace wow_launcher_cs
                     if (File.Exists("Data/ruRU/" + patch.name) && Updater.CalculateMD5("Data/ruRU/" + patch.name).CompareTo(patch.md5) == 0)
                     {
                         UpdateDownloadInfoLabel("Оновлення відсутні.");
-                        //SetPlayButtonState(true); //включаєм кнопку
                         continue;
                     }
 
@@ -195,7 +194,6 @@ namespace wow_launcher_cs
                 {
                     UpdateDownloadInfoLabel("Wow.exe оновлено.");
                     SetPlayButtonState(true);
-                    //  PlayWow();
                 });
                 wc.DownloadFileAsync(new System.Uri(Updater.data.Wow.link), "Wow.exe"); //Качає WoW.exe коли натиснуто кнопку Play
             }
