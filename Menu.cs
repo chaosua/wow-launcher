@@ -377,6 +377,7 @@ namespace wow_launcher_cs
 
                 if ((attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
                     File.SetAttributes(wtfpath, FileAttributes.Normal);
+
                 if (File.ReadAllText(wtfpath).CompareTo("set realmlist login1.freedom-wow.in.ua") != 0)
                 {
                     if (settings.CheckboxRealmlist.Checked)

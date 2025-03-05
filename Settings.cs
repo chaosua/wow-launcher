@@ -110,12 +110,14 @@ namespace wow_launcher_cs
 
         private void CheckBoxRealmName_CheckedChanged(object sender, EventArgs e)
         {
-            ChangeRealmName();
+            if (CheckBoxRealmName.CheckState == CheckState.Checked)
+                RestoreRealmName();
         }
 
         private void CheckboxRealmlist_CheckedChanged(object sender, EventArgs e)
         {
-            mainMenu.CheckRealmlistAndUpdate();
+            if (CheckboxRealmlist.CheckState == CheckState.Checked)
+                mainMenu.CheckRealmlistAndUpdate();
         }
 
         public void ChangeRealmlist(string wtfpath)
@@ -135,7 +137,7 @@ namespace wow_launcher_cs
             }
         }
 
-        private void ChangeRealmName()
+        private void RestoreRealmName()
         {
             string path = "WTF/Config.wtf"; // Шлях до файлу
             string searchText = "SET realmName"; // Рядок, який потрібно знайти
@@ -198,12 +200,23 @@ namespace wow_launcher_cs
             }
 
             var items = Directory.GetDirectories(dataDirectory)
-                .Where(subDir => File.Exists(Path.Combine(subDir, "realmlist.wtf")))
-                .Select(subDir => new ComboItem
+                .Select(subDir =>
                 {
-                    ID = Guid.NewGuid().GetHashCode(),  // Унікальний ID для кожного пункту
-                    Text = Path.GetFileName(subDir)     // Назва субдиректорії
+                    string locale = Path.GetFileName(subDir);
+                    string localeFile = $"lichking-locale-{locale}.mpq";
+                    string fullPath = Path.Combine(subDir, localeFile);
+
+                    if (File.Exists(fullPath))
+                    {
+                        return new ComboItem
+                        {
+                            ID = Guid.NewGuid().GetHashCode(), // Унікальний ID для кожного пункту
+                            Text = locale                      // Назва субдиректорії (локаль)
+                        };
+                    }
+                    return null;
                 })
+                .Where(item => item != null)
                 .ToArray();
 
             bool localeSet = false;
