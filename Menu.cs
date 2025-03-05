@@ -399,9 +399,20 @@ namespace wow_launcher_cs
 
         private void Menu_Shown(object sender, EventArgs e)
         {
-            UpdatePatches();
-            UpdateWowExecutable();
             SendUserSurvey();
+
+            // Перевірка, чи запущений процес Wow.exe
+            if (Process.GetProcessesByName("Wow").Any())
+            {
+                UpdateDownloadInfoLabel("Гра запущена. Перевірка оновлення скасована.");
+                MessageBox.Show("Гра запущена! Закрийте WoW перед оновленням патчів.", "Помилка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            else
+            {
+                UpdatePatches();
+                UpdateWowExecutable();
+            }
         }
 
         private void playButton_Click(object sender, EventArgs e)
@@ -530,7 +541,7 @@ namespace wow_launcher_cs
             return clientLocaleConfig;
         }
 
-        private void UpdateDownloadInfoLabel(string text)
+        public void UpdateDownloadInfoLabel(string text)
         {
             if (DownloadInfoLabel.InvokeRequired)
             {

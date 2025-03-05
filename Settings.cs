@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Text;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using wow_launcher_cs.Properties;
 
 namespace wow_launcher_cs
 {
@@ -62,8 +61,18 @@ namespace wow_launcher_cs
         private void closeButton_Click(object sender, EventArgs e)
         {
             Close();
-            mainMenu.UpdateWowExecutable();
-            mainMenu.UpdatePatches();
+            // Перевірка, чи запущений процес Wow.exe
+            if (Process.GetProcessesByName("Wow").Any())
+            {
+                mainMenu.UpdateDownloadInfoLabel("Гра запущена. Перевірка оновлення скасована.");
+                MessageBox.Show("Гра запущена! Закрийте WoW перед оновленням патчів.", "Помилка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            else
+            {
+                mainMenu.UpdateWowExecutable();
+                mainMenu.UpdatePatches();
+            }
         }
 
         private void closeButton_MouseDown(object sender, MouseEventArgs e)
