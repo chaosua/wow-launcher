@@ -51,7 +51,7 @@ namespace wow_launcher_cs
         static XmlDocument xml;
         static XmlElement root;
         public static UpdateData data;
-        static string remoteHost = "http://updater.freedom-wow.in.ua/client/"; //основна адреса сервера оновлення
+        static string remoteHost = "https://updater.freedom-wow.in.ua/client/"; //основна адреса сервера оновлення
 
         static public void Init()
         {
