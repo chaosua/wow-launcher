@@ -58,7 +58,7 @@ namespace wow_launcher_cs
             GetAvailableLocales();
         }
 
-        private void closeButton_Click(object sender, EventArgs e)
+        private async void closeButton_Click(object sender, EventArgs e)
         {
             Close();
             // Перевірка, чи запущений процес Wow.exe
@@ -70,8 +70,8 @@ namespace wow_launcher_cs
             }
             else
             {
-                mainMenu.UpdateWowExecutable();
-                mainMenu.UpdatePatches();
+                await mainMenu.UpdateWowExecutable();
+                await mainMenu.UpdatePatches();
             }
         }
 

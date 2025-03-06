@@ -10,6 +10,7 @@ using System.Threading;
 using System.Net.Http;
 using System.Net.NetworkInformation;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
 
 namespace wow_launcher_cs
 {
@@ -29,7 +30,7 @@ namespace wow_launcher_cs
         private bool ClenupPatchD;
         private string locale;
 
-        private void Menu_Shown(object sender, EventArgs e)
+        private async void Menu_Shown(object sender, EventArgs e)
         {
             // Перевірка, чи запущений процес Wow.exe
             if (Process.GetProcessesByName("Wow").Any())
@@ -40,8 +41,8 @@ namespace wow_launcher_cs
             }
             else
             {
-                UpdatePatches();
-                UpdateWowExecutable();
+                await UpdateWowExecutable();
+                await UpdatePatches();
             }
         }
 
@@ -100,15 +101,13 @@ namespace wow_launcher_cs
             if (Directory.Exists("Cache"))
                 Directory.Delete("Cache", true);
         }
-
-        public void UpdatePatches()
+        public async Task UpdatePatches()
         {
             UpdateDownloadInfoLabel("Перевірка оновлень.");
             DLConfigUA = GetLauncherConfig("DownloadUALocale");
             ClenupPatchD = GetLauncherConfig("Patch-D-Cleanup");
             locale = GetClientLocaleConfig();
 
-            /* тиха очистка від сміття 0-дня. TODO: не забути вимкнути коли треба буде використати файл з назвою */
             if (File.Exists("Data/ruRU/patch-ruRU-D.MPQ") && ClenupPatchD)
             {
                 File.Delete("Data/ruRU/patch-ruRU-D.MPQ");
@@ -117,16 +116,11 @@ namespace wow_launcher_cs
             if (!DLConfigUA || locale != "ruRU")
             {
                 string patchname = "patch-ruRU-4.MPQ";
-                string infotxt = "";
+                string infotxt = locale != "ruRU" ? "Не вибрано ruRU клієнт. " : "";
 
-                if (locale != "ruRU")
-                    infotxt = "Не вибрано ruRU клієнт. ";
-                else
-                    infotxt = "";
-
-                if (File.Exists("Data/ruRU/" + patchname))
+                if (File.Exists($"Data/ruRU/{patchname}"))
                 {
-                    File.Delete("Data/ruRU/" + patchname);
+                    File.Delete($"Data/ruRU/{patchname}");
                     infotxt += "UA переклад видалено!";
                 }
 
@@ -136,51 +130,87 @@ namespace wow_launcher_cs
 
             SetPlayButtonState(false);
 
-            Thread thread = new Thread(() =>
+            if (Updater.data.disabled)
             {
-                if (Updater.data.disabled)
-                {
-                    UpdateDownloadInfoLabel("Оновлення скасовано. Немає з'єднання?.");
-                    SetPlayButtonState(true);
-                    return;
-                }
+                UpdateDownloadInfoLabel("Оновлення скасовано. Немає з'єднання?");
+                SetPlayButtonState(true);
+                return;
+            }
 
+            using (HttpClient client = new HttpClient())
+            {
                 foreach (Updater.PatchData patch in Updater.data.Patches)
                 {
-                    bool dlCpt = false;
+                    string patchPath = $"Data/ruRU/{patch.name}";
+                    string tempPath = $"{patchPath}.tmp";
 
-                    if (File.Exists("Data/ruRU/" + patch.name) && Updater.CalculateMD5("Data/ruRU/" + patch.name).CompareTo(patch.md5) == 0)
+                    if (File.Exists(patchPath) && Updater.CalculateMD5(patchPath).CompareTo(patch.md5) == 0)
                     {
-                        UpdateDownloadInfoLabel("Оновлення відсутні.");
+                        UpdateDownloadInfoLabel($"Оновлення {patch.name} не потрібне.");
                         continue;
                     }
 
-                    if (File.Exists("Data/ruRU/" + patch.name))
-                        File.Delete("Data/ruRU/" + patch.name);
+                    if (File.Exists(patchPath))
+                        File.Delete(patchPath);
 
-                    using (WebClient wc = new WebClient())
+                    try
                     {
-                        UpdateDownloadInfoLabel("Завантаження: " + patch.name);
+                        UpdateDownloadInfoLabel($"Завантаження: {patch.name}");
 
-                        wc.DownloadProgressChanged += new DownloadProgressChangedEventHandler(UpdateProgress);
-                        wc.DownloadFileCompleted += ((sender, args) =>
+                        using (HttpResponseMessage response = await client.GetAsync(patch.link, HttpCompletionOption.ResponseHeadersRead))
                         {
-                            dlCpt = true; 
-                        });
-                        wc.DownloadFileAsync(new System.Uri(patch.link), "Data/ruRU/" + patch.name);
+                            response.EnsureSuccessStatusCode();
+
+                            long totalBytes = response.Content.Headers.ContentLength ?? -1;
+                            long receivedBytes = 0;
+                            byte[] buffer = new byte[65536]; // **Буфер 64КБ для пришвидшення**
+                            DateTime lastProgressUpdate = DateTime.Now;
+
+                            using (Stream contentStream = await response.Content.ReadAsStreamAsync(),
+                                           fileStream = new FileStream(tempPath, FileMode.Create, FileAccess.Write, FileShare.None, buffer.Length, true))
+                            {
+                                int bytesRead;
+                                while ((bytesRead = await contentStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                                {
+                                    await fileStream.WriteAsync(buffer, 0, bytesRead);
+                                    receivedBytes += bytesRead;
+
+                                    // **Оновлення прогрес-бару раз у 500 мс**
+                                    if (totalBytes > 0 && (DateTime.Now - lastProgressUpdate).TotalMilliseconds > 500)
+                                    {
+                                        int progress = (int)((receivedBytes * 100) / totalBytes);
+                                        SetProgressBarPct(progress);
+                                        lastProgressUpdate = DateTime.Now;
+                                    }
+                                }
+                            }
+                        }
+
+                        if (Updater.CalculateMD5(tempPath).CompareTo(patch.md5) == 0)
+                        {
+                            File.Move(tempPath, patchPath);
+                            UpdateDownloadInfoLabel($"{patch.name} завантажено успішно.");
+                        }
+                        else
+                        {
+                            throw new Exception($"Контрольна сума {patch.name} не збігається!");
+                        }
                     }
-                    while (!dlCpt)
+                    catch (Exception ex)
                     {
-                        Application.DoEvents();
+                        UpdateDownloadInfoLabel($"Помилка завантаження {patch.name}: {ex.Message}");
+
+                        if (File.Exists(tempPath))
+                            File.Delete(tempPath);
                     }
                 }
-                UpdateDownloadInfoLabel("Завантажено останнє оновлення.");
-                SetPlayButtonState(true);
-            });
-            thread.Start();  
+            }
+
+            UpdateDownloadInfoLabel("Завантажено останнє оновлення.");
+            SetPlayButtonState(true);
         }
 
-        public void UpdateWowExecutable()
+        public async Task UpdateWowExecutable()
         {
             DLConfigWoW = GetLauncherConfig("PatchClient");
 
@@ -189,36 +219,80 @@ namespace wow_launcher_cs
 
             SetPlayButtonState(false);
 
-            if (File.Exists("Wow.exe"))
+            string wowExe = "Wow.exe";
+            string wowBackup = "Wow.exe.old";
+            string wowTemp = "Wow.exe.tmp";
+
+            if (File.Exists(wowExe))
             {
-                if (Updater.CalculateMD5("Wow.exe").CompareTo(Updater.data.Wow.md5) == 0)
+                if (Updater.CalculateMD5(wowExe).CompareTo(Updater.data.Wow.md5) == 0)
                 {
                     UpdateDownloadInfoLabel("Оновлення Wow.exe не потрібне.");
                     SetPlayButtonState(true);
-                    //PlayWow();
                     return;
                 }
 
-                if (File.Exists("Wow.exe.old"))
-                    File.Delete("Wow.exe.old");
-                File.Move("Wow.exe", "Wow.exe.old");
+                // Якщо є стара резервна копія, не видаляємо її, щоб мати можливість відновлення
+                if (!File.Exists(wowBackup))
+                {
+                    File.Move(wowExe, wowBackup); // Зберігаємо поточний Wow.exe як резервну копію
+                }
             }
 
-            using (WebClient wc = new WebClient())
+            // Завантаження нового файлу у тимчасовий файл
+            try
             {
-                wc.DownloadFileCompleted += ((sender, args) =>
+                using (HttpClient client = new HttpClient())
+                using (HttpResponseMessage response = await client.GetAsync(Updater.data.Wow.link, HttpCompletionOption.ResponseHeadersRead))
+                using (Stream contentStream = await response.Content.ReadAsStreamAsync(),
+                               fileStream = new FileStream(wowTemp, FileMode.Create, FileAccess.Write, FileShare.None, 8192, true))
                 {
+                    await contentStream.CopyToAsync(fileStream);
+                }
+
+                // Перевіряємо MD5 нового файлу перед заміною
+                if (Updater.CalculateMD5(wowTemp).CompareTo(Updater.data.Wow.md5) == 0)
+                {
+                    if (File.Exists(wowExe)) File.Delete(wowExe);
+                    File.Move(wowTemp, wowExe);
                     UpdateDownloadInfoLabel("Wow.exe оновлено.");
-                    SetPlayButtonState(true);
-                });
-                wc.DownloadFileAsync(new System.Uri(Updater.data.Wow.link), "Wow.exe"); //Качає WoW.exe коли натиснуто кнопку Play
+                }
+                else
+                {
+                    throw new Exception("Контрольна сума файлу не збігається!");
+                }
+            }
+            catch (Exception ex)
+            {
+                UpdateDownloadInfoLabel($"Помилка оновлення Wow.exe: {ex.Message}");
+
+                // Відновлення резервної копії у разі невдачі
+                if (File.Exists(wowBackup))
+                {
+                    File.Copy(wowBackup, wowExe, true);
+                    UpdateDownloadInfoLabel("Оновлення не вдалося, відновлено резервну копію.");
+                }
+            }
+            finally
+            {
+                // Видаляємо тимчасовий файл, якщо він залишився після помилки
+                if (File.Exists(wowTemp)) File.Delete(wowTemp);
+                SetPlayButtonState(true);
             }
         }
 
         static private void PlayWow()
         {
-            Process.Start("Wow.exe");
-            Environment.Exit(0); // закриваєм Launcher
+            string wowExePath = "Wow.exe";
+            if (File.Exists(wowExePath))
+            {
+                Process.Start("Wow.exe");
+                Environment.Exit(0); // закриваєм Launcher
+            }
+            else
+            {
+                MessageBox.Show("Wow.exe не знайдено!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         public void UpdateProgress(object sender, DownloadProgressChangedEventArgs e)
