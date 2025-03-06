@@ -246,28 +246,15 @@ namespace wow_launcher_cs
                 }
 
                 // Обчислення MD5 з MAC-адреси
-                string macHash = BitConverter.ToString(
+                string Hash = BitConverter.ToString(
                     MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(macAddress)))
                     .Replace("-", "");
 
-                // Відправка запиту на веб-сервер
-                using (HttpClient client = new HttpClient())
+                // Відправка запиту через WebClient
+                using (WebClient wc = new WebClient())
                 {
-                    client.BaseAddress = new Uri("http://updater.freedom-wow.in.ua/");
-                    string url = $"client/survey.php?count_user={macHash}";
-                    HttpResponseMessage response = await client.GetAsync(url);
-
-                    /* Обробка відповіді сервера
-                    if (response.IsSuccessStatusCode)
-                    {
-                        string responseBody = await response.Content.ReadAsStringAsync();
-                        Console.WriteLine($"Відповідь сервера: {responseBody}");
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Запит завершився з помилкою: {response.StatusCode}");
-                    }
-                    */
+                    string url = $"http://updater.freedom-wow.in.ua/client/survey.php?count_user={Hash}";
+                    string response = await wc.DownloadStringTaskAsync(url);
                 }
             }
 
