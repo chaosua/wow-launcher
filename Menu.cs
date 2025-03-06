@@ -29,6 +29,22 @@ namespace wow_launcher_cs
         private bool ClenupPatchD;
         private string locale;
 
+        private void Menu_Shown(object sender, EventArgs e)
+        {
+            // Перевірка, чи запущений процес Wow.exe
+            if (Process.GetProcessesByName("Wow").Any())
+            {
+                UpdateDownloadInfoLabel("Гра запущена. Перевірка оновлення скасована.");
+                MessageBox.Show("Гра запущена! Закрийте WoW перед оновленням патчів.", "Помилка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            else
+            {
+                UpdatePatches();
+                UpdateWowExecutable();
+            }
+        }
+
         private void titleBar_MouseDown(object sender, MouseEventArgs e)
         {
             mouseDown = true;
@@ -226,42 +242,6 @@ namespace wow_launcher_cs
             progressBar.BackgroundImage = bmp;
         }
 
-        public async void SendUserSurvey()
-        {
-            // Збираєм статистику по кількості активних користувачів
-            try
-            {
-                // Визначення MAC-адреси активного мережевого адаптера
-                string macAddress = NetworkInterface.GetAllNetworkInterfaces()
-                    .Where(nic => nic.OperationalStatus == OperationalStatus.Up &&
-                                  nic.NetworkInterfaceType != NetworkInterfaceType.Loopback)
-                    .Select(nic => nic.GetPhysicalAddress().ToString())
-                    .FirstOrDefault();
-
-                if (string.IsNullOrEmpty(macAddress))
-                {
-                    macAddress ="00:00:00:00:00:00";
-                }
-
-                // Обчислення MD5 з MAC-адреси
-                string Hash = BitConverter.ToString(
-                    MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(macAddress)))
-                    .Replace("-", "");
-
-                // Відправка запиту через WebClient
-                using (WebClient wc = new WebClient())
-                {
-                    string url = $"http://updater.freedom-wow.in.ua/client/survey.php?count_user={Hash}";
-                    string response = await wc.DownloadStringTaskAsync(url);
-                }
-            }
-
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Не вдалося надіслати запит: {ex.Message}", "Помилка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
         private void closeButton_Click(object sender, EventArgs e)
         {
             Close();
@@ -381,25 +361,6 @@ namespace wow_launcher_cs
                 }
             }
         }
-
-        private void Menu_Shown(object sender, EventArgs e)
-        {
-            SendUserSurvey();
-
-            // Перевірка, чи запущений процес Wow.exe
-            if (Process.GetProcessesByName("Wow").Any())
-            {
-                UpdateDownloadInfoLabel("Гра запущена. Перевірка оновлення скасована.");
-                MessageBox.Show("Гра запущена! Закрийте WoW перед оновленням патчів.", "Помилка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-            else
-            {
-                UpdatePatches();
-                UpdateWowExecutable();
-            }
-        }
-
         private void playButton_Click(object sender, EventArgs e)
         {
             PlayWow();
