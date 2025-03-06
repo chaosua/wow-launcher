@@ -240,8 +240,6 @@ namespace wow_launcher_cs
 
                 if (string.IsNullOrEmpty(macAddress))
                 {
-                    //Console.WriteLine("Не вдалося знайти активний мережевий адаптер.");
-                    //return;
                     macAddress ="00:00:00:00:00:00";
                 }
 
@@ -260,7 +258,7 @@ namespace wow_launcher_cs
 
             catch (Exception ex)
             {
-                Console.WriteLine($"Помилка: {ex.Message}");
+                MessageBox.Show($"Не вдалося надіслати запит: {ex.Message}", "Помилка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
