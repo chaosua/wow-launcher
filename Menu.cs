@@ -176,7 +176,7 @@ namespace wow_launcher_cs
                                     receivedBytes += bytesRead;
 
                                     // **Оновлення прогрес-бару раз у 500 мс**
-                                    if (totalBytes > 0 && (DateTime.Now - lastProgressUpdate).TotalMilliseconds > 500)
+                                    if (totalBytes > 0 && (DateTime.Now - lastProgressUpdate).TotalMilliseconds > 250)
                                     {
                                         int progress = (int)((receivedBytes * 100) / totalBytes);
                                         SetProgressBarPct(progress);

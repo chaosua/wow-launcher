@@ -99,11 +99,6 @@ namespace wow_launcher_cs
 
                 try
                 {
-                    // Перейменовуємо поточний лаунчер, але залишаємо резервну копію
-                    if (File.Exists(backupFilename))
-                        File.Delete(backupFilename);
-                    File.Move(filename, backupFilename);
-
                     using (HttpClient client = new HttpClient())
                     using (HttpResponseMessage response = await client.GetAsync(data.Launcher.link, HttpCompletionOption.ResponseHeadersRead))
                     {
@@ -119,8 +114,16 @@ namespace wow_launcher_cs
                     // Перевіряємо MD5 перед заміною файлу
                     if (CalculateMD5(tempFilename).CompareTo(data.Launcher.md5) == 0)
                     {
-                        File.Move(tempFilename, filename);
-                        Process.Start(filename);
+                        // Використовуємо CMD для оновлення лаунчера після закриття
+                        string cmd = $@"/C timeout 1 & del /F /Q ""{filename}"" & move ""{tempFilename}"" ""{filename}"" & start """" ""{filename}""";
+
+                        ProcessStartInfo psi = new ProcessStartInfo("cmd.exe", cmd)
+                        {
+                            WindowStyle = ProcessWindowStyle.Hidden,
+                            CreateNoWindow = true
+                        };
+
+                        Process.Start(psi);
                         Application.Exit();
                     }
                     else
@@ -133,13 +136,6 @@ namespace wow_launcher_cs
                     MessageBox.Show($"Помилка оновлення: {ex.Message}", "Помилка", MessageBoxButtons.OK);
                     data.disabled = true;
 
-                    // Відновлюємо резервну копію у разі невдачі
-                    if (File.Exists(backupFilename))
-                        File.Move(backupFilename, filename);
-                }
-                finally
-                {
-                    // Видаляємо тимчасовий файл, якщо він залишився
                     if (File.Exists(tempFilename))
                         File.Delete(tempFilename);
                 }
