@@ -11,12 +11,12 @@ namespace wow_launcher_cs
             InitializeComponent();
         }
 
-        private void SplashScreen_Load(object sender, EventArgs e)
+        private async void SplashScreen_Load(object sender, EventArgs e)
         {
             string productVersion = Application.ProductVersion;
             versionLabel.Text = "Версія: " + productVersion;
             Updater.Init();
-            Updater.UpdateLauncher();
+            await Updater.UpdateLauncher();
         }
 
         private Timer tmr;

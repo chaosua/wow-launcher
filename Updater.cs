@@ -7,6 +7,8 @@ using System.Windows.Forms;
 using System.Reflection;
 using System.Diagnostics;
 using System.Security.Cryptography;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace wow_launcher_cs
 {
@@ -80,7 +82,7 @@ namespace wow_launcher_cs
             }
         }
 
-        static public void UpdateLauncher()
+        static public async Task UpdateLauncher()
         {
             if (data.disabled)
                 return;
@@ -88,30 +90,58 @@ namespace wow_launcher_cs
             Version productVersion = Version.Parse(Application.ProductVersion);
             Version latestVersion = Version.Parse(data.Launcher.version);
             string filename = Assembly.GetEntryAssembly().Location;
+            string tempFilename = filename + ".tmp";
+            string backupFilename = filename + ".old";
+
             if (productVersion.CompareTo(latestVersion) < 0)
             {
                 _status = 1;
-                File.Move(filename, filename + ".old");
-                using (WebClient wc = new WebClient())
+
+                try
                 {
-                    wc.DownloadFileCompleted += ((sender, args) =>
+                    // Перейменовуємо поточний лаунчер, але залишаємо резервну копію
+                    if (File.Exists(backupFilename))
+                        File.Delete(backupFilename);
+                    File.Move(filename, backupFilename);
+
+                    using (HttpClient client = new HttpClient())
+                    using (HttpResponseMessage response = await client.GetAsync(data.Launcher.link, HttpCompletionOption.ResponseHeadersRead))
                     {
-                        if (CalculateMD5(filename).CompareTo(data.Launcher.md5) == 0)
+                        response.EnsureSuccessStatusCode();
+
+                        using (Stream contentStream = await response.Content.ReadAsStreamAsync(),
+                                       fileStream = new FileStream(tempFilename, FileMode.Create, FileAccess.Write, FileShare.None, 8192, true))
                         {
-                            Process.Start(filename);
-                            Application.Exit();
-                        }
-                        else
-                        {
-                            MessageBox.Show("Хеш MD5 не співпадає!", "Помилка", MessageBoxButtons.OK);
-                            data.disabled = true;
-                            File.Delete(filename);
-                            File.Move(filename + "old", filename);
-                            return;
+                            await contentStream.CopyToAsync(fileStream);
                         }
                     }
-                    );
-                    wc.DownloadFileAsync(new System.Uri(data.Launcher.link), filename);
+
+                    // Перевіряємо MD5 перед заміною файлу
+                    if (CalculateMD5(tempFilename).CompareTo(data.Launcher.md5) == 0)
+                    {
+                        File.Move(tempFilename, filename);
+                        Process.Start(filename);
+                        Application.Exit();
+                    }
+                    else
+                    {
+                        throw new Exception("Хеш MD5 не співпадає!");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Помилка оновлення: {ex.Message}", "Помилка", MessageBoxButtons.OK);
+                    data.disabled = true;
+
+                    // Відновлюємо резервну копію у разі невдачі
+                    if (File.Exists(backupFilename))
+                        File.Move(backupFilename, filename);
+                }
+                finally
+                {
+                    // Видаляємо тимчасовий файл, якщо він залишився
+                    if (File.Exists(tempFilename))
+                        File.Delete(tempFilename);
                 }
             }
         }
