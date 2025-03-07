@@ -295,14 +295,6 @@ namespace wow_launcher_cs
             }
         }
 
-        public void UpdateProgress(object sender, DownloadProgressChangedEventArgs e)
-        {
-            double bytesIn = double.Parse(e.BytesReceived.ToString());
-            double totalBytes = double.Parse(e.TotalBytesToReceive.ToString());
-            double percentage = bytesIn / totalBytes * 100;
-            SetProgressBarPct(Convert.ToInt32(percentage));
-        }
-
         public void SetProgressBarPct(int pct)
         {
             Bitmap bmp = new Bitmap(Properties.Resources.dl_bar_green);
