@@ -91,7 +91,6 @@ namespace wow_launcher_cs
             Version latestVersion = Version.Parse(data.Launcher.version);
             string filename = Assembly.GetEntryAssembly().Location;
             string tempFilename = filename + ".tmp";
-            string backupFilename = filename + ".old";
 
             if (productVersion.CompareTo(latestVersion) < 0)
             {

@@ -4,12 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
-using System.Net;
 using System.Diagnostics;
-using System.Threading;
 using System.Net.Http;
-using System.Net.NetworkInformation;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 
 namespace wow_launcher_cs
@@ -94,8 +90,6 @@ namespace wow_launcher_cs
             //UpdatePlayButton(playButton);
             UpdateDownloadInfoLabel("");
             Text = "Launcher";
-            if (File.Exists("Launcher.exe.old"))
-                File.Delete("Launcher.exe.old");
 
             // Очистка Кешу
             if (Directory.Exists("Cache"))
@@ -216,6 +210,8 @@ namespace wow_launcher_cs
 
             if (Updater.data.disabled || !DLConfigWoW)
                 return;
+
+            UpdateDownloadInfoLabel("Перевірка Wow.exe.");
 
             SetPlayButtonState(false);
 
