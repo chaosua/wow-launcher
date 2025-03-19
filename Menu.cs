@@ -158,7 +158,7 @@ namespace wow_launcher_cs
                             long totalBytes = response.Content.Headers.ContentLength ?? -1;
                             long receivedBytes = 0;
                             byte[] buffer = new byte[65536]; // **Буфер 64КБ для пришвидшення**
-                            DateTime lastProgressUpdate = DateTime.Now;
+                            int lastProgress = -1;
 
                             using (Stream contentStream = await response.Content.ReadAsStreamAsync(),
                                            fileStream = new FileStream(tempPath, FileMode.Create, FileAccess.Write, FileShare.None, buffer.Length, true))
@@ -168,17 +168,21 @@ namespace wow_launcher_cs
                                 {
                                     await fileStream.WriteAsync(buffer, 0, bytesRead);
                                     receivedBytes += bytesRead;
-
-                                    // **Оновлення прогрес-бару раз у 500 мс**
-                                    if (totalBytes > 0 && (DateTime.Now - lastProgressUpdate).TotalMilliseconds > 250)
+                                    
+                                    if (totalBytes > 0)
                                     {
                                         int progress = (int)((receivedBytes * 100) / totalBytes);
-                                        SetProgressBarPct(progress);
-                                        lastProgressUpdate = DateTime.Now;
+                                        if (progress != lastProgress)
+                                        {
+                                            SetProgressBarPct(progress);
+                                            lastProgress = progress;
+                                        }
                                     }
                                 }
                             }
                         }
+
+                        SetProgressBarPct(100);
 
                         if (Updater.CalculateMD5(tempPath).CompareTo(patch.md5) == 0)
                         {
