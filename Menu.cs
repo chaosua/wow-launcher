@@ -31,7 +31,7 @@ namespace wow_launcher_cs
             // Перевірка, чи запущений процес Wow.exe
             if (Process.GetProcessesByName("Wow").Any())
             {
-                UpdateDownloadInfoLabel("Гра запущена. Перевірка оновлення скасована.");
+                UpdateDownloadInfoLabel("Перевірку оновлення скасовано. Запущена гра!");
                 MessageBox.Show("Гра запущена! Закрийте WoW перед оновленням патчів.", "Помилка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
