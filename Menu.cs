@@ -112,7 +112,7 @@ namespace wow_launcher_cs
                 string patchname = "patch-ruRU-4.MPQ";
                 string infotxt = locale != "ruRU" ? "Не вибрано ruRU клієнт. " : "";
 
-                if (File.Exists($"Data/ruRU/{patchname}"))
+                if (File.Exists($"Data/ruRU/{patchname}") && !DLConfigUA)
                 {
                     File.Delete($"Data/ruRU/{patchname}");
                     infotxt += "UA переклад видалено!";
@@ -535,16 +535,20 @@ namespace wow_launcher_cs
                 {
                     //Console.WriteLine($"Локаль знайдено: {localeLine}");
                     clientLocaleConfig = localeLine.Split('"')[1];
+
+                    if (clientLocaleConfig.Length == 4)
+                        clientLocaleConfig = clientLocaleConfig.Substring(0, 2).ToLower() + clientLocaleConfig.Substring(2, 2).ToUpper();
+                    else clientLocaleConfig = "NULL";
                 }
             }
             
             if (clientLocaleConfig == "NULL")
             {
-                if (Directory.Exists(Path.Combine(dataDirectory, "ruRU")))
+                if (Directory.Exists(Path.Combine(dataDirectory, "ruRU")) || Directory.Exists(Path.Combine(dataDirectory, "ruru")))
                     clientLocaleConfig = "ruRU";
-                else if (Directory.Exists(Path.Combine(dataDirectory, "enGB")))
+                else if (Directory.Exists(Path.Combine(dataDirectory, "enGB")) || Directory.Exists(Path.Combine(dataDirectory, "engb")))
                     clientLocaleConfig = "enGB";
-                else if (Directory.Exists(Path.Combine(dataDirectory, "enUS")))
+                else if (Directory.Exists(Path.Combine(dataDirectory, "enUS")) || Directory.Exists(Path.Combine(dataDirectory, "enus")))
                     clientLocaleConfig = "enUS";
                 else
                     MessageBox.Show("Жодної папки з локалізацією не знайдено!\nПомістіть Лаунчер в корінь папки з грою World of Warcraft 3.3.5", "Помилка", MessageBoxButtons.OK);
