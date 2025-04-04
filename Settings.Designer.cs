@@ -136,9 +136,9 @@
             this.patchClientWoW.ForeColor = System.Drawing.SystemColors.Menu;
             this.patchClientWoW.Location = new System.Drawing.Point(36, 148);
             this.patchClientWoW.Name = "patchClientWoW";
-            this.patchClientWoW.Size = new System.Drawing.Size(339, 24);
+            this.patchClientWoW.Size = new System.Drawing.Size(173, 24);
             this.patchClientWoW.TabIndex = 10;
-            this.patchClientWoW.Text = "Пропатчити клієнт (для UA обов\'язково)";
+            this.patchClientWoW.Text = "Пропатчити клієнт";
             this.patchClientWoW.UseVisualStyleBackColor = false;
             this.patchClientWoW.CheckStateChanged += new System.EventHandler(this.ConfigPatchClientWoWStateChanged);
             // 

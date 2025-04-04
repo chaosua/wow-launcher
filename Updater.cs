@@ -73,7 +73,7 @@ namespace wow_launcher_cs
                     using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
                     {
                         if (response.StatusCode == HttpStatusCode.OK)
-                            InitValidation(remoteHost + "update-new.xml"); //тимчасово новий файл для зворотної сумісності
+                            InitValidation(remoteHost + "update.xml");
                     }
                 }
                 catch (WebException e)
