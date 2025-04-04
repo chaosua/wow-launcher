@@ -107,23 +107,6 @@ namespace wow_launcher_cs
                 File.Delete("Data/ruRU/patch-ruRU-D.MPQ");
             }
 
-            /*
-            if (!DLUALocalePatch || locale != "ruRU")
-            {
-                string patchname = "patch-ruRU-4.MPQ";
-                string infotxt = locale != "ruRU" ? "Не вибрано ruRU клієнт. " : "";
-
-                if (File.Exists($"Data/ruRU/{patchname}") && !DLUALocalePatch)
-                {
-                    File.Delete($"Data/ruRU/{patchname}");
-                    infotxt += "UA переклад видалено!";
-                }
-
-                UpdateDownloadInfoLabel($"Оновлення вимкнено. {infotxt}");
-                return;
-            }
-            */
-
             SetPlayButtonState(false);
 
             if (Updater.data.disabled)
@@ -135,11 +118,6 @@ namespace wow_launcher_cs
 
             using (HttpClient client = new HttpClient())
             {
-                foreach (var patch in Updater.data.Patches)
-                {
-                    Console.WriteLine($"PATCH: name={patch.name}, locale={patch.locale}, type={patch.type}, md5={patch.md5}");
-                }
-
                 foreach (Updater.PatchData patch in Updater.data.Patches)
                 {
                     // ігноруємо інші локалі
