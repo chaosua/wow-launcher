@@ -24,6 +24,8 @@ namespace wow_launcher_cs
         public struct PatchData
         {
             public string name;
+            public string type;
+            public string locale;
             public string md5;
             public string link;
         }
@@ -71,7 +73,7 @@ namespace wow_launcher_cs
                     using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
                     {
                         if (response.StatusCode == HttpStatusCode.OK)
-                            InitValidation(remoteHost + "update.xml");
+                            InitValidation(remoteHost + "update-new.xml"); //тимчасово новий файл для зворотної сумісності
                     }
                 }
                 catch (WebException e)
@@ -240,16 +242,20 @@ namespace wow_launcher_cs
             foreach (XmlNode compPatch in components)
             {
                 PatchData tmp;
-                if (compPatch.Attributes["file"] != null && compPatch.Attributes["md5"] != null && compPatch.Attributes["link"] != null)
+                if (compPatch.Attributes["file"] != null && compPatch.Attributes["type"] != null &&
+                    compPatch.Attributes["locale"] != null && compPatch.Attributes["md5"] != null &&
+                    compPatch.Attributes["link"] != null)
                 {
                     tmp.name = compPatch.Attributes["file"].Value;
+                    tmp.type = compPatch.Attributes["type"].Value;
+                    tmp.locale = compPatch.Attributes["locale"].Value;
                     tmp.md5 = compPatch.Attributes["md5"].Value;
                     tmp.link = compPatch.Attributes["link"].Value;
                     tmp.link = tmp.link.Replace("$BASE", data.baseURL);
 
                     foreach (PatchData existingPatch in data.Patches)
                     {
-                        if (existingPatch.name == tmp.name || existingPatch.link == tmp.link || existingPatch.md5 == tmp.md5)
+                        if ((existingPatch.name == tmp.name && existingPatch.type == tmp.type) || existingPatch.link == tmp.link/* || existingPatch.md5 == tmp.md5*/)
                             return false;
                     }
                     data.Patches.Add(tmp);

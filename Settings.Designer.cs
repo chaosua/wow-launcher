@@ -119,9 +119,9 @@
             this.DownloadUALocale.ForeColor = System.Drawing.SystemColors.Menu;
             this.DownloadUALocale.Location = new System.Drawing.Point(36, 112);
             this.DownloadUALocale.Name = "DownloadUALocale";
-            this.DownloadUALocale.Size = new System.Drawing.Size(383, 24);
+            this.DownloadUALocale.Size = new System.Drawing.Size(252, 24);
             this.DownloadUALocale.TabIndex = 9;
-            this.DownloadUALocale.Text = "Завантажувати UA переклад (лише для ruRU)";
+            this.DownloadUALocale.Text = "Завантажувати UA переклад";
             this.DownloadUALocale.UseVisualStyleBackColor = false;
             this.DownloadUALocale.CheckStateChanged += new System.EventHandler(this.DownloadUALocaleStateChanged);
             // 
@@ -129,6 +129,9 @@
             // 
             this.patchClientWoW.AutoSize = true;
             this.patchClientWoW.BackColor = System.Drawing.Color.Transparent;
+            this.patchClientWoW.Checked = true;
+            this.patchClientWoW.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.patchClientWoW.Enabled = false;
             this.patchClientWoW.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.patchClientWoW.ForeColor = System.Drawing.SystemColors.Menu;
             this.patchClientWoW.Location = new System.Drawing.Point(36, 148);

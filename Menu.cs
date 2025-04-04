@@ -21,7 +21,7 @@ namespace wow_launcher_cs
 
         private bool mouseDown;
         private Point lastLocation;
-        private bool DLConfigUA;
+        private bool DLUALocalePatch;
         private bool DLConfigWoW;
         private bool ClenupPatchD;
         private string locale;
@@ -98,7 +98,7 @@ namespace wow_launcher_cs
         public async Task UpdatePatches()
         {
             UpdateDownloadInfoLabel("Перевірка оновлень.");
-            DLConfigUA = GetLauncherConfig("DownloadUALocale");
+            DLUALocalePatch = GetLauncherConfig("DownloadUALocale");
             ClenupPatchD = GetLauncherConfig("Patch-D-Cleanup");
             locale = GetClientLocaleConfig();
 
@@ -107,12 +107,13 @@ namespace wow_launcher_cs
                 File.Delete("Data/ruRU/patch-ruRU-D.MPQ");
             }
 
-            if (!DLConfigUA || locale != "ruRU")
+            /*
+            if (!DLUALocalePatch || locale != "ruRU")
             {
                 string patchname = "patch-ruRU-4.MPQ";
                 string infotxt = locale != "ruRU" ? "Не вибрано ruRU клієнт. " : "";
 
-                if (File.Exists($"Data/ruRU/{patchname}") && !DLConfigUA)
+                if (File.Exists($"Data/ruRU/{patchname}") && !DLUALocalePatch)
                 {
                     File.Delete($"Data/ruRU/{patchname}");
                     infotxt += "UA переклад видалено!";
@@ -121,6 +122,7 @@ namespace wow_launcher_cs
                 UpdateDownloadInfoLabel($"Оновлення вимкнено. {infotxt}");
                 return;
             }
+            */
 
             SetPlayButtonState(false);
 
@@ -133,9 +135,22 @@ namespace wow_launcher_cs
 
             using (HttpClient client = new HttpClient())
             {
+                foreach (var patch in Updater.data.Patches)
+                {
+                    Console.WriteLine($"PATCH: name={patch.name}, locale={patch.locale}, type={patch.type}, md5={patch.md5}");
+                }
+
                 foreach (Updater.PatchData patch in Updater.data.Patches)
                 {
-                    string patchPath = $"Data/ruRU/{patch.name}";
+                    // ігноруємо інші локалі
+                    if (!string.Equals(patch.locale, locale, StringComparison.OrdinalIgnoreCase))
+                        continue;
+
+                    // перевірка типу
+                    if ((DLUALocalePatch && patch.type != "1") || (!DLUALocalePatch && patch.type != "0"))
+                        continue;
+
+                    string patchPath = $"Data/{locale}/{patch.name}";
                     string tempPath = $"{patchPath}.tmp";
 
                     if (File.Exists(patchPath) && Updater.CalculateMD5(patchPath).CompareTo(patch.md5) == 0)

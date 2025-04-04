@@ -2,5 +2,8 @@
 <update base="http://updater.freedom-wow.in.ua/client">
   <component name="wow" md5="73b4bd122ec862171d340d2da9f9d4a5" link="$BASE/WoW.exe" />
   <component name="launcher" md5="a8d310cf6d70f035e4a15f2742f5c092" version="1.0.0.2" link="$BASE/Launcher.exe" />
-  <component name="patch" md5="c3b37782a4a582de701bd96e3852650c" file="patch-ruRU-4.MPQ" link="$BASE/patches/patch-ruRU-4.MPQ" />
+  <component name="patch" type="0" locale="ruRU" md5="c3b37782a4a582de701bd96e3852650c" file="patch-ruRU-4.MPQ" link="$BASE/patches/patch-ruRU-4.MPQ" />
+  <component name="patch" type="1" locale="ruRU" md5="c3b37782a4a582de701bd96e3852650c" file="patch-ruRU-4.MPQ" link="$BASE/patches/patch-ruRU-4.MPQ" />
+  <component name="patch" type="0" locale="enUS" md5="c3b37782a4a582de701bd96e3852650c" file="patch-enUS-4.MPQ" link="$BASE/patches/patch-enUS-4.MPQ" />
+  <component name="patch" type="0" locale="enGB" md5="c3b37782a4a582de701bd96e3852650c" file="patch-enGB-4.MPQ" link="$BASE/patches/patch-enGB-4.MPQ" />
 </update>
