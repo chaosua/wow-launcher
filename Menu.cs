@@ -237,10 +237,14 @@ namespace wow_launcher_cs
             {
                 using (HttpClient client = new HttpClient())
                 using (HttpResponseMessage response = await client.GetAsync(Updater.data.Wow.link, HttpCompletionOption.ResponseHeadersRead))
-                using (Stream contentStream = await response.Content.ReadAsStreamAsync(),
-                               fileStream = new FileStream(wowTemp, FileMode.Create, FileAccess.Write, FileShare.None, 8192, true))
                 {
-                    await contentStream.CopyToAsync(fileStream);
+                    response.EnsureSuccessStatusCode();
+
+                    using (Stream contentStream = await response.Content.ReadAsStreamAsync(),
+                                   fileStream = new FileStream(wowTemp, FileMode.Create, FileAccess.Write, FileShare.None, 8192, true))
+                    {
+                        await contentStream.CopyToAsync(fileStream);
+                    }
                 }
 
                 // Перевіряємо MD5 нового файлу перед заміною
