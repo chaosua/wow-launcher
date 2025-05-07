@@ -59,6 +59,8 @@ namespace wow_launcher_cs
 
         static public void Init()
         {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.SystemDefault;
+
             data.disabled = false;
 
             if (File.Exists("update.xml")) //перевіряє чи присутній локальний файл налаштувань поруч з лаунчером
@@ -73,7 +75,7 @@ namespace wow_launcher_cs
                     using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
                     {
                         if (response.StatusCode == HttpStatusCode.OK)
-                            InitValidation(remoteHost + "update.xml");
+                            InitValidation(remoteHost + "update-new.xml");
                     }
                 }
                 catch (WebException e)

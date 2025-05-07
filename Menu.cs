@@ -7,6 +7,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Net;
 
 namespace wow_launcher_cs
 {
@@ -28,6 +29,9 @@ namespace wow_launcher_cs
 
         private async void Menu_Shown(object sender, EventArgs e)
         {
+            //Обираєм кращий доступний протокол для безпечного з'єднання
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.SystemDefault;
+
             // Перевірка, чи запущений процес Wow.exe
             if (Process.GetProcessesByName("Wow").Any())
             {
