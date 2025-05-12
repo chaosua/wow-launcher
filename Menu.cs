@@ -95,9 +95,11 @@ namespace wow_launcher_cs
             UpdateDownloadInfoLabel("");
             Text = "Launcher";
 
-            // Очистка Кешу
-            if (Directory.Exists("Cache"))
+            // Очистка Кешу ЗРОБИТИ ОПЦІОНАЛЬНИМ
+            /*
+             if (Directory.Exists("Cache"))
                 Directory.Delete("Cache", true);
+            */
         }
         public async Task UpdatePatches()
         {
