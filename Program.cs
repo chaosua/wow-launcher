@@ -14,7 +14,6 @@ namespace wow_launcher_cs
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new SplashScreen());
-
         }
     }
 }
