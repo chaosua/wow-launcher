@@ -10,10 +10,12 @@ namespace wow_launcher_cs.Migration;
 
 public class NewGameUpdater
 {
-    private const string UpdatesApiUrl = "https://api-dev.freedom-wow.in.ua/launcher/updates";
-    private const string DownloadUrl = "https://dev.freedom-wow.in.ua/uploads/";
+    private const string UpdatesApiUrl = "https://api.freedom-wow.in.ua/launcher/updates";
+    private const string DownloadUrl = "https://freedom-wow.in.ua/uploads/";
     
     private readonly HttpClient _httpClient = new();
+
+    ~NewGameUpdater() => _httpClient.Dispose();
     
     public event EventHandler<ProgressEventArgs> UpdateProgress;
 

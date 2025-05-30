@@ -78,6 +78,8 @@
     <Compile Include="Migration\FileActionNeeded.cs" />
     <Compile Include="Migration\LauncherMigrationUpdater.cs" />
     <Compile Include="Migration\NewGameUpdater.cs" />
+    <Compile Include="Migration\OSValidator.cs" />
+    <Compile Include="Migration\OSVERSIONINFOW.cs" />
     <Compile Include="Migration\ProgressEventArgs.cs" />
     <Compile Include="Migration\UpdateAction.cs" />
     <Compile Include="Migration\UpdateActionConverter.cs" />

@@ -36,7 +36,7 @@ public class UpdateActionConverter : JavaScriptConverter
     public override IDictionary<string, object> Serialize(object obj, JavaScriptSerializer serializer)
     {
         if (obj is not UpdateAction action)
-            return [];
+            return new Dictionary<string, object>();
 
         return new Dictionary<string, object>
         {
