@@ -26,6 +26,7 @@
     <ApplicationVersion>1.1.0.7</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <LangVersion>13</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -42,7 +43,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;WITH_MIGRATION</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -74,6 +75,14 @@
     <Compile Include="Menu.Designer.cs">
       <DependentUpon>Menu.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migration\FileActionNeeded.cs" />
+    <Compile Include="Migration\LauncherMigrationUpdater.cs" />
+    <Compile Include="Migration\NewGameUpdater.cs" />
+    <Compile Include="Migration\OSValidator.cs" />
+    <Compile Include="Migration\OSVERSIONINFOW.cs" />
+    <Compile Include="Migration\ProgressEventArgs.cs" />
+    <Compile Include="Migration\UpdateAction.cs" />
+    <Compile Include="Migration\UpdateActionConverter.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

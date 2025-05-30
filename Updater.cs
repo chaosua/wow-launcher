@@ -9,11 +9,16 @@ using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Net.Http;
 using System.Threading.Tasks;
+using wow_launcher_cs.Migration;
 
 namespace wow_launcher_cs
 {
     static class Updater
     {
+#if WITH_MIGRATION
+        private static LauncherMigrationUpdater _newUpdater;
+#endif
+        
         private static int _status = 0;
 
         static public int GetStatus()
@@ -57,7 +62,7 @@ namespace wow_launcher_cs
         public static UpdateData data;
         static string remoteHost = "https://updater.freedom-wow.in.ua/client/"; //основна адреса сервера оновлення
 
-        static public void Init()
+        public static void Init()
         {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.SystemDefault;
 
@@ -86,8 +91,18 @@ namespace wow_launcher_cs
             }
         }
 
-        static public async Task UpdateLauncher()
+        public static async Task UpdateLauncher()
         {
+#if WITH_MIGRATION
+            if (OSValidator.SystemIsValidForUpdate())
+            {
+                _newUpdater = new LauncherMigrationUpdater();
+                var path = await _newUpdater.DownloadUpdateAsync();
+                _newUpdater.PrepareUpdaterScript(path);
+                Environment.Exit(0);
+                return;
+            }
+#endif
             if (data.disabled)
                 return;
 
@@ -171,9 +186,11 @@ namespace wow_launcher_cs
 
         static bool ValidateAndLoad()
         {
-            if (ValidateRoot() && ValidateComponentLimit() && ValidateWowComponent() && ValidateLauncherComponent() && ValidatePatchesComponents())
-                return true;
-            return false;
+            return ValidateRoot()
+                   && ValidateComponentLimit()
+                   && ValidateWowComponent()
+                   && ValidateLauncherComponent()
+                   && ValidatePatchesComponents();
         }
 
         static bool ValidateRoot()

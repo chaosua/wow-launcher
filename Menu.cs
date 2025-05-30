@@ -8,6 +8,9 @@ using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Net;
+#if WITH_MIGRATION
+using wow_launcher_cs.Migration;
+#endif
 
 namespace wow_launcher_cs
 {
@@ -20,12 +23,23 @@ namespace wow_launcher_cs
             InitializeComponent();
         }
 
+#if WITH_MIGRATION
+        ~Menu()
+        {
+            _gameUpdater.UpdateProgress -= GameUpdaterOnUpdateProgress;
+        }
+#endif
+
         private bool mouseDown;
         private Point lastLocation;
         private bool DLUALocalePatch;
         private bool DLConfigWoW;
         private bool ClenupPatchD;
         private string locale;
+        
+#if WITH_MIGRATION
+        private readonly NewGameUpdater _gameUpdater = new();
+#endif
 
         private async void Menu_Shown(object sender, EventArgs e)
         {
@@ -39,12 +53,22 @@ namespace wow_launcher_cs
                 MessageBox.Show("Гра запущена! Закрийте WoW перед оновленням патчів.", "Помилка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            else
-            {
-                await UpdateWowExecutable();
-                await UpdatePatches();
-            }
+            
+#if !WITH_MIGRATION
+            await UpdateWowExecutable();
+            await UpdatePatches();
+#else
+            _gameUpdater.UpdateProgress += GameUpdaterOnUpdateProgress;
+            await _gameUpdater.RunAsync();
+#endif
         }
+
+#if WITH_MIGRATION
+        private void GameUpdaterOnUpdateProgress(object sender, ProgressEventArgs e)
+        {
+            SetProgressBarPct((int)e.Progress);
+        }
+#endif
 
         private void titleBar_MouseDown(object sender, MouseEventArgs e)
         {
