@@ -77,12 +77,11 @@ namespace wow_launcher_cs
             }
             else
             {
-#if !WITH_MIGRATION
+#if WITH_MIGRATION
+                await mainMenu.StartUpdateAsync();
+#else
                 await mainMenu.UpdateWowExecutable();
                 await mainMenu.UpdatePatches();
-#else
-                _gameUpdater.UpdateProgress += mainMenu.GameUpdaterOnUpdateProgress;
-                await _gameUpdater.RunAsync();
 #endif
             }
         }

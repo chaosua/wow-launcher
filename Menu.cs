@@ -21,6 +21,9 @@ namespace wow_launcher_cs
         public Menu()
         {
             InitializeComponent();
+#if WITH_MIGRATION
+            _gameUpdater.UpdateProgress += GameUpdaterOnUpdateProgress;
+#endif
         }
 
 #if WITH_MIGRATION
@@ -54,17 +57,18 @@ namespace wow_launcher_cs
                 return;
             }
             
-#if !WITH_MIGRATION
+#if WITH_MIGRATION
+            await StartUpdateAsync();
+#else
             await UpdateWowExecutable();
             await UpdatePatches();
-#else
-            _gameUpdater.UpdateProgress += GameUpdaterOnUpdateProgress;
-            await _gameUpdater.RunAsync();
 #endif
         }
 
 #if WITH_MIGRATION
-        public void GameUpdaterOnUpdateProgress(object sender, ProgressEventArgs e)
+        public async Task StartUpdateAsync() => await _gameUpdater.RunAsync();
+        
+        private void GameUpdaterOnUpdateProgress(object sender, ProgressEventArgs e)
         {
             SetProgressBarPct((int)e.Progress);
         }
