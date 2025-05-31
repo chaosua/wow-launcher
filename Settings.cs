@@ -70,8 +70,12 @@ namespace wow_launcher_cs
             }
             else
             {
+#if WITH_MIGRATION
+                await mainMenu.StartUpdateAsync();
+#else
                 await mainMenu.UpdateWowExecutable();
                 await mainMenu.UpdatePatches();
+#endif
             }
         }
 
