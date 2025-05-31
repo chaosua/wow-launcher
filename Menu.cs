@@ -64,7 +64,7 @@ namespace wow_launcher_cs
         }
 
 #if WITH_MIGRATION
-        private void GameUpdaterOnUpdateProgress(object sender, ProgressEventArgs e)
+        public void GameUpdaterOnUpdateProgress(object sender, ProgressEventArgs e)
         {
             SetProgressBarPct((int)e.Progress);
         }

@@ -7,6 +7,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+#if WITH_MIGRATION
+using wow_launcher_cs.Migration;
+#endif
 
 namespace wow_launcher_cs
 {
@@ -23,6 +26,10 @@ namespace wow_launcher_cs
 
         private PrivateFontCollection fonts = new PrivateFontCollection();
         Font myFont;
+
+#if WITH_MIGRATION
+        private readonly NewGameUpdater _gameUpdater = new();
+#endif
 
         class ComboItem
         {
@@ -70,8 +77,13 @@ namespace wow_launcher_cs
             }
             else
             {
+#if !WITH_MIGRATION
                 await mainMenu.UpdateWowExecutable();
                 await mainMenu.UpdatePatches();
+#else
+                _gameUpdater.UpdateProgress += mainMenu.GameUpdaterOnUpdateProgress;
+                await _gameUpdater.RunAsync();
+#endif
             }
         }
 
