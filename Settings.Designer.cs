@@ -115,13 +115,16 @@
             // 
             this.DownloadUALocale.AutoSize = true;
             this.DownloadUALocale.BackColor = System.Drawing.Color.Transparent;
+            this.DownloadUALocale.Checked = true;
+            this.DownloadUALocale.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.DownloadUALocale.Enabled = false;
             this.DownloadUALocale.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.DownloadUALocale.ForeColor = System.Drawing.SystemColors.Menu;
             this.DownloadUALocale.Location = new System.Drawing.Point(36, 112);
             this.DownloadUALocale.Name = "DownloadUALocale";
-            this.DownloadUALocale.Size = new System.Drawing.Size(252, 24);
+            this.DownloadUALocale.Size = new System.Drawing.Size(349, 24);
             this.DownloadUALocale.TabIndex = 9;
-            this.DownloadUALocale.Text = "Завантажувати UA переклад";
+            this.DownloadUALocale.Text = "Завантажувати UA переклад (лише ruRU)";
             this.DownloadUALocale.UseVisualStyleBackColor = false;
             this.DownloadUALocale.CheckStateChanged += new System.EventHandler(this.DownloadUALocaleStateChanged);
             // 

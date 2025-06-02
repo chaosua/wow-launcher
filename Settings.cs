@@ -346,7 +346,10 @@ namespace wow_launcher_cs
                 // Отримання значення параметра DownloadUALocale
                 string downloadUALocale = ConfigLine.Split('"')[1];
                 // Встановлення значення чекбокса
-                DownloadUALocale.Checked = downloadUALocale == "1";
+                //DownloadUALocale.Checked = downloadUALocale == "1";
+                //harcode checked state
+                DownloadUALocale.Checked = true;  
+                UpdateLauncherConfig("DownloadUALocale", true);
             }
 
             ConfigLine = null;
