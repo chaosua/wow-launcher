@@ -100,8 +100,20 @@ namespace wow_launcher_cs
             if (OSValidator.SystemIsValidForUpdate())
             {
                 _newUpdater = new LauncherMigrationUpdater();
-                var path = await _newUpdater.DownloadUpdateAsync();
-                _newUpdater.PrepareUpdaterScript(path);
+                try
+                {
+                    var path = await _newUpdater.DownloadUpdateAsync();
+                    _newUpdater.PrepareUpdaterScript(path);
+                }
+                catch (HttpRequestException ex)
+                {
+                    MessageBox.Show("Не вдалося з'єднатися з сервером оновлень:\n" + ex.Message, "Помилка", MessageBoxButtons.OK);
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Невідома помилка:\nError: " + ex.Message, "Помилка", MessageBoxButtons.OK);
+                }
                 Environment.Exit(0);
                 return;
             }
