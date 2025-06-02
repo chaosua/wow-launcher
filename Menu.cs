@@ -66,7 +66,18 @@ namespace wow_launcher_cs
         }
 
 #if WITH_MIGRATION
-        public async Task StartUpdateAsync() => await _gameUpdater.RunAsync();
+        public async Task StartUpdateAsync()
+        {
+            try
+            {
+                await _gameUpdater.RunAsync();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Помилка Сервер оновлень недоступний!\nError: " + ex.Message, "Помилка", MessageBoxButtons.OK);
+                Updater.data.disabled = true;
+            }
+        }
         
         private void GameUpdaterOnUpdateProgress(object sender, ProgressEventArgs e)
         {
