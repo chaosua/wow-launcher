@@ -1,8 +1,10 @@
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace wow_launcher_cs.Migration;
 
@@ -15,32 +17,47 @@ public class LauncherMigrationUpdater
 
     public async Task<string> DownloadUpdateAsync()
     {
-        var response = await _httpClient.GetAsync(LauncherDownloadUrl);
-        response.EnsureSuccessStatusCode();
-        
-        var bytes = await response.Content.ReadAsByteArrayAsync();
-        var tempDir = Path.GetTempPath();
-        var exePath = Path.Combine(tempDir, "freedom-launcher-update.exe");
-        
-        File.WriteAllBytes(exePath, bytes);
-        return exePath;
+        try
+        {
+            var response = await _httpClient.GetAsync(LauncherDownloadUrl);
+            response.EnsureSuccessStatusCode();
+
+            var bytes = await response.Content.ReadAsByteArrayAsync();
+            var tempDir = Path.GetTempPath();
+            var exePath = Path.Combine(tempDir, "freedom-launcher-update.exe");
+
+            File.WriteAllBytes(exePath, bytes);
+            return exePath;
+        }
+        catch (HttpRequestException ex)
+        {
+            MessageBox.Show("Не вдалося з'єднатися з сервером оновлень:\n" + ex.Message, "Помилка", MessageBoxButtons.OK);
+            return null;
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show("Невідома помилка:\nError: " + ex.Message, "Помилка", MessageBoxButtons.OK);
+            return null;
+        }
     }
 
     public void PrepareUpdaterScript(string newExePath)
     {
-        var currentExe = Assembly.GetEntryAssembly()?.Location
-                         ?? Process.GetCurrentProcess().MainModule!.FileName;
-        
-        var nameNoExt = Path.GetFileNameWithoutExtension(currentExe);
-        
-        var oldEscaped = currentExe.Replace("'", "''");
-        var newEscaped = newExePath.Replace("'", "''");
-        
-        var oldPath = $"{oldEscaped}";
-        var newPath = $"{newEscaped}";
-
-        var lines = new []
+        try
         {
+            var currentExe = Assembly.GetEntryAssembly()?.Location
+                             ?? Process.GetCurrentProcess().MainModule!.FileName;
+
+            var nameNoExt = Path.GetFileNameWithoutExtension(currentExe);
+
+            var oldEscaped = currentExe.Replace("'", "''");
+            var newEscaped = newExePath.Replace("'", "''");
+
+            var oldPath = $"{oldEscaped}";
+            var newPath = $"{newEscaped}";
+
+            var lines = new[]
+            {
             "@echo off",
             "setlocal",
             $"set \"PROC={nameNoExt}.exe\"",
@@ -55,19 +72,24 @@ public class LauncherMigrationUpdater
             "start \"\" \"%OLD%\"",
             "endlocal",
             "exit /B"
-        };
+            };
 
-        var psi = new ProcessStartInfo
+            var psi = new ProcessStartInfo
+            {
+                FileName = "cmd.exe",
+                UseShellExecute = false,
+                RedirectStandardInput = true,
+                CreateNoWindow = true
+            };
+
+            var proc = Process.Start(psi)!;
+            using var sw = proc.StandardInput;
+            foreach (var line in lines)
+                sw.WriteLine(line);
+        }
+        catch (Exception ex)
         {
-            FileName = "cmd.exe",
-            UseShellExecute = false,
-            RedirectStandardInput = true,
-            CreateNoWindow = true
-        };
-        
-        var proc = Process.Start(psi)!;
-        using var sw = proc.StandardInput;
-        foreach (var line in lines)
-            sw.WriteLine(line);
+            MessageBox.Show("Не вдалося оновити:\nError: " + ex.Message, "Помилка", MessageBoxButtons.OK);
+        }
     }
 }

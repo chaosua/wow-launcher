@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
+using System.Windows.Forms;
 
 namespace wow_launcher_cs.Migration;
 
@@ -21,29 +22,40 @@ public class NewGameUpdater
 
     public async Task RunAsync()
     {
-        var actions = await FetchUpdatesAsync();
-        var total = actions.Length;
-
-        for (var i = 0; i < total; i++)
+        try
         {
-            var action = actions[i];
-            var fileWeight = 1f / total;
-            var baseProgress = i * fileWeight * 100f;
-            
-            await ProcessActionAsync(action, async currentFileProgress =>
+            var actions = await FetchUpdatesAsync();
+            var total = actions.Length;
+
+            for (var i = 0; i < total; i++)
             {
-                var combined = baseProgress + currentFileProgress * fileWeight;
-                OnUpdateProgress(new ProgressEventArgs
+                var action = actions[i];
+                var fileWeight = 1f / total;
+                var baseProgress = i * fileWeight * 100f;
+
+                await ProcessActionAsync(action, async currentFileProgress =>
                 {
-                    Progress = combined,
-                    Current = i + 1,
-                    Total = total
+                    var combined = baseProgress + currentFileProgress * fileWeight;
+                    OnUpdateProgress(new ProgressEventArgs
+                    {
+                        Progress = combined,
+                        Current = i + 1,
+                        Total = total
+                    });
+                    await Task.CompletedTask;
                 });
-                await Task.CompletedTask;
-            });
+            }
+
+            OnUpdateProgress(new ProgressEventArgs { Progress = 100f, Current = 0, Total = 0 });
         }
-        
-        OnUpdateProgress(new ProgressEventArgs { Progress = 100f, Current = 0, Total = 0 });
+        catch (HttpRequestException ex)
+        {
+            MessageBox.Show("Не вдалося з'єднатися з сервером оновлень:\n" + ex.Message, "Помилка", MessageBoxButtons.OK);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show("Невідома помилка:\nError: " + ex.Message, "Помилка", MessageBoxButtons.OK);
+        }
     }
     
     private async Task<UpdateAction[]> FetchUpdatesAsync()
