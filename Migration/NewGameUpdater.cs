@@ -5,7 +5,6 @@ using System.Net.Http;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
-using System.Windows.Forms;
 
 namespace wow_launcher_cs.Migration;
 
@@ -30,21 +29,23 @@ public class NewGameUpdater
             var action = actions[i];
             var fileWeight = 1f / total;
             var baseProgress = i * fileWeight * 100f;
-
+            
+            var li = action.LocalFilePath.LastIndexOf('\\');
+            var fileName = li >= 0 ? action.LocalFilePath.Substring(li + 1) : action.LocalFilePath;
+            
             await ProcessActionAsync(action, async currentFileProgress =>
             {
                 var combined = baseProgress + currentFileProgress * fileWeight;
                 OnUpdateProgress(new ProgressEventArgs
                 {
                     Progress = combined,
-                    Current = i + 1,
-                    Total = total
+                    CurrentFile = fileName
                 });
-                    await Task.CompletedTask;
+                await Task.CompletedTask;
             });
         }
 
-        OnUpdateProgress(new ProgressEventArgs { Progress = 100f, Current = 0, Total = 0 });
+        OnUpdateProgress(new ProgressEventArgs { Progress = 100f, CurrentFile = null });
     }
     
     private async Task<UpdateAction[]> FetchUpdatesAsync()
