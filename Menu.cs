@@ -68,6 +68,8 @@ namespace wow_launcher_cs
 #if WITH_MIGRATION
         public async Task StartUpdateAsync()
         {
+            SetPlayButtonState(false);
+            
             try
             {
                 await _gameUpdater.RunAsync();
@@ -82,6 +84,16 @@ namespace wow_launcher_cs
         private void GameUpdaterOnUpdateProgress(object sender, ProgressEventArgs e)
         {
             SetProgressBarPct((int)e.Progress);
+
+            if (e.CurrentFile != null)
+            {
+                UpdateDownloadInfoLabel($"Завантаження: {e.CurrentFile}");
+            }
+            else
+            {
+                UpdateDownloadInfoLabel("Завантажено останнє оновлення.");
+                SetPlayButtonState(true);
+            }
         }
 #endif
 
