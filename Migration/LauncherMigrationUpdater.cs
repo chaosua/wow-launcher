@@ -39,35 +39,23 @@ public class LauncherMigrationUpdater
         var oldPath = $"{oldEscaped}";
         var newPath = $"{newEscaped}";
 
-        var lines = new[]
-        {
-            "@echo off",
-            "setlocal",
-            $"set \"PROC={nameNoExt}.exe\"",
-            $"set \"OLD={oldPath}\"",
-            $"set \"NEW={newPath}\"",
-            "taskkill /IM \"%PROC%\" /F 2>nul",
-            ":wait_process",
-            "tasklist /FI \"IMAGENAME eq %PROC%\" 2>nul | find /I \"%PROC%\" >nul",
-            "if not errorlevel 1 ( ping -n 2 127.0.0.1 >nul & goto wait_process )",
-            "del /F \"%OLD%\"",
-            "move \"%NEW%\" \"%OLD%\"",
-            "start \"\" \"%OLD%\"",
-            "endlocal",
-            "exit /B"
-        };
+        var psScript = $$"""
+                         while (Get-Process -Name '{{nameNoExt}}' -ErrorAction SilentlyContinue) { Start-Sleep -Seconds 1 }
+                         Remove-Item -LiteralPath '{{oldPath}}' -Force
+                         Move-Item -LiteralPath '{{newPath}}' -Destination '{{oldPath}}'
+                         Start-Process -FilePath '{{oldPath}}'
+                         """;
+        
+        var arguments = $"-NoProfile -ExecutionPolicy Bypass -Command \"& {{ {psScript} }}\"";
 
         var psi = new ProcessStartInfo
         {
-            FileName = "cmd.exe",
+            FileName = "powershell.exe",
+            Arguments = arguments,
             UseShellExecute = false,
-            RedirectStandardInput = true,
             CreateNoWindow = true
         };
 
-        var proc = Process.Start(psi)!;
-        using var sw = proc.StandardInput;
-        foreach (var line in lines)
-            sw.WriteLine(line);
+        Process.Start(psi);
     }
 }
