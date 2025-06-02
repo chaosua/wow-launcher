@@ -93,6 +93,9 @@ namespace wow_launcher_cs
 
         public static async Task UpdateLauncher()
         {
+            if (data.disabled)
+                return;
+            
 #if WITH_MIGRATION
             if (OSValidator.SystemIsValidForUpdate())
             {
@@ -103,9 +106,6 @@ namespace wow_launcher_cs
                 return;
             }
 #endif
-            if (data.disabled)
-                return;
-
             Version productVersion = Version.Parse(Application.ProductVersion);
             Version latestVersion = Version.Parse(data.Launcher.version);
             string filename = Assembly.GetEntryAssembly().Location;
