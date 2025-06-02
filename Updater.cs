@@ -104,6 +104,7 @@ namespace wow_launcher_cs
                 {
                     var path = await _newUpdater.DownloadUpdateAsync();
                     _newUpdater.PrepareUpdaterScript(path);
+                    Environment.Exit(0);
                 }
                 catch (HttpRequestException ex)
                 {
@@ -114,7 +115,6 @@ namespace wow_launcher_cs
                 {
                     MessageBox.Show("Невідома помилка:\nError: " + ex.Message, "Помилка", MessageBoxButtons.OK);
                 }
-                Environment.Exit(0);
                 return;
             }
 #endif
