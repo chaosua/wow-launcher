@@ -22,40 +22,29 @@ public class NewGameUpdater
 
     public async Task RunAsync()
     {
-        try
-        {
-            var actions = await FetchUpdatesAsync();
-            var total = actions.Length;
+        var actions = await FetchUpdatesAsync();
+        var total = actions.Length;
 
-            for (var i = 0; i < total; i++)
+        for (var i = 0; i < total; i++)
+        {
+            var action = actions[i];
+            var fileWeight = 1f / total;
+            var baseProgress = i * fileWeight * 100f;
+
+            await ProcessActionAsync(action, async currentFileProgress =>
             {
-                var action = actions[i];
-                var fileWeight = 1f / total;
-                var baseProgress = i * fileWeight * 100f;
-
-                await ProcessActionAsync(action, async currentFileProgress =>
+                var combined = baseProgress + currentFileProgress * fileWeight;
+                OnUpdateProgress(new ProgressEventArgs
                 {
-                    var combined = baseProgress + currentFileProgress * fileWeight;
-                    OnUpdateProgress(new ProgressEventArgs
-                    {
-                        Progress = combined,
-                        Current = i + 1,
-                        Total = total
-                    });
-                    await Task.CompletedTask;
+                    Progress = combined,
+                    Current = i + 1,
+                    Total = total
                 });
-            }
+                    await Task.CompletedTask;
+            });
+        }
 
-            OnUpdateProgress(new ProgressEventArgs { Progress = 100f, Current = 0, Total = 0 });
-        }
-        catch (HttpRequestException ex)
-        {
-            MessageBox.Show("Не вдалося з'єднатися з сервером оновлень:\n" + ex.Message, "Помилка", MessageBoxButtons.OK);
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show("Невідома помилка:\nError: " + ex.Message, "Помилка", MessageBoxButtons.OK);
-        }
+        OnUpdateProgress(new ProgressEventArgs { Progress = 100f, Current = 0, Total = 0 });
     }
     
     private async Task<UpdateAction[]> FetchUpdatesAsync()
