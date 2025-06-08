@@ -73,8 +73,10 @@ namespace wow_launcher_cs
             else
             {
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(remoteHost);
-                request.Timeout = 5000;
+                request.Timeout = 6000; //Таймаут відповіді сервера
                 request.Method = "HEAD";
+                request.AllowAutoRedirect = true; // якщо сервер перенаправляє
+                request.UserAgent = "FreedomLauncher";
                 try
                 {
                     using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
