@@ -1,8 +1,10 @@
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace wow_launcher_cs.Migration;
 
@@ -10,7 +12,7 @@ public class LauncherMigrationUpdater
 {
     private readonly HttpClient _httpClient = new();
     private const string LauncherDownloadUrl = "https://freedom-wow.in.ua/freedom-launcher.exe";
-    
+
     ~LauncherMigrationUpdater() => _httpClient.Dispose();
 
     public async Task<string> DownloadUpdateAsync()
@@ -31,28 +33,14 @@ public class LauncherMigrationUpdater
         var currentExe = Assembly.GetEntryAssembly()?.Location
                          ?? Process.GetCurrentProcess().MainModule!.FileName;
 
-        var nameNoExt = Path.GetFileNameWithoutExtension(currentExe);
+        var tempExe = newExePath;
+        var originalExe = currentExe;
 
-        var oldEscaped = currentExe.Replace("'", "''");
-        var newEscaped = newExePath.Replace("'", "''");
+        string cmd = $@"/C ping -n 2 127.0.0.1 >nul & del /F /Q ""{originalExe}"" & move /Y ""{tempExe}"" ""{originalExe}"" & start """" ""{originalExe}""";
 
-        var oldPath = $"{oldEscaped}";
-        var newPath = $"{newEscaped}";
-
-        var psScript = $$"""
-                         while (Get-Process -Name '{{nameNoExt}}' -ErrorAction SilentlyContinue) { Start-Sleep -Seconds 1 }
-                         Remove-Item -LiteralPath '{{oldPath}}' -Force
-                         Move-Item -LiteralPath '{{newPath}}' -Destination '{{oldPath}}'
-                         Start-Process -FilePath '{{oldPath}}'
-                         """;
-        
-        var arguments = $"-NoProfile -ExecutionPolicy Bypass -Command \"& {{ {psScript} }}\"";
-
-        var psi = new ProcessStartInfo
+        var psi = new ProcessStartInfo("cmd.exe", cmd)
         {
-            FileName = "powershell.exe",
-            Arguments = arguments,
-            UseShellExecute = false,
+            WindowStyle = ProcessWindowStyle.Hidden,
             CreateNoWindow = true
         };
 
