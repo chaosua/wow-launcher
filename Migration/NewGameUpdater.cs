@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
@@ -22,6 +23,18 @@ public class NewGameUpdater
     public async Task RunAsync()
     {
         var actions = await FetchUpdatesAsync();
+        actions = actions
+            .Where(action =>
+            {
+                if (!action.LocalFilePath.StartsWith("Data\\", StringComparison.OrdinalIgnoreCase))
+                    return true;
+                
+                var path = action.LocalFilePath.TrimStart('/');
+                var parentDir = Path.GetDirectoryName(path);
+                return parentDir != null && Directory.Exists(parentDir);
+            })
+            .ToArray();
+        
         var total = actions.Length;
 
         for (var i = 0; i < total; i++)
